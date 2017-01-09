@@ -1,15 +1,9 @@
 import firebase, { initializeApp } from 'firebase'
 import { addItemSuccess, removeItemSuccess, goOnline, goOffline } from '../actions/items'
+import { config } from './fb_config'
 
 
-
-const firebaseApp = initializeApp({
-  apiKey: "AIzaSyDUUc8fGOWHpaegxo_XzHbT8TBMIrcAAnY",
-  authDomain: "restaurant-aware.firebaseapp.com",
-  databaseURL: "https://restaurant-aware.firebaseio.com",
-  storageBucket: "restaurant-aware.appspot.com",
-  messagingSenderId: "675136691429"
-})
+const firebaseApp = initializeApp(config)
 export const itemsRef = firebaseApp.database().ref('items')
 export const winesRef = firebaseApp.database().ref('wines')
 export const databaseRef = firebaseApp.database();
