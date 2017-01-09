@@ -1,0 +1,44 @@
+{
+  "name": "Exp_Nav",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@shoutem/theme": "^0.8.9",
+    "@shoutem/ui": "^0.10.2",
+    "axios": "^0.15.3",
+    "firebase": "^3.6.4",
+    "react": "15.4.1",
+    "react-native": "^0.39.2",
+    "react-native-animated-list": "^1.0.4",
+    "react-native-elements": "git://github.com/react-native-community/react-native-elements.git#v0.9.0",
+    "react-native-facebook-login": "^1.4.0",
+    "react-native-firebase-auth": "0.0.11",
+    "react-native-form-generator": "^0.9.9",
+    "react-native-google-signin": "^0.8.1",
+    "react-native-material-design": "^0.3.7",
+    "react-native-navbar": "^1.5.4",
+    "react-native-root-modal": "^1.0.7",
+    "react-native-side-menu": "^0.20.1",
+    "react-native-simple-store": "^1.1.0",
+    "react-native-vector-icons": "^3.0.0",
+    "react-redux": "^5.0.1",
+    "redux": "^3.6.0",
+    "redux-axios-middleware": "^3.0.0",
+    "redux-logger": "^2.7.4",
+    "redux-thunk": "^2.1.0",
+    "tcomb-form-native": "^0.6.3"
+  },
+  "devDependencies": {
+    "babel-jest": "18.0.0",
+    "babel-preset-react-native": "1.9.1",
+    "jest": "18.0.0",
+    "react-test-renderer": "15.4.1"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
