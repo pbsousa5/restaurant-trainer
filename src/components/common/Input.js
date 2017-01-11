@@ -3,7 +3,7 @@ import { TextInput, View, Text } from 'react-native';
 
 const Input = ({ label, value, onChangeText, placeholder, secureTextEntry }) => {
   const { inputStyle, labelStyle, containerStyle, largeBox } = styles;
-  console.log("containerStyle: " + containerStyle);
+  //console.log("containerStyle: " + containerStyle);
   return (
     <View style={containerStyle}>
       <Text style={labelStyle}>{label}</Text>

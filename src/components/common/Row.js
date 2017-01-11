@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, Animated } from 'react-native';
 import AppStyles from '../../configs/styles'
+import AppConfig from '../../configs/config'
+import LinearGradient from 'react-native-linear-gradient'
 
 const Row = (props) => (
   <View style={[AppStyles.rowHeight, AppStyles.leftAligned, AppStyles.backColor, AppStyles.fullWindowWidth]}>
+    <LinearGradient colors={AppConfig.greyGradient} style={[styles.paddingBottom, AppStyles.fullWindowWidth]}>
     <View style={AppStyles.wineRow}>
       <View style={AppStyles.leftAligned}>
         <Image source={{ uri: CheckURI(props.image)}} style={styles.photo} />
@@ -15,6 +18,7 @@ const Row = (props) => (
         </View>
       </View>
     </View>
+  </LinearGradient>
   </View>)
 function CheckURI(uri){
   if(uri === ""){
@@ -82,5 +86,8 @@ const styles = StyleSheet.create({
     height: 80 ,
     width: 80,
     borderRadius: 20,
+  },
+  paddingBottom: {
+    paddingBottom: 10,
   },
 });

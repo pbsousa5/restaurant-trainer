@@ -19,7 +19,8 @@ import {
   WINES_LOADED,
   WINES_REQUESTED,
   WINES_REJECTED,
-  WINES_REFRESH
+  WINES_REFRESH,
+  WINE_BOTTLE_DATA
 } from './types';
 
 
@@ -34,12 +35,19 @@ function receiveData(results) {
 		payload: results
 	}
 };
+function receiveWineData(results) {
+  return {
+    type: WINE_BOTTLE_DATA,
+    payload: results
+  }
+}
 export function toggleModal(){
   console.log('toggle ');
   return{
     type: TOGGLE_MODAL
   }
 }
+
 
 function receiveError(json) {
 	return {
@@ -86,6 +94,27 @@ export const wineUpdate = ({ prop, value }) => {
 	}
   */
 }
+// MODAL DATA for single bottles
+export function wineData(search){
+  console.log(search.code);
+  return function(dispatch) {
+		dispatch(requestData());
+		return axios({
+			url: wineDetails+search.code,
+			timeout: 20000,
+			method: 'get',
+			responseType: 'json'
+		})
+			.then(function(response) {
+				dispatch(receiveWineData(response.data));
+			})
+			.catch(function(response){
+				dispatch(receiveError(response.data));
+				//dispatch(pushState(null,'/error'));
+			})
+	}
+}
+
 export function searchWine({search}) {
 	return function(dispatch) {
 		dispatch(requestData());

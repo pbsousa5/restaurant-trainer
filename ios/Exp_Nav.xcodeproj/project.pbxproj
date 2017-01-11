@@ -40,7 +40,6 @@
 		F1B5257EFC934528AC1C1B0A /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09FE5F02DA144E3DACCD1539 /* SafariServices.framework */; };
 		CB02032690AC47C3A310E162 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3421EE52CE14419AA958D63B /* SystemConfiguration.framework */; };
 		07B69A9AE89447D4AE2BC847 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE4ADEB530CC4BBCA92371B6 /* AddressBook.framework */; };
-		6AE39239DDA84E3C9D0347A3 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A13EAD9ECCE048268CFAE08C /* libRNSVG.a */; };
 		42F4D2B400B341939915DBE0 /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C25C2C18A81E4A3BBAED8DDB /* rubicon-icon-font.ttf */; };
 		76A8E013068242C68385BAB7 /* Rubik-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 54F52C8A943D462DBBDE47D0 /* Rubik-Black.ttf */; };
 		286F743DF8004AB5A6CFC8CF /* Rubik-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 61432C837F2B42759E99827A /* Rubik-BlackItalic.ttf */; };
@@ -52,6 +51,7 @@
 		4F0900D90B644D79903318C8 /* Rubik-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A192526AA9194BA38A3B8789 /* Rubik-Medium.ttf */; };
 		2305C5CD9D4644C5996FCBAD /* Rubik-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C5F60B337E6A4DE18C861F83 /* Rubik-MediumItalic.ttf */; };
 		AB2DD34E71004012B2AD33EA /* Rubik-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E268083E31F9409CB096043D /* Rubik-Regular.ttf */; };
+		226DE39ABB4646F9A3FF5BE3 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FFF5F53713B4293BF4A8482 /* libBVLinearGradient.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -192,8 +192,6 @@
 		09FE5F02DA144E3DACCD1539 /* SafariServices.framework */ = {isa = PBXFileReference; name = "SafariServices.framework"; path = "System/Library/Frameworks/SafariServices.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
 		3421EE52CE14419AA958D63B /* SystemConfiguration.framework */ = {isa = PBXFileReference; name = "SystemConfiguration.framework"; path = "System/Library/Frameworks/SystemConfiguration.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
 		CE4ADEB530CC4BBCA92371B6 /* AddressBook.framework */ = {isa = PBXFileReference; name = "AddressBook.framework"; path = "System/Library/Frameworks/AddressBook.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
-		0FE5452462AA4186AE7743E4 /* RNSVG.xcodeproj */ = {isa = PBXFileReference; name = "RNSVG.xcodeproj"; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		A13EAD9ECCE048268CFAE08C /* libRNSVG.a */ = {isa = PBXFileReference; name = "libRNSVG.a"; path = "libRNSVG.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		C25C2C18A81E4A3BBAED8DDB /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; name = "rubicon-icon-font.ttf"; path = "../node_modules/@shoutem/ui/fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		54F52C8A943D462DBBDE47D0 /* Rubik-Black.ttf */ = {isa = PBXFileReference; name = "Rubik-Black.ttf"; path = "../node_modules/@shoutem/ui/fonts/Rubik-Black.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		61432C837F2B42759E99827A /* Rubik-BlackItalic.ttf */ = {isa = PBXFileReference; name = "Rubik-BlackItalic.ttf"; path = "../node_modules/@shoutem/ui/fonts/Rubik-BlackItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
@@ -205,6 +203,8 @@
 		A192526AA9194BA38A3B8789 /* Rubik-Medium.ttf */ = {isa = PBXFileReference; name = "Rubik-Medium.ttf"; path = "../node_modules/@shoutem/ui/fonts/Rubik-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		C5F60B337E6A4DE18C861F83 /* Rubik-MediumItalic.ttf */ = {isa = PBXFileReference; name = "Rubik-MediumItalic.ttf"; path = "../node_modules/@shoutem/ui/fonts/Rubik-MediumItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		E268083E31F9409CB096043D /* Rubik-Regular.ttf */ = {isa = PBXFileReference; name = "Rubik-Regular.ttf"; path = "../node_modules/@shoutem/ui/fonts/Rubik-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		1696E93DD92E4DFAAD0CDD91 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; name = "BVLinearGradient.xcodeproj"; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		1FFF5F53713B4293BF4A8482 /* libBVLinearGradient.a */ = {isa = PBXFileReference; name = "libBVLinearGradient.a"; path = "libBVLinearGradient.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -239,7 +239,7 @@
 				F1B5257EFC934528AC1C1B0A /* SafariServices.framework in Frameworks */,
 				CB02032690AC47C3A310E162 /* SystemConfiguration.framework in Frameworks */,
 				07B69A9AE89447D4AE2BC847 /* AddressBook.framework in Frameworks */,
-				6AE39239DDA84E3C9D0347A3 /* libRNSVG.a in Frameworks */,
+				226DE39ABB4646F9A3FF5BE3 /* libBVLinearGradient.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -376,7 +376,7 @@
 				949F4D9AFED346A7BECBE5E6 /* RNShare.xcodeproj */,
 				AC5BBB5ADE7C41208F1B5286 /* RCTFBLogin.xcodeproj */,
 				BF1662E5777F40E7B5247538 /* RNGoogleSignin.xcodeproj */,
-				0FE5452462AA4186AE7743E4 /* RNSVG.xcodeproj */,
+				1696E93DD92E4DFAAD0CDD91 /* BVLinearGradient.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -771,10 +771,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 			};
 			name = Debug;
@@ -791,10 +787,6 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Exp_Nav.app/Exp_Nav";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 			};
@@ -877,7 +869,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-share\ios",
 					"$(SRCROOT)\..\node_modules\react-native-facebook-login\RCTFBLogin/**",
 					"$(SRCROOT)\..\node_modules\react-native-google-signin\ios\RNGoogleSignin/**",
-					"$(SRCROOT)\..\node_modules\react-native-svg\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-linear-gradient\BVLinearGradient",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -922,7 +914,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-share\ios",
 					"$(SRCROOT)\..\node_modules\react-native-facebook-login\RCTFBLogin/**",
 					"$(SRCROOT)\..\node_modules\react-native-google-signin\ios\RNGoogleSignin/**",
-					"$(SRCROOT)\..\node_modules\react-native-svg\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-linear-gradient\BVLinearGradient",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;

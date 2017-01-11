@@ -8,10 +8,13 @@ import {
   WINES_LOADED,
   WINES_REQUESTED,
   WINES_REJECTED,
-  WINES_REFRESH
+  WINES_REFRESH,
+  WINE_BOTTLE_DATA,
+  WINE_NOTE_REMOVE,
+  WINE_NOTE_ADD
 } from '../actions/types';
 
-import { ListView } from 'react-native'
+
 
 const INITIAL_STATE = {
   name: '',
@@ -21,7 +24,9 @@ const INITIAL_STATE = {
   results: null,
   loaded: false,
   toggle: false,
-  wines: null
+  wines: null,
+  bottle: null,
+  notes: null
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -37,7 +42,7 @@ export default (state = INITIAL_STATE, action) => {
     case WINE_SEARCH_RESULTS:
       return {...state, results: action.payload, loaded: true}//dataSource: this.state.dataSource.cloneWithRows(responseData.movies),
     case TOGGLE_MODAL:
-      return {...state, toggle: !state.toggle }
+      return {...state, toggle: !state.toggle, notes: null }
     case WINES_LOADED:
       return {...state, wines: action.payload}
     case WINES_REJECTED:
@@ -46,6 +51,12 @@ export default (state = INITIAL_STATE, action) => {
       return state
     case WINES_REFRESH:
       return {...state, loaded: false}
+    case WINE_BOTTLE_DATA:
+      return {...state, toggle: !state.toggle, bottle: action.payload.wines[0]}
+    /*case WINE_NOTE_ADD:
+      return {...state, notes: action.payload}
+    case WINE_NOTE_REMOVE:
+      return {...state, notes: action.payload}*/
     default:
       return state;
   }

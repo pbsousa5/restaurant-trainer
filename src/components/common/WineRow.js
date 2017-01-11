@@ -5,8 +5,12 @@ import {  Subtitle, Caption } from '@shoutem/ui'
 import AppStyles from '../../configs/styles'
 import AppConfig from '../../configs/config'
 import { Card } from 'react-native-elements'
+import Gradient from './GradientImage'
+import LinearGradient from 'react-native-linear-gradient'
+
 const WineRow = (props) => (
   <View style={[AppStyles.rowHeight, AppStyles.leftAligned, AppStyles.backColor, AppStyles.fullWindowWidth]}>
+    <LinearGradient colors={AppConfig.greyGradient} style={styles.paddingBottom}>
     <View style={AppStyles.wineRow}>
       <View style={AppStyles.leftAligned}>
         <Image
@@ -19,6 +23,7 @@ const WineRow = (props) => (
         <Text style={AppStyles.h5}>{`${props.time}`}</Text>
       </View>
     </View>
+    </LinearGradient>
 </View>
 
 )
@@ -35,5 +40,8 @@ const styles = StyleSheet.create({
   },
   paddingTop: {
     paddingTop: 5,
+  },
+  paddingBottom: {
+    paddingBottom: 10,
   }
 });

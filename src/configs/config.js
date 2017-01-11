@@ -49,4 +49,5 @@ export default {
 	secondaryTextColor: "#e7e7e7",
 	textColor: "#555",
 	borderColor: "#E7E7E7",
+	greyGradient: ['#606466', '#393e42', '#182930'],
 }

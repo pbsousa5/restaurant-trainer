@@ -7,13 +7,12 @@ import {
   Animated,
   TouchableOpacity,
   Image,
-  Alert,
-  AlertIOS, ListViewDataSource, StyleSheet,
-  InteractionManager, RefreshControl, Platform, Dimensions
+  StyleSheet,
+  LayoutAnimation
 } from 'react-native';
 import { connect } from 'react-redux';
 import { CardSection, Input } from './common';
-import { wineUpdate, wineCreate, searchWine, toggleModal } from '../actions';
+import { wineUpdate, wineCreate, searchWine, toggleModal, wineData, wineNoteAdd, wineNoteRemove } from '../actions';
 import {Button, SearchBar, Icon} from 'react-native-elements'
 import Row from './common/Row';
 import AnimatedList from 'react-native-animated-list';
@@ -35,8 +34,16 @@ class WineForm extends Component {
     }
     this.onSearchPress = _.debounce(this.onSearchPress, 300)
     this.props.hideModal = this.hideModal.bind(this)
+    this._addWineNote = this._addWineNote.bind(this)
+    this._removeWineNote = this._removeWineNote.bind(this)
+    console.log(this.store);
   }
-
+  _addWineNote(note, id){
+    this.props.wineNoteAdd(note, id)
+  }
+  _removeWineNote(note, id){
+    this.props.wineNoteRemove(note, id)
+  }
   slideModal = () => {
 
       this.state.x.setValue(-320);
@@ -72,9 +79,8 @@ class WineForm extends Component {
   _renderRow(rowData, sectionID, rowID) {
     //<DynamicListRow>  </DynamicListRow>
         return (
-
               <TouchableOpacity
-                onPress={this.props.toggleModal}>
+                onPress={this.props.wineData.bind(this,rowData)}>
               <View style={AppStyles.rowStyle}>
                     <Row {...rowData} />
               </View>
@@ -160,8 +166,18 @@ class WineForm extends Component {
         </Picker>
       </CardSection>
       */
-      <View style={[AppStyles.colorBorder, AppStyles.fullWindowWidth]}>
 
+      <View style={[AppStyles.fullWindowWidth]}>
+        <Animated.Modal {...this.props} visible={this.props.toggle} style={[
+            styles.modal, {
+                transform: [
+                    {
+                        scale: this.state.scale
+                    }, {
+                        translateX: this.state.x
+                    }]}]}>
+            <DetailModal {...this.props} _addWineNote={this._addWineNote.bind(this)} _removeWineNote={this._removeWineNote.bind(this)}/>
+        </Animated.Modal>
 
           <View style={AppStyles.searchBar}>
             <SearchBar
@@ -231,7 +247,7 @@ class WineForm extends Component {
                     }, {
                         translateX: this.state.x
                     }]}]}>
-            <DetailModal/>
+            <DetailModal {...this.props}/>
         </Animated.Modal>
         <View style={[AppStyles.rowStyle]}>
           <View style={AppStyles.searchBar}>
@@ -241,10 +257,8 @@ class WineForm extends Component {
               onChangeText={value => this.onSearchPress(value)}
               placeholder='Search For Wines Here...' />
           </View>
-
-
            </View>
-          <Text>
+          <Text style={[AppStyles.paddedText, AppStyles.h4]}>
             You can search for wines first to populate the fields.  If you cannot find the wine you can always enter the info below to create a new wine.
           </Text>
         <CardSection>
@@ -306,12 +320,14 @@ const styles = {
      paddingVertical : 10,
      width           : 80,
      alignSelf       : 'flex-end'
- }
+ },
+
 };
 
 const mapStateToProps = (state) => {
-  const { name, description, type, results, loaded, search, toggle } = state.wines;
-  return { name, description, type, results, loaded, search, toggle };
+  const { name, description, type, results, loaded, search, toggle, bottle } = state.wines;
+  const { notes } = state.notes
+  return { name, description, type, results, loaded, search, toggle, bottle, notes };
 };
 
-export default connect(mapStateToProps, { wineUpdate, searchWine, toggleModal })(WineForm);
+export default connect(mapStateToProps, { wineUpdate, searchWine, toggleModal, wineData, wineNoteAdd, wineNoteRemove })(WineForm);

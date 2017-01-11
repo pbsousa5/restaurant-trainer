@@ -36,12 +36,19 @@ module.exports = StyleSheet.create({
   },
   modalContainer: {
       flex: 1,
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      backgroundColor: 'rgba(0, 0, 0, 1)',
   },
   createWine: {
     paddingTop:70,
     paddingLeft:0,
     paddingRight:0,
+    backgroundColor: AppConfig.greyBack,
+  },
+  paddedText: {
+    paddingTop:10,
+    paddingBottom: 10,
+    paddingLeft:10,
+    paddingRight:10,
     backgroundColor: AppConfig.greyBack,
   },
   backColor:{
@@ -333,6 +340,17 @@ module.exports = StyleSheet.create({
     borderRadius: 20,
     borderWidth:1,
     borderColor: '#ffffff',
+  },
+  largePhoto: {
+    height: 150,
+    width: 150,
+    borderRadius: 20,
+    borderWidth:1,
+    borderColor: '#ffffff',
+  },
+  checkIcon: {
+    height: 50,
+    width: 50,
   },
   colorBorder:{
     borderColor: '#FF0000',

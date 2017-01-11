@@ -14,6 +14,10 @@ export const WINES_LOADED = 'wines_loaded'
 export const WINES_REQUESTED = 'wines_requested'
 export const WINES_REJECTED = 'wines_rejected'
 export const WINES_REFRESH = 'wines_refresh'
+export const WINE_BOTTLE_DATA = 'WINE_BOTTLE_DATA'
+
+export const WINE_NOTE_ADD = 'wine_note_add'
+export const WINE_NOTE_REMOVE = 'wine_note_remove'
 
 export const CREATE_USER_SUCCESS = 'create_user_success';
 export const USER_IS_LOGGED_IN = 'user_is_logged_in'

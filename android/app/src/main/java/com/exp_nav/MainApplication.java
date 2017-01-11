@@ -4,6 +4,8 @@ import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
+import com.BV.LinearGradient.LinearGradientPackage;
+
 import com.oblador.vectoricons.VectorIconsPackage;
 
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
@@ -32,6 +34,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new LinearGradientPackage(),
           new VectorIconsPackage(),
           new RNGoogleSigninPackage(),
           new FacebookLoginPackage(),

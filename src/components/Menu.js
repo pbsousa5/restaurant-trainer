@@ -35,7 +35,7 @@ const MenuIems = [
 ];
 import AppConfig from '../configs/config'
 import AppStyles from '../configs/styles'
-
+import LinearGradient from 'react-native-linear-gradient'
 class Menu extends Component {
   static propTypes = {
     onItemSelected: React.PropTypes.func.isRequired,
@@ -46,8 +46,10 @@ class Menu extends Component {
       <ScrollView scrollsToTop={false} style={AppStyles.sideMenu3}>
         <View style={AppStyles.sideMenu}>
           <List containerStyle={AppStyles.sideMenu2}>
+
           {
             MenuIems.map((item, i) => (
+              <LinearGradient key={i} colors={AppConfig.greyGradient} >
               <ListItem
                 onPress={() => this.props.onItemSelected(item.key, item.title)}
                 leftIcon={{type: 'ionicon', name: item.icon, color: '#ffc100'}}
@@ -56,12 +58,14 @@ class Menu extends Component {
                 titleStyle={AppStyles.menuText}
                 subtitle={item.content}
                 subtitleStyle={AppStyles.menuSubText}
-               />
+              />
+               </LinearGradient>
             ))
           }
           </List>
 
         </View>
+
       </ScrollView>
     );
   }
@@ -89,5 +93,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '300',
     paddingTop: 5,
+  },
+  linearGradient: {
+    flex: 1,
+    paddingLeft: 0,
+    paddingRight: 0,
+    borderRadius: 0
   },
 });
