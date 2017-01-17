@@ -4,24 +4,39 @@ import {
 } from '../actions/types'
 
 const INITIAL_STATE = {
-  id: null,
   notes: []
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case WINE_NOTE_ADD:
-      return {notes: addItem(action.payload, action.id)}
+      // add notes items to our notes array
+      return {...state, notes: insert(state.notes, action.id, action.payload)
+        }
     case WINE_NOTE_REMOVE:
-      return {notes: removeItem(action.id)}
+      return {...state,
+        // removes notes items from the array by the note
+        notes:  state.notes.filter(element => element !== action.payload)}
     default:
       return state;
   }
 }
 function addItem(item, index){
-  INITIAL_STATE.notes.push(item[index])
+  return INITIAL_STATE.notes.push(item[index])
 }
-function removeItem(index){
-  INITIAL_STATE.notes.splice(index,1);
-  return notes
-}
+
+const insert = (arr, index, newItem) => {
+  return [
+  // part of the array before the specified index
+  ...arr.slice(0, index),
+  // inserted item
+  newItem,
+  // part of the array after the specified index
+  ...arr.slice(index)
+]}
+
+const removeItem = (arr, index) => {
+  return [
+  ...arr.slice(0, index),
+  ...arr.slice(index +1)
+]}

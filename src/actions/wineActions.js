@@ -6,7 +6,7 @@ import {
   GetLocalRef
 } from '../configs/firebase'
 import LocalStore from 'react-native-simple-store';
-import axios from 'axios';
+//import axios from 'axios';
 import AppConfigs from '../configs/config'
 import {
   WINE_UPDATE,
@@ -20,7 +20,9 @@ import {
   WINES_REQUESTED,
   WINES_REJECTED,
   WINES_REFRESH,
-  WINE_BOTTLE_DATA
+  WINE_BOTTLE_DATA,
+  HIDE_MODAL,
+  HIDE_MODAL_REFRESH
 } from './types';
 
 
@@ -37,15 +39,32 @@ function receiveData(results) {
 };
 function receiveWineData(results) {
   return {
+    modalType: 'WINE_MODAL',
     type: WINE_BOTTLE_DATA,
     payload: results
   }
 }
-export function toggleModal(){
-  console.log('toggle ');
-  return{
-    type: TOGGLE_MODAL
+export function closeModal(){
+  return {
+    modalType: '',
+    type: HIDE_MODAL
   }
+}
+export function toggleModal(obj, data, notes){
+  console.log('toggle ', obj, data);
+  if(obj){
+    return{
+      type: HIDE_MODAL_REFRESH,
+      payload: data,
+      notes: notes
+    }
+  }else {
+    return{
+      type: HIDE_MODAL,
+    }
+  }
+
+
 }
 
 
@@ -65,8 +84,8 @@ const wineSearch = AppConfigs.wineSearch
 const wineDetails = AppConfigs.wineDetails
 export const wineUpdate = ({ prop, value }) => {
   return {
-
-    type: WINE_UPDATE,
+    type: 'TEST_WINE_UPDATE',
+    //type: WINE_UPDATE,
     payload: { prop, value }
   }
 
@@ -94,6 +113,24 @@ export const wineUpdate = ({ prop, value }) => {
 	}
   */
 }
+  export function wineData(search) {
+    return function(dispatch) {
+      dispatch(requestData());
+    return fetch(wineDetails+search.code)
+      .then((response) => response.json())
+      .then((responseJson) => {
+        return responseJson;
+      }).then((data) => {
+        dispatch(receiveWineData(data))
+        console.log(data);
+      })
+      .catch((error) => {
+        dispatch(receiveError(responseJson.data))
+      });
+    }
+  }
+
+  /*
 // MODAL DATA for single bottles
 export function wineData(search){
   console.log(search.code);
@@ -114,7 +151,25 @@ export function wineData(search){
 			})
 	}
 }
+*/
+  export function searchWine({search}) {
+    return function(dispatch) {
+      dispatch(requestData())
+    return fetch(wineSearch+search)
+      .then((response) => response.json())
+      .then((responseJson) => {
+        return responseJson;
+      }).then((data) => {
+        dispatch(receiveData(data))
+        console.log(data);
+      })
+      .catch((error) => {
+        dispatch(receiveError(responseJson.data))
+      });
+    }
+  }
 
+  /*
 export function searchWine({search}) {
 	return function(dispatch) {
 		dispatch(requestData());
@@ -133,6 +188,25 @@ export function searchWine({search}) {
 			})
 	}
 };
+*/
+  export function getWineDetails({search}) {
+    return function(dispatch) {
+      dispatch(requestData())
+    return fetch(wineDetails+search)
+      .then((response) => response.json())
+      .then((responseJson) => {
+        return responseJson
+      }).then((data) => {
+        dispatch(receiveData(data))
+        console.log(data);
+      })
+      .catch((error) => {
+        dispatch(receiveError(responseJson.data))
+      })
+    }
+  }
+
+  /*
 export function getWineDetails({search}){
   return function(dispatch) {
 		dispatch(requestData());
@@ -151,6 +225,7 @@ export function getWineDetails({search}){
 			})
 	}
 }
+*/
 //Load wines from firebase
 export function loadWines (currentLocalID) {
   return dispatch => {

@@ -36,10 +36,13 @@ class CreateWine extends Component {
   render() {
     return (
       <ScrollView
-        keyboardShouldPersistTaps={true}
-        style={AppStyles.createWine}>
-      <View >
-        <WineForm {...this.props} />
+        keyboardShouldPersistTaps="always"
+        style={AppStyles.flex1}
+        contentContainerStyle={AppStyles.createWine}>
+      <View  >
+
+          <WineForm {...this.props} />
+
         <CardSection>
           <Button
             icon={{name: 'code'}}
@@ -50,7 +53,9 @@ class CreateWine extends Component {
             title='CREATE' />
 
         </CardSection>
+
       </View>
+
       </ScrollView>
     );
   }

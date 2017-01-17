@@ -14,11 +14,11 @@ export default class ReviewDetails extends Component {
       checked: false,
     }
     this._onCheckPressed = this._onCheckPressed.bind(this)
-    //this._addWineNote = this.props._addWineNote.bind(this)
+  //  this._addWineNote = this.props._addWineNote.bind(this)
     //this._removeWineNote = this.props._removeWineNote.bind(this)
   }
-  shouldComponentUpdate(nextProps, nextState) {
-    return false;
+  componentDidMount(){
+    //console.log(this.myProps);
   }
 
   _onCheckPressed(){
@@ -30,12 +30,13 @@ export default class ReviewDetails extends Component {
 
   submitNotes(){
     if(this.state.checked){
-      //this.props._addWineNote(this.props.body, this.props.id)
+      this.props._addWineNote(this.props.body, this.props.id)
       //this.props._addWineNote(this.props.body, this.props.id);
     }else{
-      //this.props._removeWineNote(this.props.body, this.props.id)
+      this.props._removeWineNote(this.props.body, this.props.id)
     }
   }
+  
   render(){
     return(
       <View style={[AppStyles.leftAligned, AppStyles.backColor, AppStyles.fullWindowWidth]}>
@@ -57,3 +58,10 @@ export default class ReviewDetails extends Component {
     )
   }
 }
+/*
+const mapStateToProps = (state) => {
+
+};
+
+export default connect(mapStateToProps, { wineNoteAdd, wineNoteRemove })(ReviewDetails)
+*/

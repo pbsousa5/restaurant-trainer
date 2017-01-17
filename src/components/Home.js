@@ -4,7 +4,7 @@ import AppUtil from '../configs/util';
 import {View, Text, StyleSheet, Image, TouchableOpacity, TextInput} from 'react-native'
 import {Icon, NavigationBar, Title} from '@shoutem/ui';
 import {List, ListItem, Button, Card, FormLabel, FormInput} from 'react-native-elements'
-import axios from 'axios'
+
 import {logOutUser, CheckForCompanyExist, CompanyCreated, NoCompanyCreated, CompanyExists} from '../actions'
 import {connect} from 'react-redux'
 import LocalStore from 'react-native-simple-store';

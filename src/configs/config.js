@@ -45,9 +45,11 @@ export default {
 	secondaryColor: "#FFE229",
 	whiteColor: "#ffffff",
 	greyBack: "#393e42",//303337 //404040 //393e42
+	lightGrey: "#ddd",
 	menuColor: "#2d2d2d",
 	secondaryTextColor: "#e7e7e7",
 	textColor: "#555",
+	whiteText: "#f6f5f3",
 	borderColor: "#E7E7E7",
 	greyGradient: ['#606466', '#393e42', '#182930'],
 }

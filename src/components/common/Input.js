@@ -1,19 +1,21 @@
 import React from 'react';
 import { TextInput, View, Text } from 'react-native';
 
-const Input = ({ label, value, onChangeText, placeholder, secureTextEntry }) => {
+
+const Input = ({ label, value, onChangeText, placeholder, secureTextEntry, refName, myStyle, myLabelStyle }) => {
   const { inputStyle, labelStyle, containerStyle, largeBox } = styles;
   //console.log("containerStyle: " + containerStyle);
   return (
     <View style={containerStyle}>
-      <Text style={labelStyle}>{label}</Text>
+      <Text style={myLabelStyle}>{label.toUpperCase()}</Text>
       <TextInput
         secureTextEntry={secureTextEntry}
         multiline = {true}
         numberOfLines = {8}
         placeholder={placeholder}
         autoCorrect={false}
-        style={inputStyle}
+        placeholderTextColor="grey"
+        style={myStyle}
         value={value}
         onChangeText={onChangeText}
       />
@@ -33,13 +35,15 @@ const styles = {
     height: 80
   },
   labelStyle: {
-    fontSize: 18,
-    paddingLeft: 20,
-    flex: 1
+    fontSize: 15,
+    paddingLeft: 0,
+    flex: 0.7
   },
   containerStyle: {
-    height: 40,
+    height:50,
     flex: 1,
+    paddingBottom: 5,
+    paddingTop: 5,
     flexDirection: 'row',
     alignItems: 'center'
   },

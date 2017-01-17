@@ -24,6 +24,24 @@ module.exports = StyleSheet.create({
 	container: {
     position: 'relative',
     flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
+  cardStyle: {
+    borderWidth: 1,
+    backgroundColor: AppConfig.lightGrey,
+
+    flexDirection: 'column',
+    justifyContent: 'center',
+    //'flex-start' || 'flex-end' || 'center' || 'space-around' || 'space-between'
+  },
+  smallCard: {
+    flex: 0.5,
+  },
+  mediumCard: {
+    flex: 2,
+  },
+  largeCard: {
+    flex: 3,
   },
   modal: {
       top: 0,
@@ -40,9 +58,40 @@ module.exports = StyleSheet.create({
   },
   createWine: {
     paddingTop:70,
-    paddingLeft:0,
-    paddingRight:0,
+    paddingLeft:2,
+    paddingRight:2,
     backgroundColor: AppConfig.greyBack,
+    justifyContent: 'space-between',
+
+  },
+  labelStyle: {
+    color: AppConfig.secondaryColor,
+    fontSize: 13,
+    paddingLeft: 0,
+    flex: 0.7,
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 1,
+    textShadowColor: '#000000',
+    fontFamily: AppConfig.baseFont,
+    fontWeight: '800',
+  },
+  inputStyle: {
+    borderRadius: 5,
+    textAlignVertical: 'top',
+    borderWidth: 1,
+    borderColor: AppConfig.whiteColor,
+    color: '#000',
+    paddingRight: 5,
+    paddingLeft: 5,
+
+    fontSize: 18,
+    lineHeight: 46,
+    flex: 2,
+    flexDirection: 'column',
+
+  },
+  paddingInvis: {
+    flex: 0.1
   },
   paddedText: {
     paddingTop:10,
@@ -91,6 +140,16 @@ module.exports = StyleSheet.create({
     fontFamily: AppConfig.baseFont,
     fontWeight: '500',
     color: AppConfig.textColor,
+    fontSize: AppConfig.baseFontSize,
+    lineHeight: parseInt(AppConfig.baseFontSize + (AppConfig.baseFontSize * 0.5)),
+  },
+  placeholderColor: {
+    color: AppConfig.whiteColor,
+  },
+  inputText: {
+    fontFamily: AppConfig.baseFont,
+    fontWeight: '500',
+    color: AppConfig.whiteColor,
     fontSize: AppConfig.baseFontSize,
     lineHeight: parseInt(AppConfig.baseFontSize + (AppConfig.baseFontSize * 0.5)),
   },
@@ -169,6 +228,9 @@ module.exports = StyleSheet.create({
   },
   strong: {
     fontWeight: '900',
+  },
+  fieldContainer: {
+    backgroundColor: AppConfig.greyBack,
   },
   /* MENU STYLES */
   sideMenu: {
@@ -251,6 +313,9 @@ module.exports = StyleSheet.create({
   paddingBottom: {
     paddingBottom: 20,
   },
+  paddingBott3: {
+    paddingBottom: 3,
+  },
   paddingHorizontalSml: {
     paddingHorizontal: 10,
   },
@@ -332,7 +397,7 @@ module.exports = StyleSheet.create({
         width: AppConfig.windowWidth,
         borderBottomColor : '#000000',
         borderBottomWidth : 1,
-        flexDirection     : 'row'
+
     },
   photo: {
     height: 80,
@@ -369,6 +434,9 @@ module.exports = StyleSheet.create({
   },
   wineBackground:{
     backgroundColor: '#444b4b',
+  },
+  flex08:{
+    flex: 0.8,
   },
   flex1: {
     flex: 1,

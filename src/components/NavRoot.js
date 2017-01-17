@@ -135,7 +135,6 @@ class NavRoot extends Component {
                     </TouchableOpacity>
                 )} centerComponent={< Title > HOME < /Title>}/>
               }
-
             case 'wines':
                 return <NavigationBar leftComponent={(
                     <TouchableOpacity onPress={this._toggleSideMenu}>

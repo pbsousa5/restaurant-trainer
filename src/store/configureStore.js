@@ -1,19 +1,20 @@
-import { createStore, applyMiddleware } from 'redux'
-
-import rootReducer from '../reducers'
+import { createStore, applyMiddleware, compose } from 'redux'
+import wineReducer from '../reducers/wineFormReducer'
+import reducer from '../reducers'
 import syncOffline from './syncOffline'
 import { syncFirebase } from '../configs/firebase'
 import createLogger from 'redux-logger'
 import thunk from 'redux-thunk'
-import axios from 'axios';
+
 import * as Actions from '../actions'
 
 
 const logger = createLogger();
-
+//export default compose(applyMiddleware(thunk))(createStore)(duedates);
 export default function configureStore () {
   const store = createStore(
-    rootReducer,
+    reducer,
+    //wineReducer,
     applyMiddleware(thunk,logger)
   )
   syncOffline(store)
@@ -21,8 +22,8 @@ export default function configureStore () {
 
   if (module.hot) {
     module.hot.accept(() => {
-      const nextRootReducer = require('../reducers/index').default
-      store.replaceReducer(nextRootReducer)
+      const reducer = require('../reducers/index').default
+      store.replaceReducer(reducer)
     })
   }
   // immediately check firebase if the user is Authed in already

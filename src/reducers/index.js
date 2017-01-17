@@ -6,14 +6,17 @@ import loggedReducer from './loggedReducer'
 import companyReducer from './companyReducer'
 import wineEdit from './wineReducer'
 import wineNotes from './noteReducer'
-const rootReducer = combineReducers({
+import modal from './modalReducer'
+
+const reducer = combineReducers({
   navReducer,
   items,
   auth: emailReducer,
   userLogged: loggedReducer,
   myCompany: companyReducer,
   wines: wineEdit,
-  notes: wineNotes
+  notes: wineNotes,
+  modal: modal
 })
 
-export default rootReducer
+export default reducer
