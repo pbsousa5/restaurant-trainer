@@ -7,6 +7,7 @@ import LoadingScreen from './common/LoadingScreen'
 import AnimatedModal from './AnimationModal'
 import ValidationForm from './social/validationForm'
 import CreateWine from './CreateWine'
+import EditWine from './common/EditWine'
 import Wines from './Wines'
 import {connect} from 'react-redux'
 import { refreshingWines } from '../actions'
@@ -95,7 +96,7 @@ class NavRoot extends Component {
                     <View style={styles.container}>
                         <SideMenu menu={menu} isOpen={this.state.isOpen}
                           onChange={(isOpen) => this.updateMenuState(isOpen)}>
-                            <Wines/>
+                            <Wines _handleNavigate={this._handleNavigate.bind(this)}/>
                         </SideMenu>
                     </View>
 
@@ -110,6 +111,8 @@ class NavRoot extends Component {
                 return <ValidationForm _goBack={this._handleBackAction.bind(this)} _handleNavigate={this._handleNavigate.bind(this)}/>
             case 'createwine':
                 return (<CreateWine/>)
+            case 'editwine':
+                return (<EditWine _handleNavigate={this._handleNavigate.bind(this)}/>)
             default:
                 return null
         }
@@ -159,6 +162,12 @@ class NavRoot extends Component {
                     type='ionicon' iconStyle={styles.iconColor}
                     onPress={this._handleBackAction}/>)}
                     title="ADD WINE"></NavigationBar>
+            case 'editwine':
+                return <NavigationBar leftComponent={(
+                  <Icon name='md-arrow-round-back'
+                    type='ionicon' iconStyle={styles.iconColor}
+                    onPress={this._handleBackAction}/>)}
+                    title="EDIT WINE"></NavigationBar>
             default:
                 return null
         }

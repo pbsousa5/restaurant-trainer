@@ -15,7 +15,7 @@ const WineRow = (props) => (
       <View style={AppStyles.leftAligned}>
         <Image
           style={AppStyles.photo}
-          source={{uri: `${props.imageURL}`}}
+          source={{uri: `${props.image}`}}
         />
       </View>
       <View style={[AppStyles.paddingLeft, AppStyles.container, AppStyles.wrapText, AppStyles.paddingRight]}>

@@ -12,7 +12,7 @@ import {
 import { Card } from 'react-native-elements'
 import SearchBarExport from './common/SearchBar'
 import { connect } from 'react-redux';
-import { loadWines } from '../actions';
+import { loadWines, showWineSelect } from '../actions';
 import DynamicListRow from './common/DynamicListRow'
 import WineRow from './common/WineRow';
 import AppConfig from '../configs/config'
@@ -27,7 +27,17 @@ class Wines extends Component {
   }
   _loadWineScreen = (data) => {
     console.log('load wine screen ' , data);
+    this.props.showWineSelect(data)
+    route = {
+        type: 'push',
+        route: {
+            key: 'editwine',
+            title: 'EDIT WINE'
+        }
+    }
+    this.props._handleNavigate(route)
   }
+
   _renderRow(rowData, sectionID, rowID) {
     return (
       <View style={styles.rowStyle}>
@@ -86,7 +96,7 @@ const mapStateToProps = (state) => {
   return { wines, companyID };
 };
 
-export default connect(mapStateToProps, { loadWines })(Wines);
+export default connect(mapStateToProps, { loadWines, showWineSelect })(Wines);
 
 
 const styles = StyleSheet.create({

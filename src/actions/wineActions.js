@@ -27,7 +27,8 @@ import {
   HIDE_MODAL_REFRESH,
   POP_ROUTE,
   LOADING_MODAL_DATA,
-  BY_THE_GLASS
+  BY_THE_GLASS,
+  SHOW_WINE_SELECT
 
 } from './types';
 
@@ -61,6 +62,12 @@ function receiveWineData(results) {
     modalType: 'WINE_MODAL',
     type: WINE_BOTTLE_DATA,
     payload: results
+  }
+}
+export function showWineSelect(data){
+  return {
+    type: SHOW_WINE_SELECT,
+    payload: data
   }
 }
 export function byTheGlass(){
@@ -332,12 +339,13 @@ export const wineCreate = ({ winename, winery,
         key: id,
         name: winename ? winename : "",
         link: link ? link : "",
+        vintage: vintage ? vintage : "",
         code: code ? code : "",
-        description: winenotes ? winenotes : "",
+        winenotes: winenotes ? winenotes : "",
         winery: winery ? winery : "",
         varietal: varietal ? varietal : "",
         glass: glass,
-        imageURL: image ? image : "",
+        image: image ? image : "",
         region: region ? region : "",
         time: new Date().getTime(),
         createdBy: currentUser.uid,

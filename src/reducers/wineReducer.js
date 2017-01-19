@@ -15,7 +15,8 @@ import {
   WINE_NOTE_ADD,
   HIDE_MODAL,
   HIDE_MODAL_REFRESH,
-  BY_THE_GLASS
+  BY_THE_GLASS,
+  SHOW_WINE_SELECT
 } from '../actions/types';
 
 
@@ -43,7 +44,8 @@ const INITIAL_STATE = {
     vintage: null,
     producer: null,
     code: null,
-    link: null
+    link: null,
+    key: null
   }
 };
 
@@ -75,6 +77,21 @@ export default (state = INITIAL_STATE, action) => {
       return state
     case WINES_REFRESH:
       return {...state, loaded: false, notes: INITIAL_STATE.notes, details: INITIAL_STATE.details}
+    case SHOW_WINE_SELECT:
+      return {...state, details: {
+          name: action.payload.name,
+          hasLoaded: true,
+          vintage: action.payload.vintage,
+          region: action.payload.region,
+          varietal: action.payload.varietal,
+          winenotes:action.payload.winenotes,
+          image: action.payload.image,
+          producer: action.payload.winery,
+          code: action.payload.code,
+          link: action.payload.link,
+          key: action.payload.key
+        }
+      }
     case HIDE_MODAL_REFRESH:
       return {...state, loaded: false, details: {
           name: action.payload.name,

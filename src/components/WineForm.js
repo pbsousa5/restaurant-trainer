@@ -231,7 +231,8 @@ class WineForm extends Component {
             </CardSection>
             <Form>
               <FieldsContainer style={AppStyles.fieldContainer}>
-                <Fieldset label="Bottle details">
+                <Fieldset label="Bottle details" style={{color:AppConfigs.greenColor}}>
+                  
                   <Field
                     name="winename"
                     myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
