@@ -15,12 +15,12 @@ const WineRow = (props) => (
       <View style={AppStyles.leftAligned}>
         <Image
           style={AppStyles.photo}
-          source={{uri: 'http://shoutem.github.io/img/ui-toolkit/examples/image-10.png'}}
+          source={{uri: `${props.imageURL}`}}
         />
       </View>
       <View style={[AppStyles.paddingLeft, AppStyles.container, AppStyles.wrapText, AppStyles.paddingRight]}>
-        <Text style={[AppStyles.h4]}>Choosing The Right Boutique Hotel For You</Text>
-        <Text style={AppStyles.h5}>{`${props.time}`}</Text>
+        <Text numberOfLines={2} style={[AppStyles.h4]}>{props.name}</Text>
+        <Text style={AppStyles.h5}>{`${props.varietal}`}</Text>
       </View>
     </View>
     </LinearGradient>

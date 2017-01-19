@@ -1,4 +1,6 @@
 import firebase from 'firebase';
+import React from 'react'
+import { Alert } from 'react-native'
 import {
   winesRef,
   companyRef,
@@ -22,14 +24,31 @@ import {
   WINES_REFRESH,
   WINE_BOTTLE_DATA,
   HIDE_MODAL,
-  HIDE_MODAL_REFRESH
+  HIDE_MODAL_REFRESH,
+  POP_ROUTE,
+  LOADING_MODAL_DATA,
+  BY_THE_GLASS
+
 } from './types';
 
 
-function requestData() {
-	return {
-    type: REQ_DATA
+function requestData(data) {
+  switch (data){
+    case "wines":
+      return {
+        type: REQ_DATA
+      }
+    case "wines_modal":
+      return {
+        type: LOADING_MODAL_DATA
+      }
+    default:
+      return {
+        type: "DEFAULT"
+      }
   }
+
+
 }
 function receiveData(results) {
 	return{
@@ -42,6 +61,11 @@ function receiveWineData(results) {
     modalType: 'WINE_MODAL',
     type: WINE_BOTTLE_DATA,
     payload: results
+  }
+}
+export function byTheGlass(){
+  return{
+    type: BY_THE_GLASS
   }
 }
 export function closeModal(){
@@ -114,8 +138,10 @@ export const wineUpdate = ({ prop, value }) => {
   */
 }
   export function wineData(search) {
+    console.log('search ',wineDetails+search.code);
     return function(dispatch) {
-      dispatch(requestData());
+      dispatch(requestData("wines_modal"));
+
     return fetch(wineDetails+search.code)
       .then((response) => response.json())
       .then((responseJson) => {
@@ -154,7 +180,7 @@ export function wineData(search){
 */
   export function searchWine({search}) {
     return function(dispatch) {
-      dispatch(requestData())
+      dispatch(requestData("wines"))
     return fetch(wineSearch+search)
       .then((response) => response.json())
       .then((responseJson) => {
@@ -231,14 +257,11 @@ export function loadWines (currentLocalID) {
   return dispatch => {
     dispatch(getWineRequestedAction());
     const winesRef = companyRef.child(`${currentLocalID}`).child('wines')
-    return winesRef.once('value', snap => {
+    return winesRef.on('value', snap => {
       const wines = snap.val();
+      console.log("snap.key " , wines);
       dispatch(getWineFulfilledAction(wines))
     })
-    .catch((error) => {
-      console.log(error);
-      dispatch(getWineRejectedAction());
-    });
   }
   //
 }
@@ -255,54 +278,119 @@ function getWineRejectedAction() {
 }
 
 function getWineFulfilledAction(wines) {
+  console.log('wines ', wines);
   return {
     type: WINES_LOADED,
     payload: wines
   };
 }
+function createWineAction() {
+  return{
+    type: "CREATING_WINE"
+  }
+}
+function wineCreateSuccess() {
+  Alert.alert(
+    'SUCCESS',
+    'Wine has been added to your database.',
+    [
+      {text: 'OK', onPress: () => console.log('OK Pressed')},
+    ]
+  )
+  return {
+    //type: WINE_CREATE
+    type: POP_ROUTE
+  }
+}
+function wineCreateError() {
+  Alert.alert(
+    'ERROR',
+    'There was an error saving your data.  Please try again.',
+    [
+      {text: 'OK', onPress: () => console.log('OK Pressed')},
+    ]
+  )
+  return {
+    type: "WINE_CREATE_ERROR"
+  }
+}
 
-
-export const wineCreate = ({ name, description, type }) => {
-
+export const wineCreate = ({ winename, winery,
+  varietal, vintage, winenotes, region, image, glass, link, code }) => {
   const { currentUser } = firebase.auth();
   var currentLocalID
-
-
   var idRef = firebase.database().ref(`/users/${currentUser.uid}/currentID`);
-  idRef.once('value', function(thisID) {
-    // The first callback succeeded; go to the second.
-    idRef.child('readCount').transaction(function(current) {
-      // Increment readCount by 1, or set to 1 if it was undefined before.
-      return (current || 0) + 1;
-    }, function(error, committed, snapshot) {
-      if (error) {
-        // The fetch succeeded, but the update failed.
-        console.error(error);
-      } else {
-        currentLocalID = thisID.val()
-        const id = Math.random().toString(36).substring(7);
-        const winesRef = companyRef.child(`${currentLocalID}`).child('wines').child(id)
-      //  console.log(thisID.val())
-        winesRef.set({
-          name: name,
-          description: description,
-          type: type,
-          time: new Date().getTime(),
-          createdBy: currentUser.uid,
-          imageURL: '',
-          region: ''
-        })
+  return dispatch => {
+    dispatch(createWineAction());
+    return idRef.once('value',function(snapshot){
+      currentLocalID = snapshot.val()
+      console.log('idRef ', currentLocalID)
+      const id = Math.random().toString(36).substring(7)
+      const winesRef = companyRef.child(`${currentLocalID}`).child('wines').child(id)
+      console.log('imageURL ', image);
+      winesRef.set({
+        key: id,
+        name: winename ? winename : "",
+        link: link ? link : "",
+        code: code ? code : "",
+        description: winenotes ? winenotes : "",
+        winery: winery ? winery : "",
+        varietal: varietal ? varietal : "",
+        glass: glass,
+        imageURL: image ? image : "",
+        region: region ? region : "",
+        time: new Date().getTime(),
+        createdBy: currentUser.uid,
+      })
+      dispatch(wineCreateSuccess())
+    })
+      .catch((error) => {
+        console.log(error);
+        dispatch(wineCreateError());
+      })
+      /*
+    idRef.once('value',function(snapshot){
+      currentLocalID = snapshot.val()
+      console.log('idRef ', currentLocalID)
+      const id = Math.random().toString(36).substring(7)
+      const winesRef = companyRef.child(`${currentLocalID}`).child('wines').child(id)
+      console.log('imageURL ', image);
+      winesRef.set({
+        name: winename ? winename : "",
+        description: winenotes ? winenotes : "",
+        winery: winery ? winery : "",
+        varietal: varietal ? varietal : "",
+        glass: glass ? glass : "",
+        imageURL: image ? image : "",
+        region: region ? region : "",
+        time: new Date().getTime(),
+        createdBy: currentUser.uid,
+      }, function(error) {
+        if (error) {
+          Alert.alert(
+            'ERROR',
+            'Data could not be saved.',
+            [
+              {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
+              {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+              {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ]
+          )
 
-      }
-    });
-  }, function(error) {
-    // The fetch failed.
-    console.error(error);
-  });
+        } else {
+          Alert.alert(
+            'SUCCESS',
+            'Data was saved.',
+            [
+              {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ]
+          )
 
-  return {
-    type: WINE_CREATE
+        }
+      })
+    })*/
   }
+
 };
 
 export const wineFetch = () => {

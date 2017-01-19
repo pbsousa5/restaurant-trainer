@@ -72,6 +72,8 @@ class NavRoot extends Component {
         //console.log('menu ' + key);
     }
     _sceneNavigate = () => {
+      console.log('refreshing wines');
+      this.props.refreshingWines()
       this.onMenuItemSelected('createwine', 'ADD WINE')
     }
 
@@ -187,7 +189,7 @@ class NavRoot extends Component {
             case 'replace':
               return this.props.replaceRoute(action.route)
             default:
-                return false
+              return false
         }
     }
     render() {

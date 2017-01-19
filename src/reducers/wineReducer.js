@@ -3,6 +3,7 @@ import {
   WINE_CREATE,
   WINE_SAVE_SUCCESS,
   REQ_DATA,
+  LOADING_MODAL_DATA,
   WINE_SEARCH_RESULTS,
   TOGGLE_MODAL,
   WINES_LOADED,
@@ -13,7 +14,8 @@ import {
   WINE_NOTE_REMOVE,
   WINE_NOTE_ADD,
   HIDE_MODAL,
-  HIDE_MODAL_REFRESH
+  HIDE_MODAL_REFRESH,
+  BY_THE_GLASS
 } from '../actions/types';
 
 
@@ -25,18 +27,23 @@ const INITIAL_STATE = {
   search: '',
   results: null,
   loaded: false,
+  loadingModal: false,
   toggle: false,
   wines: null,
   bottle: {},
   notes: null,
+  glass: false,
   details: {
+    hasLoaded: false,
     name: null,
     region: null,
     varietal: null,
     winenotes:null,
     image: "",
+    vintage: null,
     producer: null,
     code: null,
+    link: null
   }
 };
 
@@ -50,6 +57,12 @@ export default (state = INITIAL_STATE, action) => {
       return state;
     case REQ_DATA:
       return state
+    case BY_THE_GLASS:
+      return {...state, glass: !state.glass}
+    case LOADING_MODAL_DATA:
+      return {...state, loadingModal: !state.loadingModal}
+    case WINE_BOTTLE_DATA:
+      return {...state, loadingModal: !state.loadingModal}
     case WINE_SEARCH_RESULTS:
       return {...state, results: action.payload, loaded: true}//dataSource: this.state.dataSource.cloneWithRows(responseData.movies),
     case TOGGLE_MODAL:
@@ -61,16 +74,19 @@ export default (state = INITIAL_STATE, action) => {
     case WINES_REQUESTED:
       return state
     case WINES_REFRESH:
-      return {...state, loaded: false}
+      return {...state, loaded: false, notes: INITIAL_STATE.notes, details: INITIAL_STATE.details}
     case HIDE_MODAL_REFRESH:
       return {...state, loaded: false, details: {
           name: action.payload.name,
+          hasLoaded: true,
+          vintage: action.payload.vintage,
           region: action.payload.region,
           varietal: action.payload.varietal,
           winenotes:action.notes,
           image: action.payload.image,
           producer: action.payload.winery,
-          code: action.payload.code
+          code: action.payload.code,
+          link: action.payload.link
         }
       }
     case 'TEST_WINE_UPDATE':
@@ -85,12 +101,6 @@ const updateDetails = ({ prop, value }) =>{
     case "name":
       return {
           name: value,
-          region: INITIAL_STATE.details.region,
-          varietal: INITIAL_STATE.details.varietal,
-          winenotes: INITIAL_STATE.details.notes,
-          image: INITIAL_STATE.details.image,
-          producer: INITIAL_STATE.details.winery,
-          code: INITIAL_STATE.details.code
         }
     default:
       return ""

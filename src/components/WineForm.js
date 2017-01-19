@@ -9,10 +9,11 @@ import {
   Image,
   StyleSheet,
   TextInput,
-  LayoutAnimation
+  LayoutAnimation,
+  Switch
 } from 'react-native';
 import { connect } from 'react-redux';
-import { CardSection, Card, Input } from './common';
+import { CardSection, Card, Input, CustomSwitch } from './common';
 import {
   wineUpdate,
   wineCreate,
@@ -20,20 +21,22 @@ import {
   toggleModal,
   wineData,
   wineNoteAdd,
-  wineNoteRemove } from '../actions';
-import { SearchBar, Icon} from 'react-native-elements'
+  wineNoteRemove,
+  byTheGlass } from '../actions';
+import { SearchBar, Icon, Button} from 'react-native-elements'
 import Row from './common/Row';
 //import AnimatedList from 'react-native-animated-list';
 import DynamicListRow from './common/DynamicListRow'
 import AppStyles from '../configs/styles'
+import AppConfigs from '../configs/config'
 //import Modal from 'react-native-root-modal';
 import AnimationModal from './AnimationModal'
 import DetailModal from './common/DetailsModal'
 import RootModal from './common/modalRoot'
-import { reduxForm } from 'redux-form/immutable'
+import Spinner from 'react-native-loading-spinner-overlay'
+import { reduxForm, Field, formValueSelector } from 'redux-form/immutable'
 import {
   ActionsContainer,
-  Button,
   FieldsContainer,
   Fieldset,
   Form,
@@ -43,7 +46,6 @@ import {
 import {
   //Input,
   Select,
-  Switch
 } from 'react-native-clean-form/redux-form-immutable'
 import _ from 'lodash'
 
@@ -56,13 +58,17 @@ class WineForm extends Component {
         visible: false,
         scale: new Animated.Value(0),
         x: new Animated.Value(0),
+        spinner: false
     }
     this.onSearchPress = _.debounce(this.onSearchPress, 300)
     this.props.hideModal = this.hideModal.bind(this)
     this._addWineNote = this._addWineNote.bind(this)
     this._removeWineNote = this._removeWineNote.bind(this)
-
+    const {
+      winename, winery
+    } = props
   }
+
   _addWineNote = (note, id) => {
     this.props.wineNoteAdd(note, id)
   }
@@ -135,10 +141,10 @@ class WineForm extends Component {
         this.hideModal()
       }
       return (
-
         <View style={[AppStyles.fullWindowWidth]}>
-
-            <RootModal {...this.props} />
+            <View style={AppStyles.flex1}>
+              <RootModal {...this.props} />
+            </View>
             <View style={AppStyles.searchBar}>
               <SearchBar
                 round
@@ -147,44 +153,19 @@ class WineForm extends Component {
                 placeholder='Search For Wines Here...' />
             </View>
 
-
+            <View style={{ flex: 1 }}>
+              <Spinner visible={this.props.loadingModal}
+                textContent={"Loading..."}
+                color={AppConfigs.orangeColor}
+                textStyle={{color: AppConfigs.orangeColor}}></Spinner>
+            </View>
+            <View style={[AppStyles.backColor, AppStyles.flex1]}>
             <ListView
               dataSource={dataSource}
               renderRow={this._renderRow.bind(this)}
             />
-            <CardSection>
-              <Input
-                label="Name"
-                refName="wineName"
-                placeholder="Enter Wine Name"
-                value={this.props.name}
-                onChangeText={value => this.props.wineUpdate({ prop: 'name', value })}
-              />
-            </CardSection>
-
-            <CardSection>
-              <Input
-                label="Description"
-                placeholder="Enter a wine description here."
-                value={this.props.description}
-                onChangeText={value => this.props.wineUpdate({ prop: 'description', value })}
-              />
-            </CardSection>
-
-            <CardSection style={{ flexDirection: 'column', height: 100 }}>
-              <Text style={styles.pickerTextStyle}>Varietal</Text>
-              <Picker
-                style={{ flex: 1 }}
-                selectedValue={this.props.type}
-                onValueChange={value => this.props.wineUpdate({ prop: 'type', value })}
-              >
-                <Picker.Item label="White" value="White" />
-                <Picker.Item label="Red" value="Red" />
-                <Picker.Item label="Sparkling" value="Sparkling" />
-                <Picker.Item label="Rose" value="Rose" />
-              </Picker>
-            </CardSection>
-
+            </View>
+            <View>{/*HAD TO ADD THIS TO PUSH LISTVIEW UP FOR SOME REASON */}</View>
         </View>
       );
     }
@@ -201,137 +182,121 @@ class WineForm extends Component {
 
   }
   handleSubmit = () => {
-    console.log('subnmit');
+    console.log('submit');
+  }
+  onSwitchChange = () => {
+    console.log('switch');
+    this.props.byTheGlass()
+  }
+  onCreatePress = () => {
+    const { winename, winery, varietal, vintage, winenotes, region } = this.props;
+    const glass = this.props.glass
+    const image = this.props.details.image
+    const link = this.props.details.link
+    const code = this.props.details.code
+    this.props.wineCreate({ winename, winery, varietal, vintage, winenotes, region, image, glass, link, code });
+  }
+  setFormFields = () => {
+    console.log('setting form values ');
+    //TODO this isnt used anymore but is how you can update form from code
+    this.props.change("winename", this.props.details.name)
+    this.props.change("winery", this.props.details.producer)
+    this.props.change("region", this.props.details.region)
+    this.props.change("varietal", this.props.details.varietal)
+    this.props.change("vintage", this.props.details.vintage)
+    this.props.change("winenotes", this.displayNotes(this.props.notes))
   }
   renderLoadingView() {
-    //this.refs.myTextInput.value = this.state.myTextInputInitialValue;
-    //{//value={this.props.name}}
-    /*
-    <Animated.Modal visible={this.props.toggle} style={[
-        AppStyles.modal, {
-            transform: [
-                {
-                    scale: this.state.scale
-                }, {
-                    translateX: this.state.x
-                }]}]}>
-        <DetailModal {...this.props}/>
-    </Animated.Modal>
-    */
+    {this.props.details.hasLoaded ? this.setFormFields() : null}
     return (
       <View style={[AppStyles.flex1, AppStyles.container]}>
-        <View style={[AppStyles.rowStyle]}>
-          <View style={AppStyles.searchBar}>
+          <View style={[AppStyles.searchBar]}>
             <SearchBar
               round
               containerStyle={AppStyles.searchBarBox}
               onChangeText={value => this.onSearchPress(value)}
               placeholder='Search For Wines Here...' />
           </View>
-           </View>
-          <Text style={[AppStyles.paddedText, AppStyles.h4]}>
-            You can search for wines first to populate the fields.  If you cannot find the wine you can always enter the info below to create a new wine.
-          </Text>
+          {this.props.details.hasLoaded ? <View style={AppStyles.paddingTop}/> :
+            <Text style={[AppStyles.paddedText, AppStyles.h4]}>
+               You can search for wines first to populate the fields.
+              If you cannot find the wine you can always enter the info below to create a new wine.
+            </Text>
 
-          <Card style={AppStyles.cardStyle}>
+          }
 
-            <CardSection style={[AppStyles.backColor, AppStyles.paddingLeft]}>
+          <Card style={[AppStyles.cardStyle]}>
+            <CardSection style={[AppStyles.backColor, AppStyles.paddingLeft, AppStyles.paddingBottom]}>
               <Image source={{ uri: this.CheckURI(this.props.details.image)}} style={AppStyles.photo}/>
             </CardSection>
             <Form>
               <FieldsContainer style={AppStyles.fieldContainer}>
                 <Fieldset label="Bottle details">
-                  <Input myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
-                    value={this.props.details.name}
+                  <Field
+                    name="winename"
+                    myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
+                    defValue={this.props.details.name}
                     myLabelStyle={AppStyles.labelStyle}
-                    name="bottle_name" label="Bottle name" placeholder="Bottle name" />
-                  <Input myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
-                    value={this.props.details.producer}
+                    viewStyle={AppStyles.containerStyle}
+                    label="Bottle name" placeholder="Bottle name"
+                    component={ Input } />
+
+                  <Field name="winery" myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
+                    defValue={this.props.details.producer}
                     myLabelStyle={AppStyles.labelStyle}
-                    name="winery" label="Winery" placeholder="Winery" />
-                  <Input myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
+                    viewStyle={AppStyles.containerStyle}
+                    label="Winery" placeholder="Winery"
+                    component={ Input }/>
+                  <Field name="region"
+                    myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
                     lable="Region"
                     myLabelStyle={AppStyles.labelStyle}
-                    value={this.props.details.region}
-                    name="region" label="Region" placeholder="Region" />
-                  <Input myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
+                    defValue={this.props.details.region}
+                    viewStyle={AppStyles.containerStyle}
+                    label="Region" placeholder="Region"
+                    component={ Input }/>
+                  <Field
+                    myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
                     myLabelStyle={AppStyles.labelStyle}
-                    value={this.props.details.varietal}
-                    name="varietal" label="Varietal" placeholder="Varietal" />
-                  <Input myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
+                    defValue={this.props.details.varietal}
+                    viewStyle={AppStyles.containerStyle}
+                    label="Varietal" placeholder="Varietal"
+                    name="varietal" component={ Input }/>
+                  <Field name="vintage"
+                    myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
                     myLabelStyle={AppStyles.labelStyle}
-                    value={this.props.details.vintage}
-                    name="vintage" label="Vintage" placeholder="Vintage" />
-                  <Switch label="By the glass" border={false} name="by_glass" />
+                    defValue={this.props.details.vintage}
+                    viewStyle={AppStyles.containerStyle}
+                    label="Vintage" placeholder="Vintage"
+                    component={ Input }/>
+                  <CustomSwitch label="By the glass" value={false}
+                    onSwitchChange={this.onSwitchChange.bind(this)}
+                    myLabelStyle={AppStyles.labelStyle}/>
                 </Fieldset>
                 <Fieldset label="Wine tasting notes" last>
-                  <TextInput
-                    value={this.displayNotes(this.props.notes)}
-                    style={[AppStyles.inputStyle, AppStyles.inputText]}
-                    {...this.props} // Inherit any props passed to it; e.g., multiline, numberOfLines below
-                    editable = {true}
+                  <Field name="winenotes"
+                    myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
+                    myLabelStyle={AppStyles.labelStyle}
+                    defValue={this.displayNotes(this.props.notes)}
                     multiline = {true}
-                    numberOfLines= {10}
-                    placeholderTextColor="grey"
+                    lineNum= {10}
+                    viewStyle={AppStyles.paraStyle}
                     placeholder="Enter wine tasting notes."
-                  />
+                    component={ Input }/>
                 </Fieldset>
               </FieldsContainer>
             </Form>
-
+            <CardSection>
+              <Button
+                icon={{name: 'add'}}
+                backgroundColor= {AppConfigs.greenColor}
+                fontFamily= {AppConfigs.baseFont}
+                buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+                onPress={this.onCreatePress.bind(this)}
+                title='CREATE' />
+            </CardSection>
           </Card>
       </View>
-/*
-<CardSection style={AppStyles.smallCard}>
-  <Input
-    label="Name"
-    refName="wineName"
-    placeholder="Enter Wine Name"
-    value={this.props.details.name}
-    onChangeText={value => this.props.wineUpdate({ prop: 'name', value })}
-  />
-</CardSection>
-<CardSection style={AppStyles.smallCard}>
-  <Input
-    label="Winery"
-    refName="wineProducer"
-    placeholder="Enter Winery"
-    value={this.props.details.producer}
-    onChangeText={value => this.props.wineUpdate({ prop: 'producer', value })}
-  />
-</CardSection>
-<CardSection style={AppStyles.smallCard}>
-  <Input
-    label="Region"
-    refName="wineRegion"
-    placeholder="Enter Wine Region"
-    value={this.props.details.region}
-    onChangeText={value => this.props.wineUpdate({ prop: 'region', value })}
-  />
-</CardSection>
-<CardSection style={[AppStyles.largeCard, AppStyles.flex5]}>
-
-  <Input
-    label="Wine Notes"
-    placeholder="Enter a wine description."
-    value={this.displayNotes(this.props.notes)}
-    onChangeText={value => this.props.wineUpdate({ prop: 'description', value })}
-  />
-</CardSection>
-<CardSection style={AppStyles.smallCard}>
-<Text style={styles.pickerTextStyle}>Varietal</Text>
-<Input
-  placeholder="Enter a wine varietal."
-  value={this.props.details.varietal}
-  onChangeText={value => this.props.wineUpdate({ prop: 'type', value })}
-/>
-</CardSection>
-<Picker
-  style={{ flex: 1 }}
-  selectedValue={this.props.type}
-  onValueChange={value => this.props.wineUpdate({ prop: 'type', value })}
->
-*/
     );
   }
 
@@ -362,22 +327,37 @@ const styles = {
 
 };
 
+WineForm = reduxForm({
+  form: 'wineDetailsForm'  // a unique identifier for this form
+})(WineForm)
+const selector = formValueSelector('wineDetailsForm');
+
 const mapStateToProps = (state) => {
-  const { name, description, type, results, loaded, search, details } = state.wines
+  const { name, description, results, loaded, search, details, loadingModal, glass } = state.wines
   const { notes } = state.notes
   const { toggle, bottle } = state.modal
-  return { name, description, type, results, loaded, search, toggle, bottle, notes, details }
+  return {
+    winename: selector(state, 'winename'),
+    vintage: selector(state, 'vintage'),
+    varietal: selector(state, 'varietal'),
+    winery: selector(state, 'winery'),
+    region: selector(state, 'region'),
+    winenotes: selector(state, 'winenotes'),
+    name, description, results, loaded, search, toggle, bottle, notes, details, loadingModal, glass }
 };
-WineForm = reduxForm({
-  form: 'initializeFromState'  // a unique identifier for this form
-})(WineForm)
-export default connect(
 
+
+
+
+WineForm =  connect(
   mapStateToProps, {
   wineUpdate,
   searchWine,
   toggleModal,
   wineData,
   wineNoteAdd,
-  wineNoteRemove
+  wineNoteRemove,
+  byTheGlass
 })(WineForm);
+
+export default WineForm

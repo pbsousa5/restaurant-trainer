@@ -39,6 +39,28 @@ export const logOutUser = () => {
     firebase.auth().signOut();
   }
 }
+export const UpdateLocalID = () => {
+  var user = firebase.auth().currentUser
+  var uid = user.uid
+  var profileRef = firebase.database().ref(`users/${uid}`);
+  LocalStore.get('localID').then(localID => {
+      if (!localID) {
+          console.log('houston we have a problem!');
+      }
+      else{
+        console.log('Local ID ' , localID);
+        // add a currentID of this company
+        // this can be used later for admins under
+        // multiple company's
+        profileRef.update({
+          currentID: localID.value
+        });
+      }
+    })
+
+}
+
+
 export const loginUser = ( email, password, firstName, lastName ) => {
   return (dispatch) => {
     dispatch({ type: LOGIN_USER });

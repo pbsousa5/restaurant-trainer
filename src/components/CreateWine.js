@@ -23,11 +23,7 @@ import WineForm from './WineForm'
 
 
 class CreateWine extends Component {
-  onCreatePress() {
-    const { name, description, type } = this.props;
 
-    this.props.wineCreate({ name, description, type });
-  }
   onSearchPress(){
     const { search } = this.props
     this.props.searchWine({search})
@@ -37,25 +33,11 @@ class CreateWine extends Component {
     return (
       <ScrollView
         keyboardShouldPersistTaps="always"
-        style={AppStyles.flex1}
+        style={[AppStyles.backColor, AppStyles.flex1]}
         contentContainerStyle={AppStyles.createWine}>
       <View  >
-
           <WineForm {...this.props} />
-
-        <CardSection>
-          <Button
-            icon={{name: 'code'}}
-            backgroundColor='#03A9F4'
-            fontFamily='Lato'
-            buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-            onPress={this.onCreatePress.bind(this)}
-            title='CREATE' />
-
-        </CardSection>
-
       </View>
-
       </ScrollView>
     );
   }

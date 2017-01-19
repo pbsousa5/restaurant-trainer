@@ -9,12 +9,14 @@ import {
   ListViewDataSource,
   TouchableOpacity
 } from 'react-native'
+import { Card } from 'react-native-elements'
 import SearchBarExport from './common/SearchBar'
 import { connect } from 'react-redux';
 import { loadWines } from '../actions';
 import DynamicListRow from './common/DynamicListRow'
 import WineRow from './common/WineRow';
 import AppConfig from '../configs/config'
+import AppStyles from '../configs/styles'
 class Wines extends Component {
   constructor (props) {
     super(props)
@@ -23,11 +25,14 @@ class Wines extends Component {
     this.props.loadWines(this.props.companyID)
     this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
   }
+  _loadWineScreen = (data) => {
+    console.log('load wine screen ' , data);
+  }
   _renderRow(rowData, sectionID, rowID) {
     return (
       <View style={styles.rowStyle}>
       <TouchableOpacity
-        onPress={this.props.toggleModal}>
+        onPress={this._loadWineScreen.bind(this, rowData)}>
             <WineRow {...rowData} />
       </TouchableOpacity>
       </View>
@@ -40,8 +45,8 @@ class Wines extends Component {
   }
   _defaultView(){
     return(
-      <View style={styles.container}>
-           <View style={styles.container}>
+      <View style={[AppStyles.pageContainer, AppStyles.backColor]}>
+        <Card>
            <Text style={styles.welcome}>
              Welcome to the Wines page!
            </Text>
@@ -55,7 +60,7 @@ class Wines extends Component {
            <Text style={styles.instructions}>
              Wines
            </Text>
-         </View>
+        </Card>
        </View>
     )
   }
@@ -65,7 +70,7 @@ class Wines extends Component {
     }
     const dataSource = this.ds.cloneWithRows(this.props.wines);
     return(
-      <View style={styles.container}>
+      <View style={[AppStyles.pageContainer, AppStyles.backColor]}>
           <ListView
             dataSource={dataSource}
             renderRow={this._renderRow.bind(this)}
@@ -110,10 +115,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-    paddingTop: 70,
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      top: 70
   },
   welcome: {
     fontSize: 20,

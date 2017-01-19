@@ -9,7 +9,7 @@ const Row = (props) => (
     <LinearGradient colors={AppConfig.greyGradient} style={[styles.paddingBottom, AppStyles.fullWindowWidth]}>
     <View style={AppStyles.wineRow}>
       <View style={AppStyles.leftAligned}>
-        <Image source={{ uri: CheckURI(props.image)}} style={styles.photo} />
+        <Image source={{ uri: CheckURI(props.image)}} style={AppStyles.photo} />
       </View>
       <View style={AppStyles.paddingLeft}>
         <View style={AppStyles.paddingLeft, AppStyles.container, AppStyles.wrapText, AppStyles.paddingRight}>

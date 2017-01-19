@@ -26,8 +26,29 @@ module.exports = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
   },
+  pageContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      top: 70
+  },
+  containerStyle: {
+    height: 50,
+    flex: 1,
+    paddingBottom: 5,
+    paddingTop: 5,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  paraStyle: {
+    flex: 1,
+    paddingBottom: 5,
+    paddingTop: 5,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
   cardStyle: {
-    borderWidth: 1,
+    borderWidth: 0,
     backgroundColor: AppConfig.lightGrey,
 
     flexDirection: 'column',
@@ -50,7 +71,7 @@ module.exports = StyleSheet.create({
       left: 0,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: 'rgba(255, 0, 0, 0.2)'
+      backgroundColor: AppConfig.greyBack
   },
   modalContainer: {
       flex: 1,
@@ -191,7 +212,7 @@ module.exports = StyleSheet.create({
   h4: {
     fontFamily: AppConfig.baseFont,
     fontWeight: '800',
-    color: AppConfig.whiteColor,
+    color: AppConfig.orangeColor,
     fontSize: AppConfig.baseFontSize * 1.1,
     lineHeight: parseInt((AppConfig.baseFontSize * 1.1) + (AppConfig.baseFontSize * 0.5)),
     margin: 0,
@@ -231,6 +252,7 @@ module.exports = StyleSheet.create({
   },
   fieldContainer: {
     backgroundColor: AppConfig.greyBack,
+    borderWidth: 0,
   },
   /* MENU STYLES */
   sideMenu: {
@@ -288,8 +310,15 @@ module.exports = StyleSheet.create({
     paddingRight: 80,
   },
   searchBar: {
-
     flex:1,
+    backgroundColor   : '#000000',
+    paddingVertical   : 1,
+    paddingHorizontal : 1,
+    paddingLeft: 0,
+    paddingRight: 0,
+    width: AppConfig.windowWidth,
+    borderBottomColor : '#000000',
+    borderBottomWidth : 1,
   },
   searchBarBox: {
     backgroundColor: AppConfig.greyBack,
@@ -397,14 +426,13 @@ module.exports = StyleSheet.create({
         width: AppConfig.windowWidth,
         borderBottomColor : '#000000',
         borderBottomWidth : 1,
-
     },
   photo: {
     height: 80,
     width: 80,
     borderRadius: 20,
     borderWidth:1,
-    borderColor: '#ffffff',
+    borderColor: AppConfig.orangeColor,
   },
   largePhoto: {
     height: 150,

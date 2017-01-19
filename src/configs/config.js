@@ -41,11 +41,15 @@ export default {
 	baseFontSize: 14,
 
 	// Colors
+	greenColor: "#679F16",
+	blueColor: "#64ACC5",
+	orangeColor: "#FE881E",
+	redColor: "#BB0D17",
 	primaryColor: "#FFB333",
 	secondaryColor: "#FFE229",
 	whiteColor: "#ffffff",
 	greyBack: "#393e42",//303337 //404040 //393e42
-	lightGrey: "#ddd",
+	lightGrey: "#E5E5E5",
 	menuColor: "#2d2d2d",
 	secondaryTextColor: "#e7e7e7",
 	textColor: "#555",

@@ -93,7 +93,7 @@ import { wineNoteAdd, wineNoteRemove, toggleModal } from '../../actions';
       this.hideModal()
     }
     return(
-      <View style={[AppStyles.modalContainer,{height:AppConfig.windowHeight, width:AppConfig.windowWidth}]}>
+      <View style={[AppStyles.modalContainer]}>
         <Animated.Modal {...this.props} visible={this.state.visible} style={[
             AppStyles.modal, {
                 transform: [
@@ -124,23 +124,22 @@ import { wineNoteAdd, wineNoteRemove, toggleModal } from '../../actions';
            <Button
              raised
              buttonStyle={{
-               borderRadius: 30,
+               marginBottom: 10,
                marginLeft: 15,
                marginRight: 15,
-               marginBottom: 10
            }}
-            backgroundColor="#22a3ed"
+            backgroundColor={AppConfig.redColor}
             title='Cancel'
             onPress={this._closeModal.bind(this, false)}/>
             <Button
               raised
               buttonStyle={{
-                borderRadius: 30,
+
                 marginLeft: 15,
                 marginRight: 15,
                 marginBottom: 10
             }}
-             backgroundColor="#22a3ed"
+             backgroundColor={AppConfig.greenColor}
              title='Select'
              onPress={this._closeModal.bind(this, true)}/>
           </View>

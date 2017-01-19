@@ -1,6 +1,7 @@
 import {
   WINE_NOTE_REMOVE,
-  WINE_NOTE_ADD
+  WINE_NOTE_ADD,
+  WINES_REFRESH
 } from '../actions/types'
 
 const INITIAL_STATE = {
@@ -17,6 +18,8 @@ export default (state = INITIAL_STATE, action) => {
       return {...state,
         // removes notes items from the array by the note
         notes:  state.notes.filter(element => element !== action.payload)}
+    case WINES_REFRESH:
+      return {...state, notes: INITIAL_STATE.notes}
     default:
       return state;
   }

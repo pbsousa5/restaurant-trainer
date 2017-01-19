@@ -5,7 +5,8 @@ import {View, Text, StyleSheet, Image, TouchableOpacity, TextInput} from 'react-
 import {Icon, NavigationBar, Title} from '@shoutem/ui';
 import {List, ListItem, Button, Card, FormLabel, FormInput} from 'react-native-elements'
 
-import {logOutUser, CheckForCompanyExist, CompanyCreated, NoCompanyCreated, CompanyExists} from '../actions'
+import {logOutUser, CheckForCompanyExist,
+  CompanyCreated, NoCompanyCreated, CompanyExists, UpdateLocalID} from '../actions'
 import {connect} from 'react-redux'
 import LocalStore from 'react-native-simple-store';
 
@@ -60,12 +61,20 @@ class HomeClass extends Component {
       if(this.props.myCompany){
         //console.log('this.state.company');
       //  console.log(this.props.myCompany);
-        return(<View style={[styles.container, AppStyles.backColor]}>
+        return(
+          <View style={[AppStyles.pageContainer, AppStyles.backColor]}>
           <Card
             title='WELCOME TO RESTARAUNT TRAINER'>
             <Text style={{marginBottom: 10}}>
               You will need to create a company name so we can start buidling the database.
             </Text>
+            <Button
+              icon={{name: 'code'}}
+              backgroundColor='#03A9F4'
+              fontFamily='Lato'
+              buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+              onPress={this.props.UpdateLocalID}
+              title='CREATE ID' />
             <Button
               icon={{name: 'code'}}
               backgroundColor='#03A9F4'
@@ -77,7 +86,7 @@ class HomeClass extends Component {
         </View>)
       }else{
         //console.log(this.props.myCompany);
-        return(<View style={styles.container}>
+        return(<View style={AppStyles.pageContainer}>
           <Card
             title='WELCOME TO RESTARAUNT TRAINER'>
             <View style={styles.containerForm}>
@@ -107,8 +116,8 @@ class HomeClass extends Component {
         </View>)
       }
         return (
-            <View style={styles.container}>
-                <View style={styles.container}>
+            <View style={AppStyles.pageContainer}>
+                <View style={AppStyles.pageContainer}>
                     <Text style={styles.welcome}>
                         Welcome to React Native! {this.props.LoggedIn}
                     </Text>
@@ -149,7 +158,8 @@ export default connect(mapStateToProps, {
   logOutUser,
   CheckForCompanyExist,
   CompanyCreated,
-  CompanyExists
+  CompanyExists,
+  UpdateLocalID
 })(HomeClass);
 
 const styles = StyleSheet.create({

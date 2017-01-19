@@ -14,8 +14,7 @@ const logger = createLogger();
 export default function configureStore () {
   const store = createStore(
     reducer,
-    //wineReducer,
-    applyMiddleware(thunk,logger)
+    compose(applyMiddleware(thunk,logger))
   )
   syncOffline(store)
   syncFirebase(store)
