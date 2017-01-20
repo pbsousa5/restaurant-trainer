@@ -7,10 +7,10 @@ import companyReducer from './companyReducer'
 import wineEdit from './wineReducer'
 import wineNotes from './noteReducer'
 import modal from './modalReducer'
-import { reducer as formReducer } from 'redux-form';
+import { reducer as forms } from 'redux-form';
 
 const reducer = combineReducers({
-  form: formReducer,
+  form: forms,
   navReducer,
   items,
   auth: emailReducer,

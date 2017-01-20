@@ -7,16 +7,23 @@ import {
   Image,
   ListView,
   ListViewDataSource,
-  Animated
+  Animated,
+  ScollView
  } from 'react-native'
-
+ import {
+   FieldsContainer,
+   Fieldset,
+   Form,
+   FormGroup,
+   Label,
+ } from 'react-native-clean-form'
+import { CardSection, Card } from './';
 import { connect } from 'react-redux';
 import AppStyles from '../../configs/styles'
 import AppConfig from '../../configs/config'
 import {
   Button,
   SocialIcon,
-  Card,
   FormLabel,
   FormInput,
   Icon,
@@ -42,6 +49,7 @@ import { wineNoteAdd, wineNoteRemove, toggleModal } from '../../actions';
   componentDidMount(){
     this.setModalVisible(true)
   }
+
   slideModal = () => {
 
       this.state.x.setValue(-320);
@@ -58,6 +66,7 @@ import { wineNoteAdd, wineNoteRemove, toggleModal } from '../../actions';
       //this.setState({visible: true});
       this.slide = false;
   };
+
   hideModal = () => {
       if (this.slide) {
           Animated.timing(this.state.x, {toValue: -320}).start(() => {
@@ -74,6 +83,7 @@ import { wineNoteAdd, wineNoteRemove, toggleModal } from '../../actions';
   setModalVisible(visible) {
       this.setState({visible: visible})
   }
+
   _addWineNote = (note, id) => {
     this.props.wineNoteAdd(note, id)
   }
@@ -93,7 +103,7 @@ import { wineNoteAdd, wineNoteRemove, toggleModal } from '../../actions';
       this.hideModal()
     }
     return(
-      <View style={[AppStyles.modalContainer]}>
+      <View style={[AppStyles.container, AppStyles.cardStyle]}>
         <Animated.Modal {...this.props} visible={this.state.visible} style={[
             AppStyles.modal, {
                 transform: [
@@ -103,23 +113,34 @@ import { wineNoteAdd, wineNoteRemove, toggleModal } from '../../actions';
                         translateX: this.state.x
                     }]}]}>
 
-        <View style={AppStyles.row}>
-          <Image source={{uri: this.props.image}} style={AppStyles.largePhoto}/>
-          <View style={AppStyles.container, AppStyles.paddingLeft, AppStyles.paddingRight}>
-            <Text style={AppStyles.h4}>{this.props.name}</Text>
-            <Text style={AppStyles.h4}>{this.props.varietal}</Text>
-            <Text style={AppStyles.h4}>{this.props.vintage}</Text>
-            <Text style={AppStyles.h4}>{this.props.region}</Text>
-          </View>
+          <Fieldset label="Bottle details" style={[{color:AppConfig.greenColor}]}>
 
-        </View>
+            <View style={ [AppStyles.row, AppStyles.flex1] }>
+            <Image source={{uri: this.props.image}} style={AppStyles.largePhoto}/>
 
-          <Text style={AppStyles.h5}>Select multiple or single Wine tasting notes below</Text>
-          <Text style={AppStyles.h5}>You can edit these on the next page</Text>
+            <View style={ AppStyles.paddingLeft,
+              AppStyles.paddingRight, AppStyles.column, AppStyles.flex1}>
+              <Text style={AppStyles.h4}>{this.props.name}</Text>
+              <Text style={AppStyles.h4}>{this.props.varietal}</Text>
+              <Text style={AppStyles.h4}>{this.props.vintage}</Text>
+              <Text style={AppStyles.h4}>{this.props.region}</Text>
+            </View>
+            </View>
+          </Fieldset>
+
+          <Fieldset label="WINE NOTES" style={{color:AppConfig.greenColor}}>
+
+              <Text style={AppStyles.h5}>Select multiple or single Wine tasting notes below</Text>
+              <Text style={AppStyles.h5}>You can edit these on the next page</Text>
+
+          </Fieldset>
+
+
           <ListView
              dataSource={dataSource}
              renderRow={this._renderRow}
            />
+
            <View style={AppStyles.row}>
            <Button
              raised

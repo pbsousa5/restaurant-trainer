@@ -10,8 +10,8 @@ import LinearGradient from 'react-native-linear-gradient'
 
 const WineRow = (props) => (
   <View style={[AppStyles.rowHeight, AppStyles.leftAligned, AppStyles.backColor, AppStyles.fullWindowWidth]}>
-    <LinearGradient colors={AppConfig.greyGradient} style={styles.paddingBottom}>
-    <View style={AppStyles.wineRow}>
+    <LinearGradient colors={AppConfig.greyGradient} style={[styles.paddingBottom]}>
+    <View style={[AppStyles.wineRow,AppStyles.fullWindowWidth]}>
       <View style={AppStyles.leftAligned}>
         <Image
           style={AppStyles.photo}

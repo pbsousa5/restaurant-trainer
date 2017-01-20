@@ -1,9 +1,11 @@
-import React, { Component } from 'react'
-import { View, Text, Image, ScrollView } from 'react-native'
-import { reduxForm, Field, formValueSelector } from 'redux-form/immutable'
+import React, { Component, PropTypes  } from 'react'
+import { View, Text, Image, ScrollView, Linking, TouchableOpacity, Alert } from 'react-native'
+import { reduxForm, Field, formValueSelector } from 'redux-form'
 import AppStyles from '../../configs/styles'
 import AppConfigs from '../../configs/config'
 import { connect } from 'react-redux';
+import { Lightbox } from '@shoutem/ui'
+import { Icon, Button} from 'react-native-elements'
 import {
   FieldsContainer,
   Fieldset,
@@ -11,22 +13,101 @@ import {
 } from 'react-native-clean-form'
 import {
   wineEdit,
-  wineUpdate
+  wineUpdate,
+  byTheGlass,
+  wineDelete,
+  disableWine
 } from '../../actions';
 import { CardSection, Card, Input, CustomSwitch } from './';
 
 class EditWine extends Component {
   constructor(props){
     super(props)
+    this._renderNormalView = this._renderNormalView.bind(this)
+    this._renderEditView = this._renderEditView.bind(this)
+    this._goToURL = this._goToURL.bind(this);
+    this.deleteWine = this.deleteWine.bind(this)
+    this.onUpdatePress = this.onUpdatePress.bind(this)
+    this.onDisablePressed = this.onDisablePressed.bind(this)
   }
-  render(){
+
+  componentDidMount(){
+    if(this.props.details.glass == true){
+      console.log("TRUE!!")
+    }else{
+      console.log("FALSE!!")
+    }
+    console.log("this.props.details.glass ", this.props.details.glass);
+  }
+  renderLightBoxImage = () => {
     return(
-      <ScrollView>
+      <View style={AppStyles.photoContainer}>
+        <Image source={{ uri: this.CheckURI(this.props.details.image)}}
+          style={[AppStyles.hugePhoto ]}/>
+      </View>
+    )
+  }
+  onSwitchChange = () => {
+    console.log('switch');
+    this.props.byTheGlass()
+  }
+  onUpdatePress = () => {
+    const { winename, winery, varietal, vintage, winenotes, region,  winelink } = this.props;
+    //{ winename, winery, varietal, vintage, winenotes, region, image, glass, key, link }
+    const key = this.props.details.key
+    const image = this.props.details.image
+    const glass = this.props.details.glass
+    this.props.wineUpdate({ winename, winery, varietal, vintage, winenotes, region, image, glass, key, winelink });
+  }
+  onDisablePressed = () => {
+    this.props.disableWine()
+  }
+  onDeletePress = () => {
+    Alert.alert(
+      'WARNING',
+      'Are you sure you want to permanently delete this wine?',
+      [
+        {text: 'OK', onPress: () => this.props.wineDelete(this.props.details.key)},
+        {text: 'CANCEL', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+      ]
+    )
+  }
+  deleteWine = () => {
+    console.log('DELETE WINE')
+  }
+  _goToURL() {
+
+    Linking.canOpenURL(this.props.details.link).then(supported => {
+      if (supported) {
+        Linking.openURL(this.props.details.link);
+      } else {
+        console.log('Don\'t know how to open URI: ' + this.props.details.link);
+      }
+    });
+  }
+
+  _renderNormalView = () => {
+    return(
+      <ScrollView style={AppStyles.backColor}>
       <View style={[AppStyles.flex1, AppStyles.container, AppStyles.backColor, {paddingTop:70}]}>
           <Card style={[AppStyles.cardStyle]}>
             <CardSection style={[AppStyles.backColor,
-              AppStyles.paddingLeft, AppStyles.paddingBottom,{paddingTop:10}]}>
-              <Image source={{ uri: this.CheckURI(this.props.details.image)}} style={AppStyles.photo}/>
+              AppStyles.paddingLeft, AppStyles.paddingBottom,{paddingTop:10}, AppStyles.row]}>
+              <Lightbox onRequestClose={null} renderContent={this.renderLightBoxImage}>
+                <Image source={{ uri: this.CheckURI(this.props.details.image)}}
+                  style={AppStyles.photo}/>
+              </Lightbox>
+              <View style={[AppStyles.column, {paddingLeft:30, justifyContent: "center"}]}>
+                <Button
+                  icon={{name: 'link'}}
+                  raised
+                  textStyle={AppStyles.h3}
+                  backgroundColor= {AppConfigs.blueColor}
+                  fontFamily= {AppConfigs.baseFont}
+                  buttonStyle={{borderRadius: 5, marginLeft: 0, marginRight: 0, marginBottom: 0, height: 50, width: 170}}
+                  onPress={this._goToURL}
+                  title='MORE INFO' />
+              </View>
             </CardSection>
             <Form>
               <FieldsContainer style={AppStyles.fieldContainer}>
@@ -47,13 +128,15 @@ class EditWine extends Component {
                       <Text numberOfLines={1} style={[AppStyles.displayText, AppStyles.topBotPadding]}>{this.props.details.region}</Text>
                       <Text style={[AppStyles.displayText, AppStyles.topBotPadding]}>{this.props.details.varietal}</Text>
                       <Text style={[AppStyles.displayText, AppStyles.topBotPadding]}>{this.props.details.vintage}</Text>
-                      <Text style={[AppStyles.displayText, AppStyles.topBotPadding, {color: AppConfigs.greenColor}]}>YES</Text>
+                      {this.props.details.glass == true ? <Text style={[AppStyles.displayText, AppStyles.topBotPadding, {color: AppConfigs.greenColor}]}>YES</Text> :
+                    <Text style={[AppStyles.displayText, AppStyles.topBotPadding, {color: AppConfigs.redColor}]}>NO</Text>}
+
                     </View>
                   </View>
                 </Fieldset>
                 <Fieldset label="Wine tasting notes" last>
                   <View style={AppStyles.flex1}>
-                    <Text style={AppStyles.flex1} numberOfLines={20}>{this.props.details.winenotes}</Text>
+                    <Text style={[AppStyles.flex1, AppStyles.inputText]} numberOfLines={20}>{this.props.details.winenotes}</Text>
                   </View>
                   <View style={AppStyles.flex1}></View>
                 </Fieldset>
@@ -65,23 +148,68 @@ class EditWine extends Component {
       </ScrollView>
     )
   }
-  _renderEditView = () => {
+  render(){
+
     return(
-      <View style={[AppStyles.flex1, AppStyles.container, {paddingTop:70}]}>
+      this.props.wineEdit ? this._renderEditView() : this._renderNormalView()
+    )
+  }
+  setFormFields = () => {
+    console.log('setting form values ');
+    //TODO populate form state
+    this.props.change("winelink", this.props.details.link)
+    this.props.change("winename", this.props.details.name)
+    this.props.change("winery", this.props.details.producer)
+    this.props.change("region", this.props.details.region)
+    this.props.change("varietal", this.props.details.varietal)
+    this.props.change("vintage", this.props.details.vintage)
+    this.props.change("winenotes", this.props.details.winenotes)
+  }
+  _renderEditView = () => {
+    // set the default values in the form
+    // ONLY ONCE!!!
+    // the timeout stops setState errors from firing
+    if(this.props.details.hasLoaded){
+      setTimeout(
+      () => { this.setFormFields() },
+      500
+      )
+      this.props.details.hasLoaded = false
+    }
+
+    return(
+      <ScrollView style={AppStyles.backColor}>
+      <View style={[AppStyles.flex1, AppStyles.container, AppStyles.backColor, {paddingTop:70}]}>
           <Card style={[AppStyles.cardStyle]}>
-            <CardSection style={[AppStyles.backColor, AppStyles.paddingLeft, AppStyles.paddingBottom]}>
+            <CardSection style={[AppStyles.backColor, AppStyles.paddingLeft,
+              AppStyles.paddingBottom, {paddingTop:10}]}>
               <Image source={{ uri: this.CheckURI(this.props.details.image)}} style={AppStyles.photo}/>
+              <View style={[AppStyles.column, {paddingLeft:30, justifyContent: "center"}]}>
+
+              </View>
             </CardSection>
             <Form>
               <FieldsContainer style={AppStyles.fieldContainer}>
                 <Fieldset label="Bottle details">
                   <Field
+                    name="winelink"
+                    lineNum= {2}
+                    multiline = {true}
+                    myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
+                    defValue={this.props.details.link}
+                    myLabelStyle={AppStyles.labelStyle}
+                    viewStyle={AppStyles.paraStyle}
+                    label="Wine link"
+                    component={ Input } />
+                  <Field
                     name="winename"
+                    lineNum= {2}
+                    multiline = {true}
                     myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
                     defValue={this.props.details.name}
                     myLabelStyle={AppStyles.labelStyle}
-                    viewStyle={AppStyles.containerStyle}
-                    label="Bottle name" placeholder="Bottle name"
+                    viewStyle={AppStyles.paraStyle}
+                    label="Bottle name"
                     component={ Input } />
 
                   <Field name="winery" myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
@@ -112,7 +240,7 @@ class EditWine extends Component {
                     viewStyle={AppStyles.containerStyle}
                     label="Vintage" placeholder="Vintage"
                     component={ Input }/>
-                  <CustomSwitch label="By the glass" value={false}
+                  <CustomSwitch label="By the glass" value={this.props.details.glass == true ? true : false}
                     onSwitchChange={this.onSwitchChange.bind(this)}
                     myLabelStyle={AppStyles.labelStyle}/>
                 </Fieldset>
@@ -120,7 +248,7 @@ class EditWine extends Component {
                   <Field name="winenotes"
                     myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
                     myLabelStyle={AppStyles.labelStyle}
-                    defValue={this.displayNotes(this.props.notes)}
+                    defValue={this.props.details.winenotes}
                     multiline = {true}
                     lineNum= {10}
                     viewStyle={AppStyles.paraStyle}
@@ -129,17 +257,38 @@ class EditWine extends Component {
                 </Fieldset>
               </FieldsContainer>
             </Form>
-            <CardSection>
+            <CardSection style={[AppStyles.row, AppStyles.backColor, {paddingLeft:10, paddingRight: 10, paddingBottom: 10, justifyContent:"space-between"}]}>
               <Button
                 icon={{name: 'add'}}
+                raised
+                textStyle={AppStyles.h3}
                 backgroundColor= {AppConfigs.greenColor}
                 fontFamily= {AppConfigs.baseFont}
                 buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-                onPress={this.onCreatePress.bind(this)}
+                onPress={this.onUpdatePress.bind(this)}
                 title='UPDATE' />
+              <Button
+                icon={{name: 'not-interested'}}
+                raised
+                textStyle={AppStyles.h3}
+                backgroundColor= {AppConfigs.orangeColor}
+                fontFamily= {AppConfigs.baseFont}
+                buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+                onPress={this.onDisablePressed.bind(this)}
+                title='DISABLE' />
+              <Button
+                icon={{name: 'delete-forever'}}
+                raised
+                textStyle={AppStyles.h3}
+                backgroundColor= {AppConfigs.redColor}
+                fontFamily= {AppConfigs.baseFont}
+                buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+                onPress={this.onDeletePress.bind(this)}
+                title='DELETE' />
             </CardSection>
           </Card>
       </View>
+    </ScrollView>
     )
   }
   CheckURI(uri){
@@ -150,29 +299,25 @@ class EditWine extends Component {
       return uri
     }
   }
-  displayNotes = (data) => {
-    return data.join('\n')
-  }
 
 }
 
 EditWine = reduxForm({
-  form: 'wineDetailsForm'  // a unique identifier for this form
+  form: 'wineUpdateForm'  // a unique identifier for this form
 })(EditWine)
-const selector = formValueSelector('wineDetailsForm');
+const selector = formValueSelector('wineUpdateForm');
 
 const mapStateToProps = (state) => {
-  const { name, description, results, loaded, search, details, loadingModal, glass } = state.wines
-
-
+  const { name, description, results, loaded, search, details, loadingModal, glass, wineEdit } = state.wines
   return {
+    winelink: selector(state, 'winelink'),
     winename: selector(state, 'winename'),
     vintage: selector(state, 'vintage'),
     varietal: selector(state, 'varietal'),
     winery: selector(state, 'winery'),
     region: selector(state, 'region'),
     winenotes: selector(state, 'winenotes'),
-    name, description, results, loaded, search, details, loadingModal, glass }
+    name, description, results, loaded, search, details, loadingModal, glass, wineEdit }
 };
 
 
@@ -180,7 +325,10 @@ const mapStateToProps = (state) => {
 
 EditWine =  connect(
   mapStateToProps, {
-  wineUpdate
+  wineUpdate,
+  disableWine,
+  wineDelete,
+  byTheGlass
 })(EditWine);
 
 export default EditWine

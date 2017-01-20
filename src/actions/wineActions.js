@@ -28,8 +28,9 @@ import {
   POP_ROUTE,
   LOADING_MODAL_DATA,
   BY_THE_GLASS,
-  SHOW_WINE_SELECT
-
+  SHOW_WINE_SELECT,
+  WINE_EDIT_SWITCH,
+  DELETE_WINE
 } from './types';
 
 
@@ -64,9 +65,30 @@ function receiveWineData(results) {
     payload: results
   }
 }
+export function wineEditSwitch() {
+  return{
+    type: WINE_EDIT_SWITCH,
+  }
+}
 export function showWineSelect(data){
+  console.log('data ' , data.glass);
   return {
     type: SHOW_WINE_SELECT,
+    payload: data
+  }
+}
+export function deleteWine(data){
+  console.log("WINE TO DELETE: ", data);
+  var adaRef = firebase.database().ref('users/ada');
+  adaRef.remove()
+    .then(function() {
+      console.log("Remove succeeded.")
+    })
+    .catch(function(error) {
+      console.log("Remove failed: " + error.message)
+    });
+  return{
+    type: DELETE_WINE,
     payload: data
   }
 }
@@ -113,37 +135,7 @@ export function refreshingWines(){
 //const url = 'http://services.wine.com/api/beta/service.svc/json/catalog?apikey=aca7099dc132f00c97ac0abf5e4872e8&search='
 const wineSearch = AppConfigs.wineSearch
 const wineDetails = AppConfigs.wineDetails
-export const wineUpdate = ({ prop, value }) => {
-  return {
-    type: 'TEST_WINE_UPDATE',
-    //type: WINE_UPDATE,
-    payload: { prop, value }
-  }
 
-
-  /*
-  return {
-    type: WINE_UPDATE,
-    payload: { prop, value }
-  }
-  return function(dispatch) {
-		dispatch(requestData());
-		return axios({
-			url: url+search,
-			timeout: 20000,
-			method: 'get',
-			responseType: 'json'
-		})
-			.then(function(response) {
-				dispatch(receiveData(response.data));
-			})
-			.catch(function(response){
-				dispatch(receiveError(response.data));
-				//dispatch(pushState(null,'/error'));
-			})
-	}
-  */
-}
   export function wineData(search) {
     console.log('search ',wineDetails+search.code);
     return function(dispatch) {
@@ -309,6 +301,37 @@ function wineCreateSuccess() {
     type: POP_ROUTE
   }
 }
+function deleteWineAction(){
+  return {
+    type: 'ATTEMPTING_WINE_DELETE'
+  }
+}
+function wineDeleteSuccess(){
+  Alert.alert(
+    'SUCCESS',
+    'Wine has been removed from your database.',
+    [
+      {text: 'OK', onPress: () => console.log('OK Pressed')},
+    ]
+  )
+  return {
+    //type: WINE_CREATE
+    type: POP_ROUTE
+  }
+}
+function wineDeleteError(){
+  Alert.alert(
+    'ERROR',
+    'There was an error deleting this wine.',
+    [
+      {text: 'OK', onPress: () => console.log('OK Pressed')},
+    ]
+  )
+  return {
+    //type: WINE_CREATE
+    type: "ERROR_DELETING_WINE"
+  }
+}
 function wineCreateError() {
   Alert.alert(
     'ERROR',
@@ -321,7 +344,84 @@ function wineCreateError() {
     type: "WINE_CREATE_ERROR"
   }
 }
-
+function updateWineAction(){
+  return {
+    type: 'ATTEMPTING_WINE_UPDATE'
+  }
+}
+function wineUpdateSuccess(){
+  Alert.alert(
+    'SUCCESS',
+    'Wine has been updated from your database.',
+    [
+      {text: 'OK', onPress: () => console.log('OK Pressed')},
+    ]
+  )
+  return {
+    //type: WINE_CREATE
+    type: POP_ROUTE
+  }
+}
+function wineUpdateError() {
+  Alert.alert(
+    'ERROR',
+    'There was an error saving your data.  Please try again.',
+    [
+      {text: 'OK', onPress: () => console.log('OK Pressed')},
+    ]
+  )
+  return {
+    type: "WINE_UPDATE_ERROR"
+  }
+}
+export const disableWine = () => {
+  Alert.alert(
+    'ERROR',
+    'This feature has not yet been implemented.',
+    [
+      {text: 'OK', onPress: () => console.log('OK Pressed')},
+    ]
+  )
+  return {
+    type: "WINE_DISABLE"
+  }
+}
+// FUNCTION FOR UPDATING WINES IN firebase
+export const wineUpdate = ({ winename, winery,
+  varietal, vintage, winenotes, region, image, glass, key, winelink }) => {
+    console.log('VARS ', {winename, winery,
+      varietal, vintage, winenotes, region, image, glass, key, winelink} );
+  const { currentUser } = firebase.auth();
+  var currentLocalID
+  var idRef = firebase.database().ref(`/users/${currentUser.uid}/currentID`);
+  return dispatch => {
+    dispatch(updateWineAction());
+    return idRef.once('value',function(snapshot){
+      currentLocalID = snapshot.val()
+      console.log('idRef ', currentLocalID)
+      const winesRef = companyRef.child(`${currentLocalID}`).child('wines').child(key)
+      winesRef.update({
+        name: winename,
+        link: winelink,
+        vintage: vintage,
+        winenotes: winenotes,
+        winery: winery,
+        varietal: varietal,
+        glass: glass,
+        image: image,
+        region: region,
+        time: new Date().getTime(),
+        updatedBy: currentUser.uid,
+      })
+      dispatch(wineUpdateSuccess())
+    })
+      .catch((error) => {
+        console.log(error);
+        dispatch(wineUpdateError());
+      })
+  }
+}
+// FUNCTION FOR CREATING WINE IN FIREBASE
 export const wineCreate = ({ winename, winery,
   varietal, vintage, winenotes, region, image, glass, link, code }) => {
   const { currentUser } = firebase.auth();
@@ -356,47 +456,6 @@ export const wineCreate = ({ winename, winery,
         console.log(error);
         dispatch(wineCreateError());
       })
-      /*
-    idRef.once('value',function(snapshot){
-      currentLocalID = snapshot.val()
-      console.log('idRef ', currentLocalID)
-      const id = Math.random().toString(36).substring(7)
-      const winesRef = companyRef.child(`${currentLocalID}`).child('wines').child(id)
-      console.log('imageURL ', image);
-      winesRef.set({
-        name: winename ? winename : "",
-        description: winenotes ? winenotes : "",
-        winery: winery ? winery : "",
-        varietal: varietal ? varietal : "",
-        glass: glass ? glass : "",
-        imageURL: image ? image : "",
-        region: region ? region : "",
-        time: new Date().getTime(),
-        createdBy: currentUser.uid,
-      }, function(error) {
-        if (error) {
-          Alert.alert(
-            'ERROR',
-            'Data could not be saved.',
-            [
-              {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
-              {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-              {text: 'OK', onPress: () => console.log('OK Pressed')},
-            ]
-          )
-
-        } else {
-          Alert.alert(
-            'SUCCESS',
-            'Data was saved.',
-            [
-              {text: 'OK', onPress: () => console.log('OK Pressed')},
-            ]
-          )
-
-        }
-      })
-    })*/
   }
 
 };
@@ -425,14 +484,32 @@ export const wineSave = ({ name, description, type, uid }) => {
   };
 };
 
-export const wineDelete = ({ uid }) => {
+export const wineDelete = ( key ) => {
   const { currentUser } = firebase.auth();
-
-  return () => {
-    firebase.database().ref(`/users/${currentUser.uid}/wines/${uid}`)
-      .remove()
-      .then(() => {
-        //Actions.employeeList({ type: 'reset' });
-      });
-  };
+  var currentLocalID
+  var isAdmin
+  var idRef = firebase.database().ref(`/users/${currentUser.uid}/currentID`);
+/*
+  idRef.once("value")
+    .then(function(snapshot) {
+      currentLocalID = snapshot.val();
+      console.log("CURRENT ID ", currentLocalID);
+      //var firstName = snapshot.child("name/first").val(); // "Ada"
+      //var lastName = snapshot.child("name").child("last").val(); // "Lovelace"
+      //var age = snapshot.child("age").val(); // null
+    });
+*/
+  return dispatch => {
+    dispatch(deleteWineAction());
+    return idRef.once('value',function(snapshot){
+      currentLocalID = snapshot.val()
+      const wineRef = companyRef.child(`${currentLocalID}/wines/${key}`)
+      wineRef.remove()
+      dispatch(wineDeleteSuccess())
+    })
+      .catch((error) => {
+        console.log(error);
+        dispatch(wineDeleteError());
+      })
+  }
 };

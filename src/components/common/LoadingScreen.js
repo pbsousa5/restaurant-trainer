@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native'
+import { View, Text, ActivityIndicator, StyleSheet, Image } from 'react-native'
 import { connect } from 'react-redux'
 import AppStyles from '../../configs/styles'
+import AppConfig from '../../configs/config'
 import { startAuthListener } from '../../actions'
 import firebase from 'firebase'
-
+import BackgroundImage from './BackgroundImage'
 const routeLogin = {
      type: 'push',
 
@@ -49,13 +50,15 @@ class LoadingScreen extends Component {
 
   render(){
     return(
-      <View style={[AppStyles.container, AppStyles.modalBox, AppStyles.backColor]}>
-        <ActivityIndicator
-        animating={this.state.animating}
-        style={[styles.centering, {height: 200}]}
-        size="large"
-      />
-        <Text style={AppStyles.h1}>Loading...</Text>
+      <View style={[AppStyles.container, AppStyles.modalBox,AppStyles.flex1, AppStyles.backColor]}>
+        <Image style={AppStyles.imageContainer} source={require('../../images/lights-bokeh-small.jpg')}>
+          <ActivityIndicator
+            animating={this.state.animating}
+            color={AppConfig.blueColor}
+            style={[styles.centering, {height: 200}]}
+            size="large"/>
+          <Text style={AppStyles.h1}>Loading...</Text>
+        </Image>
       </View>
     )
   }

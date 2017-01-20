@@ -16,7 +16,8 @@ import {
   HIDE_MODAL,
   HIDE_MODAL_REFRESH,
   BY_THE_GLASS,
-  SHOW_WINE_SELECT
+  SHOW_WINE_SELECT,
+  WINE_EDIT_SWITCH
 } from '../actions/types';
 
 
@@ -28,7 +29,9 @@ const INITIAL_STATE = {
   search: '',
   results: null,
   loaded: false,
+  wineListLoaded: false,
   loadingModal: false,
+  wineEdit: false,
   toggle: false,
   wines: null,
   bottle: {},
@@ -45,7 +48,8 @@ const INITIAL_STATE = {
     producer: null,
     code: null,
     link: null,
-    key: null
+    key: null,
+    glass: null
   }
 };
 
@@ -59,6 +63,8 @@ export default (state = INITIAL_STATE, action) => {
       return state;
     case REQ_DATA:
       return state
+    case WINE_EDIT_SWITCH:
+      return {...state, wineEdit: !state.wineEdit}
     case BY_THE_GLASS:
       return {...state, glass: !state.glass}
     case LOADING_MODAL_DATA:
@@ -70,7 +76,7 @@ export default (state = INITIAL_STATE, action) => {
     case TOGGLE_MODAL:
       return {...state, toggle: !state.toggle, notes: null }
     case WINES_LOADED:
-      return {...state, wines: action.payload}
+      return {...state, wines: action.payload, wineListLoaded: true}
     case WINES_REJECTED:
       return state
     case WINES_REQUESTED:
@@ -78,7 +84,8 @@ export default (state = INITIAL_STATE, action) => {
     case WINES_REFRESH:
       return {...state, loaded: false, notes: INITIAL_STATE.notes, details: INITIAL_STATE.details}
     case SHOW_WINE_SELECT:
-      return {...state, details: {
+      return {...state, wineEdit: false , details: {
+          glass: action.payload.glass,
           name: action.payload.name,
           hasLoaded: true,
           vintage: action.payload.vintage,
@@ -89,7 +96,8 @@ export default (state = INITIAL_STATE, action) => {
           producer: action.payload.winery,
           code: action.payload.code,
           link: action.payload.link,
-          key: action.payload.key
+          key: action.payload.key,
+
         }
       }
     case HIDE_MODAL_REFRESH:

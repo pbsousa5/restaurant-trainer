@@ -34,7 +34,7 @@ import AnimationModal from './AnimationModal'
 import DetailModal from './common/DetailsModal'
 import RootModal from './common/modalRoot'
 import Spinner from 'react-native-loading-spinner-overlay'
-import { reduxForm, Field, formValueSelector } from 'redux-form/immutable'
+import { reduxForm, Field, formValueSelector } from 'redux-form'
 import {
   ActionsContainer,
   FieldsContainer,
@@ -128,12 +128,12 @@ class WineForm extends Component {
       return data.join('\n')
     }
 
-  //renderRow={(data) => <Row {...data} />}
   render() {
     if (!this.props.loaded) {
-      //console.log("NOT LOADED");
       return this.renderLoadingView();
-    }else{
+    }
+    //renderRow={(data) => <Row {...data} />}
+    else{
       const dataSource = this.ds.cloneWithRows(this.props.results.wines);
       if(this.props.toggle){
         this.scaleModal()
@@ -207,8 +207,18 @@ class WineForm extends Component {
     this.props.change("winenotes", this.displayNotes(this.props.notes))
   }
   renderLoadingView() {
-    {this.props.details.hasLoaded ? this.setFormFields() : null}
-    return (
+    // set the default values in the form
+    // ONLY ONCE!!!
+    // the timeout stops setState errors from firing
+    if(this.props.details.hasLoaded){
+      setTimeout(
+      () => { this.setFormFields() },
+      500
+      )
+      this.props.details.hasLoaded = false
+    }
+
+    return(
       <View style={[AppStyles.flex1, AppStyles.container]}>
           <View style={[AppStyles.searchBar]}>
             <SearchBar
@@ -232,7 +242,7 @@ class WineForm extends Component {
             <Form>
               <FieldsContainer style={AppStyles.fieldContainer}>
                 <Fieldset label="Bottle details" style={{color:AppConfigs.greenColor}}>
-                  
+
                   <Field
                     name="winename"
                     myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
@@ -240,8 +250,8 @@ class WineForm extends Component {
                     myLabelStyle={AppStyles.labelStyle}
                     viewStyle={AppStyles.containerStyle}
                     label="Bottle name" placeholder="Bottle name"
-                    component={ Input } />
-
+                    component={ Input }
+                    onChangeAction={this.props.onChangeAction}/>
                   <Field name="winery" myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
                     defValue={this.props.details.producer}
                     myLabelStyle={AppStyles.labelStyle}
@@ -298,7 +308,7 @@ class WineForm extends Component {
             </CardSection>
           </Card>
       </View>
-    );
+    )
   }
 
 }

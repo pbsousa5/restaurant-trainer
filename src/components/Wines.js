@@ -23,7 +23,10 @@ class Wines extends Component {
     // PASS IN A REFERENCE TO THE LOCAL companyID
     // THIS MAY CHANGE LATER IF THE USER IS A MEMBER OF MULTIPLE COMPANIES
     this.props.loadWines(this.props.companyID)
-    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.ds = new ListView.DataSource({
+        rowHasChanged: (r1, r2) => r1 !== r2,
+        sectionHeaderHasChanged: (s1, s2) => s1 !== s2
+    });
   }
   _loadWineScreen = (data) => {
     console.log('load wine screen ' , data);
@@ -37,7 +40,24 @@ class Wines extends Component {
     }
     this.props._handleNavigate(route)
   }
-
+  convertWineArrayToMap = () => {
+    const wineCategoryMap = {} // Create the blank map
+    //console.log('wine ', this.props.wines);
+    console.log(this.props.wineListLoaded);
+    const wines = this.props.wines
+    if(this.props.wineListLoaded == true){
+      Object.keys(wines).map(function(wineItem) {
+        //const item = this.props.wines[wineItem]
+        console.log('wineItem ' , wines[wineItem]);
+        if (!wineCategoryMap[wines[wineItem].varietal]) {
+          // Create an entry in the map for the varietal if it hasn't yet been created
+          wineCategoryMap[wines[wineItem].varietal] = []
+        }
+        wineCategoryMap[wines[wineItem].varietal].push(wines[wineItem])
+      })
+    }
+    return wineCategoryMap;
+  }
   _renderRow(rowData, sectionID, rowID) {
     return (
       <View style={styles.rowStyle}>
@@ -47,6 +67,14 @@ class Wines extends Component {
       </TouchableOpacity>
       </View>
     );
+  }
+  renderSectionHeader = (sectionData, varietal) => {
+    console.log('varietal ', sectionData.varietal);
+    return (
+      <View style={AppStyles.sectionHeader}>
+        <Text style={[AppStyles.h3,AppStyles.centered]}>{varietal.toUpperCase()}</Text>
+      </View>
+    )
   }
   _renderSearchBar() {
     return(
@@ -78,22 +106,29 @@ class Wines extends Component {
     if(!this.props.wines){
       return this._defaultView()
     }
-    const dataSource = this.ds.cloneWithRows(this.props.wines);
-    return(
-      <View style={[AppStyles.pageContainer, AppStyles.backColor]}>
-          <ListView
-            dataSource={dataSource}
-            renderRow={this._renderRow.bind(this)}
-            renderHeader={this._renderSearchBar}
-          />
-       </View>
-    )
-  }
+    //if(this.props.wineListLoaded == true){
+
+      const dataSource = this.ds.cloneWithRowsAndSections(this.convertWineArrayToMap())
+      return(
+        <View style={[AppStyles.pageContainer, AppStyles.backColor]}>
+            <ListView
+              dataSource={dataSource}
+              renderRow={this._renderRow.bind(this)}
+              renderHeader={this._renderSearchBar}
+              renderSectionHeader={this.renderSectionHeader}
+            />
+         </View>
+      )
+    }/*else{
+      return(null)
+    }*/
+
+
 }
 const mapStateToProps = (state) => {
-  const { wines } = state.wines;
+  const { wines, wineListLoaded } = state.wines;
   const { companyID} = state.myCompany;
-  return { wines, companyID };
+  return { wines, companyID, wineListLoaded };
 };
 
 export default connect(mapStateToProps, { loadWines, showWineSelect })(Wines);

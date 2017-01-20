@@ -19,7 +19,9 @@ module.exports = StyleSheet.create({
 	appContainer: {
     backgroundColor: "#000",
 	},
-
+  iconColor: {
+      color: '#ffc100'
+  },
 	/* Default */
 	container: {
     position: 'relative',
@@ -30,7 +32,14 @@ module.exports = StyleSheet.create({
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      top: 70
+      top: 70,
+      paddingBottom: 70
+  },
+  photoContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+
   },
   containerStyle: {
     height: 50,
@@ -46,6 +55,28 @@ module.exports = StyleSheet.create({
     paddingTop: 5,
     flexDirection: 'row',
     alignItems: 'center'
+  },
+  linkStyle: {
+    color: AppConfig.redColor,
+    fontFamily: AppConfig.baseFont,
+    fontWeight: '800',
+    fontSize: AppConfig.baseFontSize * 1.1,
+    lineHeight: parseInt((AppConfig.baseFontSize * 1.1) + (AppConfig.baseFontSize * 0.5)),
+    margin: 0,
+    marginTop: 4,
+    marginBottom: 4,
+    left: 0,
+    right: 0,
+    textShadowOffset: {width: 2, height: 2},
+    textShadowRadius: 1,
+    textShadowColor: '#000000'
+  },
+  multilineTitle: {
+    flex: 1,
+  },
+  sectionHeader:{
+    backgroundColor: AppConfig.darkGrey,
+    flex: 1,
   },
   cardStyle: {
     borderWidth: 0,
@@ -115,7 +146,7 @@ module.exports = StyleSheet.create({
     color: '#000',
     paddingRight: 5,
     paddingLeft: 5,
-
+    backgroundColor: AppConfig.darkGrey,
     fontSize: 18,
     lineHeight: 46,
     flex: 2,
@@ -144,6 +175,10 @@ module.exports = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
+  },
+  modalTop: {
+    flex: 1,
+    justifyContent: 'flex-start',
   },
   topRight: {
     justifyContent: 'flex-end',
@@ -191,15 +226,18 @@ module.exports = StyleSheet.create({
   },
   h1: {
     fontFamily: AppConfig.baseFont,
-    fontSize: AppConfig.baseFontSize * 2,
-    lineHeight: parseInt((AppConfig.baseFontSize * 2) + (AppConfig.baseFontSize * 0.5)),
-    color: AppConfig.primaryColor,
+    fontSize: AppConfig.baseFontSize * 3,
+    lineHeight: parseInt((AppConfig.baseFontSize * 3) + (AppConfig.baseFontSize * 0.5)),
+    color: AppConfig.blueColor,
     fontWeight: '800',
     margin: 0,
     marginTop: 4,
     marginBottom: 4,
     left: 0,
     right: 0,
+    textShadowOffset: {width: 3, height: 3},
+    textShadowRadius: 2,
+    textShadowColor: '#000000',
   },
   h2: {
     fontFamily: AppConfig.baseFont,
@@ -215,14 +253,17 @@ module.exports = StyleSheet.create({
   h3: {
     fontFamily: AppConfig.baseFont,
     fontWeight: '500',
-    color: AppConfig.primaryColor,
-    fontSize: AppConfig.baseFontSize * 1.25,
-    lineHeight: parseInt((AppConfig.baseFontSize * 1.25) + (AppConfig.baseFontSize * 0.5)),
+    color: AppConfig.whiteColor,
+    fontSize: AppConfig.baseFontSize * 1.20,
+    lineHeight: parseInt((AppConfig.baseFontSize * 1.20) + (AppConfig.baseFontSize * 0.5)),
     margin: 0,
     marginTop: 4,
     marginBottom: 4,
     left: 0,
     right: 0,
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 1,
+    textShadowColor: '#000000',
   },
   h4: {
     fontFamily: AppConfig.baseFont,
@@ -268,6 +309,14 @@ module.exports = StyleSheet.create({
   fieldContainer: {
     backgroundColor: AppConfig.greyBack,
     borderWidth: 0,
+  },
+  imageContainer: {
+    flex: 1,
+    width: AppConfig.windowWidth,
+    height: AppConfig.windowHeight,
+    backgroundColor:'transparent',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   /* MENU STYLES */
   sideMenu: {
@@ -450,11 +499,18 @@ module.exports = StyleSheet.create({
     borderColor: AppConfig.orangeColor,
   },
   largePhoto: {
-    height: 150,
-    width: 150,
+    height: 100,
+    width: 100,
+    borderRadius: 20,
+    borderWidth:3,
+    borderColor: AppConfig.orangeColor,
+  },
+  hugePhoto:{
+    height: 300,
+    width: 300,
     borderRadius: 20,
     borderWidth:1,
-    borderColor: '#ffffff',
+    borderColor: AppConfig.orangeColor,
   },
   checkIcon: {
     height: 50,
@@ -471,6 +527,7 @@ module.exports = StyleSheet.create({
     paddingTop: 10,
     paddingLeft: 20,
     paddingRight: 20,
+    flex: 1,
   },
   wineText: {
     width: 200,

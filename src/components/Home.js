@@ -63,6 +63,9 @@ class HomeClass extends Component {
       //  console.log(this.props.myCompany);
         return(
           <View style={[AppStyles.pageContainer, AppStyles.backColor]}>
+
+          <Image style={AppStyles.imageContainer} source={require('../images/lights-bokeh-small.jpg')}>
+
           <Card
             title='WELCOME TO RESTARAUNT TRAINER'>
             <Text style={{marginBottom: 10}}>
@@ -83,6 +86,7 @@ class HomeClass extends Component {
               onPress={this._deleteCompany.bind(this)}
               title='LOGOUT' />
           </Card>
+          </Image>
         </View>)
       }else{
         //console.log(this.props.myCompany);
@@ -201,5 +205,13 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#333333',
         marginBottom: 5
-    }
+    },
+    imageContainer: {
+      flex: 1,
+      width: undefined,
+      height: undefined,
+      backgroundColor:'transparent',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
 })

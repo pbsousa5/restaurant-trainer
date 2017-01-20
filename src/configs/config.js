@@ -37,7 +37,7 @@ export default {
   gaTrackingId: (__DEV__) ? 'UA-84284256-2' : 'UA-84284256-1',
 
 	// Fonts
-	baseFont: "Avenir",
+	baseFont: "Roboto",
 	baseFontSize: 14,
 
 	// Colors
@@ -47,6 +47,7 @@ export default {
 	redColor: "#BB0D17",
 	primaryColor: "#FFB333",
 	secondaryColor: "#FFE229",
+	darkGrey: "#333333",
 	whiteColor: "#ffffff",
 	greyBack: "#393e42",//303337 //404040 //393e42
 	lightGrey: "#E5E5E5",
