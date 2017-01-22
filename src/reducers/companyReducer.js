@@ -1,20 +1,31 @@
-import {COMPANY_NAME_ADDED, COMPANY_CHANGED, CHECK_COMPANY, COMPANY_DOES_NOT_EXIST, COMPANY_EXISTS} from '../actions/types';
+import {
+  COMPANY_NAME_ADDED,
+  COMPANY_CHANGED,
+  CHECK_COMPANY,
+  COMPANY_DID_NOT_EXIST,
+  COMPANY_EXISTS,
+  DELETE_COMPANY,
+  CHECK_COMPANY_NAME
+  } from '../actions/types';
 
 const INITIAL_STATE = {
     company: false,
     loading: true,
-    companyID: null
+    companyID: null,
+    localName: false
 };
 
 export default(state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case CHECK_COMPANY:
+        case COMPANY_NAME_ADDED:
             return {
               ...state,
-              //company: action.payload.company,
-              //companyID: action.payload.companyID
+              company: action.payload.company,
+              companyID: action.payload.companyID,
+              localName: action.localName
             };
-        case COMPANY_DOES_NOT_EXIST:
+        case COMPANY_DID_NOT_EXIST:
+
             return {
               ...state,
               company: action.payload.company,
@@ -26,6 +37,18 @@ export default(state = INITIAL_STATE, action) => {
             company: action.payload.company,
             companyID: action.payload.companyID
           };
+        case DELETE_COMPANY:
+          return {
+            company: false,
+            loading: true,
+            companyID: null,
+            localName: false
+          }
+        case CHECK_COMPANY_NAME:
+          return{
+            ...state,
+            localName: action.payload
+          }
         default:
             return state
     }

@@ -3,8 +3,8 @@ import { View, Text, Image } from 'react-native'
 import AppStyles from '../../configs/styles'
 import { connect } from 'react-redux'
 import AppConfig from '../../configs/config'
-//import  { CheckBox } from 'react-native-elements'
-import CheckBox from 'react-native-check-box'
+import  { CheckBox } from 'react-native-elements'
+//import CheckBox from 'react-native-check-box'
 import { wineNoteAdd, wineNoteRemove } from '../../actions'
 
 export default class ReviewDetails extends Component {
@@ -36,32 +36,33 @@ export default class ReviewDetails extends Component {
       this.props._removeWineNote(this.props.body, this.props.id)
     }
   }
-  
+
   render(){
     return(
-      <View style={[AppStyles.leftAligned, AppStyles.backColor, AppStyles.fullWindowWidth]}>
+      <CheckBox
+        title={this.props.body}
+        checked={this.state.checked}
+        onPress={this._onCheckPressed.bind(this)}
+      />
+    )
+    /*
+    return(
+      <View style={[AppStyles.leftAligned, AppStyles.backColor, AppStyles.fullWindowWidth, AppStyles.flex1]}>
         <View style={AppStyles.row}>
           <CheckBox
-              style={{paddingRight: 5, paddingTop: 5}}
+              style={{paddingRight: 10, paddingLeft:10, paddingTop: 5, flex:0.1}}
               onClick={this._onCheckPressed.bind(this)}
               isChecked={this.state.checked}
           />
-          <View style={{paddingLeft:5}}>
+          <View style={{paddingLeft:10,paddingRight:10, flex:3}}>
 
-            <View style={AppStyles.paddingLeft, AppStyles.container, AppStyles.wrapText}>
+            <View style={[AppStyles.paddingLeft, AppStyles.container, AppStyles.wrapText]}>
               <Text style={AppStyles.h5}>{this.props.body}</Text>
             </View>
           </View>
         </View>
 
       </View>
-    )
+    )*/
   }
 }
-/*
-const mapStateToProps = (state) => {
-
-};
-
-export default connect(mapStateToProps, { wineNoteAdd, wineNoteRemove })(ReviewDetails)
-*/

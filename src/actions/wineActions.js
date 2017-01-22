@@ -1,4 +1,4 @@
-import firebase from 'firebase';
+import firebase from 'firebase'
 import React from 'react'
 import { Alert } from 'react-native'
 import {
@@ -7,8 +7,8 @@ import {
   databaseRef,
   GetLocalRef
 } from '../configs/firebase'
-import LocalStore from 'react-native-simple-store';
-//import axios from 'axios';
+import LocalStore from 'react-native-simple-store'
+//import axios from 'axios'
 import AppConfigs from '../configs/config'
 import {
   WINE_UPDATE,
@@ -16,7 +16,7 @@ import {
   WINE_FETCH_SUCCESS,
   WINE_SAVE_SUCCESS,
   REQ_DATA,
-  WINE_SEARCH_RESULTS,
+  ULTS,
   TOGGLE_MODAL,
   WINES_LOADED,
   WINES_REQUESTED,
@@ -30,15 +30,17 @@ import {
   BY_THE_GLASS,
   SHOW_WINE_SELECT,
   WINE_EDIT_SWITCH,
-  DELETE_WINE
-} from './types';
-
+  DELETE_WINE,
+  WINE_SEARCHING,
+  WINE_SEARCH_RESULTS
+} from './types'
+import { ApiUtils } from '../configs/ApiUtils'
 
 function requestData(data) {
   switch (data){
     case "wines":
       return {
-        type: REQ_DATA
+        type: WINE_SEARCHING
       }
     case "wines_modal":
       return {
@@ -53,11 +55,12 @@ function requestData(data) {
 
 }
 function receiveData(results) {
+  //console.log('RESULTS: ', results)
 	return{
 		type: WINE_SEARCH_RESULTS,
 		payload: results
 	}
-};
+}
 function receiveWineData(results) {
   return {
     modalType: 'WINE_MODAL',
@@ -71,22 +74,22 @@ export function wineEditSwitch() {
   }
 }
 export function showWineSelect(data){
-  console.log('data ' , data.glass);
+  console.log('data ' , data.glass)
   return {
     type: SHOW_WINE_SELECT,
     payload: data
   }
 }
 export function deleteWine(data){
-  console.log("WINE TO DELETE: ", data);
-  var adaRef = firebase.database().ref('users/ada');
+  console.log("WINE TO DELETE: ", data)
+  var adaRef = firebase.database().ref('users/ada')
   adaRef.remove()
     .then(function() {
       console.log("Remove succeeded.")
     })
     .catch(function(error) {
       console.log("Remove failed: " + error.message)
-    });
+    })
   return{
     type: DELETE_WINE,
     payload: data
@@ -104,7 +107,7 @@ export function closeModal(){
   }
 }
 export function toggleModal(obj, data, notes){
-  console.log('toggle ', obj, data);
+  console.log('toggle ', obj, data)
   if(obj){
     return{
       type: HIDE_MODAL_REFRESH,
@@ -122,11 +125,14 @@ export function toggleModal(obj, data, notes){
 
 
 function receiveError(json) {
+  return function(dispatch) {
+    dispatch(wineDataError())
+  }
 	return {
 		type: 'RECV_ERROR',
 		payload: json
 	}
-};
+}
 export function refreshingWines(){
   return{
     type: WINES_REFRESH,
@@ -136,138 +142,83 @@ export function refreshingWines(){
 const wineSearch = AppConfigs.wineSearch
 const wineDetails = AppConfigs.wineDetails
 
-  export function wineData(search) {
-    console.log('search ',wineDetails+search.code);
-    return function(dispatch) {
-      dispatch(requestData("wines_modal"));
+export function wineData(search) {
+  console.log('search ',wineDetails+search.code)
 
-    return fetch(wineDetails+search.code)
-      .then((response) => response.json())
-      .then((responseJson) => {
-        return responseJson;
-      }).then((data) => {
-        dispatch(receiveWineData(data))
-        console.log(data);
-      })
-      .catch((error) => {
-        dispatch(receiveError(responseJson.data))
-      });
-    }
-  }
-
-  /*
-// MODAL DATA for single bottles
-export function wineData(search){
-  console.log(search.code);
   return function(dispatch) {
-		dispatch(requestData());
-		return axios({
-			url: wineDetails+search.code,
-			timeout: 20000,
-			method: 'get',
-			responseType: 'json'
-		})
-			.then(function(response) {
-				dispatch(receiveWineData(response.data));
-			})
-			.catch(function(response){
-				dispatch(receiveError(response.data));
-				//dispatch(pushState(null,'/error'));
-			})
-	}
-}
-*/
-  export function searchWine({search}) {
-    return function(dispatch) {
-      dispatch(requestData("wines"))
-    return fetch(wineSearch+search)
-      .then((response) => response.json())
-      .then((responseJson) => {
-        return responseJson;
-      }).then((data) => {
-        dispatch(receiveData(data))
-        console.log(data);
-      })
-      .catch((error) => {
-        dispatch(receiveError(responseJson.data))
-      });
-    }
-  }
+    dispatch(requestData("wines_modal"))
 
-  /*
+  return fetch(wineDetails+search.code) 
+    .then((response) => response.json())
+    .then((responseJson) => {
+      return responseJson
+    }).then((data) => {
+      dispatch(receiveWineData(data))
+      console.log(data)
+    })
+    .catch((error) => {
+      dispatch(receiveError(responseJson.data))
+    })
+  }
+}
+
+
 export function searchWine({search}) {
-	return function(dispatch) {
-		dispatch(requestData());
-		return axios({
-			url: wineSearch+search,
-			timeout: 20000,
-			method: 'get',
-			responseType: 'json'
-		})
-			.then(function(response) {
-				dispatch(receiveData(response.data));
-			})
-			.catch(function(response){
-				dispatch(receiveError(response.data));
-				//dispatch(pushState(null,'/error'));
-			})
-	}
-};
-*/
-  export function getWineDetails({search}) {
-    return function(dispatch) {
-      dispatch(requestData())
-    return fetch(wineDetails+search)
-      .then((response) => response.json())
-      .then((responseJson) => {
-        return responseJson
-      }).then((data) => {
-        dispatch(receiveData(data))
-        console.log(data);
+  console.log('search ',wineSearch+search)
+  return function(dispatch) {
+      dispatch(requestData("wines"))
+      fetch(wineSearch+search).then(function(response) {
+        if(response.ok) {
+          return response.json()
+        } else {
+          dispatch(receiveError(response.data))
+        }
+      }).then(function(data) {
+         if(data) {
+           dispatch(receiveData(data))
+         }
+      }).catch(function(error) {
+        dispatch(receiveError(error))
       })
-      .catch((error) => {
-        dispatch(receiveError(responseJson.data))
-      })
-    }
   }
 
-  /*
-export function getWineDetails({search}){
-  return function(dispatch) {
-		dispatch(requestData());
-		return axios({
-			url: wineDetails+search,
-			timeout: 20000,
-			method: 'get',
-			responseType: 'json'
-		})
-			.then(function(response) {
-				dispatch(receiveData(response.data));
-			})
-			.catch(function(response){
-				dispatch(receiveError(response.data));
-				//dispatch(pushState(null,'/error'));
-			})
-	}
 }
-*/
+
+
+export function getWineDetails({search}) {
+  return function(dispatch) {
+    dispatch(requestData())
+  return fetch(wineDetails+search)
+    .then((response) => response.json())
+    .then((responseJson) => {
+      return responseJson
+    }).then((data) => {
+      dispatch(receiveData(data))
+      console.log(data)
+    })
+    .catch((error) => {
+      dispatch(receiveError(responseJson.data))
+    })
+  }
+}
+
+
 //Load wines from firebase
 export function loadWines (currentLocalID) {
   return dispatch => {
-    dispatch(getWineRequestedAction());
+    dispatch(getWineRequestedAction())
     const winesRef = companyRef.child(`${currentLocalID}`).child('wines')
     return winesRef.on('value', snap => {
-      const wines = snap.val();
-      console.log("snap.key " , wines);
+      const wines = snap.val()
+      console.log("snap.key " , wines)
       dispatch(getWineFulfilledAction(wines))
     })
   }
-  //
 }
 function getWineRequestedAction() {
   return {
     type: WINES_REQUESTED
-  };
+  }
 }
 
 function getWineRejectedAction() {
@@ -277,11 +228,11 @@ function getWineRejectedAction() {
 }
 
 function getWineFulfilledAction(wines) {
-  console.log('wines ', wines);
+  console.log('wines ', wines)
   return {
     type: WINES_LOADED,
     payload: wines
-  };
+  }
 }
 function createWineAction() {
   return{
@@ -304,6 +255,18 @@ function wineCreateSuccess() {
 function deleteWineAction(){
   return {
     type: 'ATTEMPTING_WINE_DELETE'
+  }
+}
+function wineDataError() {
+  Alert.alert(
+    'ERROR',
+    'There was an error loading data.  Please try again.',
+    [
+      {text: 'OK', onPress: () => console.log('OK Pressed')},
+    ]
+  )
+  return {
+    type: WINE_SEARCHING
   }
 }
 function wineDeleteSuccess(){
@@ -341,8 +304,8 @@ function wineCreateError() {
     ]
   )
   return {
-    type: "WINE_CREATE_ERROR"
-  }
+      type: "WINE_CREATE_ERROR"
+    }
 }
 function updateWineAction(){
   return {
@@ -390,12 +353,12 @@ export const disableWine = () => {
 export const wineUpdate = ({ winename, winery,
   varietal, vintage, winenotes, region, image, glass, key, winelink }) => {
     console.log('VARS ', {winename, winery,
-      varietal, vintage, winenotes, region, image, glass, key, winelink} );
-  const { currentUser } = firebase.auth();
+    varietal, vintage, winenotes, region, image, glass, key, winelink} )
+  const { currentUser } = firebase.auth()
   var currentLocalID
-  var idRef = firebase.database().ref(`/users/${currentUser.uid}/currentID`);
+  var idRef = firebase.database().ref(`/users/${currentUser.uid}/currentID`)
   return dispatch => {
-    dispatch(updateWineAction());
+    dispatch(updateWineAction())
     return idRef.once('value',function(snapshot){
       currentLocalID = snapshot.val()
       console.log('idRef ', currentLocalID)
@@ -416,25 +379,25 @@ export const wineUpdate = ({ winename, winery,
       dispatch(wineUpdateSuccess())
     })
       .catch((error) => {
-        console.log(error);
-        dispatch(wineUpdateError());
+        console.log(error)
+        dispatch(wineUpdateError())
       })
   }
 }
 // FUNCTION FOR CREATING WINE IN FIREBASE
 export const wineCreate = ({ winename, winery,
   varietal, vintage, winenotes, region, image, glass, link, code }) => {
-  const { currentUser } = firebase.auth();
+  const { currentUser } = firebase.auth()
   var currentLocalID
-  var idRef = firebase.database().ref(`/users/${currentUser.uid}/currentID`);
+  var idRef = firebase.database().ref(`/users/${currentUser.uid}/currentID`)
   return dispatch => {
-    dispatch(createWineAction());
+    dispatch(createWineAction())
     return idRef.once('value',function(snapshot){
       currentLocalID = snapshot.val()
       console.log('idRef ', currentLocalID)
       const id = Math.random().toString(36).substring(7)
       const winesRef = companyRef.child(`${currentLocalID}`).child('wines').child(id)
-      console.log('imageURL ', image);
+      console.log('imageURL ', image)
       winesRef.set({
         key: id,
         name: winename ? winename : "",
@@ -453,54 +416,45 @@ export const wineCreate = ({ winename, winery,
       dispatch(wineCreateSuccess())
     })
       .catch((error) => {
-        console.log(error);
-        dispatch(wineCreateError());
+        console.log(error)
+        dispatch(wineCreateError())
       })
   }
 
-};
+}
 
 export const wineFetch = () => {
-  const { currentUser } = firebase.auth();
+  const { currentUser } = firebase.auth()
 
   return (dispatch) => {
     firebase.database().ref(`/users/${currentUser.uid}/wines`)
       .on('value', snapshot => {
-        dispatch({ type: WINES_FETCH_SUCCESS, payload: snapshot.val() });
-      });
-  };
-};
+        dispatch({ type: WINES_FETCH_SUCCESS, payload: snapshot.val() })
+      })
+  }
+}
 
 export const wineSave = ({ name, description, type, uid }) => {
-  const { currentUser } = firebase.auth();
+const { currentUser } = firebase.auth()
 
-  return (dispatch) => {
-    firebase.database().ref(`/users/${currentUser.uid}/wines/${uid}`)
-      .set({ name, description, type })
-      .then(() => {
-        dispatch({ type: WINE_SAVE_SUCCESS });
-        //Actions.employeeList({ type: 'reset' });
-      });
-  };
-};
+return (dispatch) => {
+  firebase.database().ref(`/users/${currentUser.uid}/wines/${uid}`)
+    .set({ name, description, type })
+    .then(() => {
+      dispatch({ type: WINE_SAVE_SUCCESS })
+      //Actions.employeeList({ type: 'reset' })
+    })
+  }
+}
 
 export const wineDelete = ( key ) => {
-  const { currentUser } = firebase.auth();
+  const { currentUser } = firebase.auth()
   var currentLocalID
   var isAdmin
-  var idRef = firebase.database().ref(`/users/${currentUser.uid}/currentID`);
-/*
-  idRef.once("value")
-    .then(function(snapshot) {
-      currentLocalID = snapshot.val();
-      console.log("CURRENT ID ", currentLocalID);
-      //var firstName = snapshot.child("name/first").val(); // "Ada"
-      //var lastName = snapshot.child("name").child("last").val(); // "Lovelace"
-      //var age = snapshot.child("age").val(); // null
-    });
-*/
+  var idRef = firebase.database().ref(`/users/${currentUser.uid}/currentID`)
+
   return dispatch => {
-    dispatch(deleteWineAction());
+    dispatch(deleteWineAction())
     return idRef.once('value',function(snapshot){
       currentLocalID = snapshot.val()
       const wineRef = companyRef.child(`${currentLocalID}/wines/${key}`)
@@ -508,8 +462,8 @@ export const wineDelete = ( key ) => {
       dispatch(wineDeleteSuccess())
     })
       .catch((error) => {
-        console.log(error);
-        dispatch(wineDeleteError());
+        console.log(error)
+        dispatch(wineDeleteError())
       })
-  }
-};
+    }
+}

@@ -31,7 +31,8 @@ const MenuIems = [
   {id: 4, key: 'apps' ,title: 'Appetizers', content: 'Here you can view the appetizers.', icon: 'ios-pizza'},
   {id: 5, key: 'entrees' ,title: 'Entrees', content: 'Here you can view the entrees.', icon: 'ios-pizza-outline'},
   {id: 6, key: 'salads' ,title: 'Salads', content: 'Here you can view the salads.', icon: 'ios-nutrition'},
-  {id: 7, key: 'desserts' ,title: 'Desserts', content: 'Here you can view the desserts.', icon: 'ios-ice-cream'}
+  {id: 7, key: 'desserts' ,title: 'Desserts', content: 'Here you can view the desserts.', icon: 'ios-ice-cream'},
+  {id: 7, key: 'admin' ,title: 'Admin', content: 'Enter the admin controls.', icon: 'ios-person'}
 ];
 import AppConfig from '../configs/config'
 import AppStyles from '../configs/styles'
@@ -40,6 +41,7 @@ class Menu extends Component {
   static propTypes = {
     onItemSelected: React.PropTypes.func.isRequired,
   };
+//              <LinearGradient key={i} colors={AppConfig.greyGradient} >
 
   render() {
     return (
@@ -49,17 +51,16 @@ class Menu extends Component {
 
           {
             MenuIems.map((item, i) => (
-              <LinearGradient key={i} colors={AppConfig.greyGradient} >
               <ListItem
                 onPress={() => this.props.onItemSelected(item.key, item.title)}
-                leftIcon={{type: 'ionicon', name: item.icon, color: '#ffc100'}}
+                leftIcon={{type: 'ionicon', name: item.icon, color: '#ffc100', width:50}}
                 key={i}
                 title={item.title}
                 titleStyle={AppStyles.menuText}
                 subtitle={item.content}
                 subtitleStyle={AppStyles.menuSubText}
               />
-               </LinearGradient>
+
             ))
           }
           </List>

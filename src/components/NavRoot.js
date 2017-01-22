@@ -2,10 +2,13 @@ import React, {Component} from 'react'
 import Home from './Home'
 import About from './About'
 import Login from './Login'
+//import UploadImage from './common/UploadImage'
+import ImageSelect from './common/ImageSelect'
 import LoadingScreen from './common/LoadingScreen'
 import AnimatedModal from './AnimationModal'
 import ValidationForm from './social/validationForm'
 import CreateWine from './CreateWine'
+import AdminPage from './AdminPage'
 import EditWine from './common/EditWine'
 import Wines from './Wines'
 import {connect} from 'react-redux'
@@ -101,6 +104,15 @@ class NavRoot extends Component {
                     </View>
 
                 )
+            case 'beers':
+              return(
+                <View style={styles.container}>
+                    <SideMenu menu={menu} isOpen={this.state.isOpen}
+                      onChange={(isOpen) => this.updateMenuState(isOpen)}>
+                        <ImageSelect />
+                    </SideMenu>
+                </View>
+              )
             case 'about':
                 return (<About _goBack={this._handleBackAction.bind(this)}/>)
             case 'login':
@@ -113,6 +125,12 @@ class NavRoot extends Component {
                 return (<CreateWine/>)
             case 'editwine':
                 return (<EditWine _handleNavigate={this._handleNavigate.bind(this)}/>)
+            case 'admin':
+                return (<View style={styles.container}>
+                    <SideMenu menu={menu} isOpen={this.state.isOpen} onChange={(isOpen) => this.updateMenuState(isOpen)}>
+                        <AdminPage _handleNavigate={this._handleNavigate.bind(this)}/>
+                    </SideMenu>
+                </View>)
             default:
                 return null
         }
@@ -140,6 +158,16 @@ class NavRoot extends Component {
                     </TouchableOpacity>
                 )} centerComponent={< Title > HOME < /Title>}/>
               }
+            case "beers":
+              return <NavigationBar leftComponent={(
+                  <TouchableOpacity onPress={this._toggleSideMenu}>
+                      <Icon type='ionicon' name="md-menu" iconStyle={AppStyles.iconColor}/>
+                  </TouchableOpacity>
+              )} centerComponent={< Title > BEERS < /Title>} rightComponent={(
+                  <TouchableOpacity onPress={this._sceneNavigate}>
+                      <Icon type='ionicon' name="md-add" iconStyle={AppStyles.iconColor}/>
+                  </TouchableOpacity>
+              )}/>
             case 'wines':
                 return <NavigationBar leftComponent={(
                     <TouchableOpacity onPress={this._toggleSideMenu}>
@@ -163,15 +191,21 @@ class NavRoot extends Component {
                     onPress={this._handleBackAction}/>)}
                     title="ADD WINE"></NavigationBar>
             case 'editwine':
-            return <NavigationBar leftComponent={(
-                <TouchableOpacity onPress={this._handleBackAction}>
-                    <Icon type='ionicon' name="md-arrow-round-back" iconStyle={AppStyles.iconColor}/>
-                </TouchableOpacity>
-            )} centerComponent={< Title > VIEW WINE < /Title>} rightComponent={(
-                <TouchableOpacity onPress={this.props.wineEditSwitch}>
-                    <Icon type='ionicon' name="md-clipboard" iconStyle={AppStyles.iconColor}/>
-                </TouchableOpacity>
-            )}/>
+              return <NavigationBar leftComponent={(
+                  <TouchableOpacity onPress={this._handleBackAction}>
+                      <Icon type='ionicon' name="md-arrow-round-back" iconStyle={AppStyles.iconColor}/>
+                  </TouchableOpacity>
+              )} centerComponent={< Title > VIEW WINE < /Title>} rightComponent={(
+                  <TouchableOpacity onPress={this.props.wineEditSwitch}>
+                      <Icon type='ionicon' name="md-clipboard" iconStyle={AppStyles.iconColor}/>
+                  </TouchableOpacity>
+              )}/>
+            case "admin":
+              return <NavigationBar leftComponent={(
+                  <TouchableOpacity onPress={this._toggleSideMenu}>
+                      <Icon type='ionicon' name="md-menu" iconStyle={AppStyles.iconColor}/>
+                  </TouchableOpacity>
+              )} centerComponent={< Title > ADMIN < /Title>} />
 
             /*
                 return <NavigationBar leftComponent={(
@@ -202,7 +236,7 @@ class NavRoot extends Component {
       return true
     }
     _handleNavigate(action) {
-        //console.log("navigate " + this.props.navigation.index);
+        console.log("navigate " + action.route);
         switch (action && action.type) {
             case 'push':
               this.props.pushRoute(action.route);

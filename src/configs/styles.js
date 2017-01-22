@@ -17,7 +17,8 @@ import AppConfig from './config';
 /* Styles ==================================================================== */
 module.exports = StyleSheet.create({
 	appContainer: {
-    backgroundColor: "#000",
+    backgroundColor: AppConfig.greyBack,
+    flex:1,
 	},
   iconColor: {
       color: '#ffc100'
@@ -28,6 +29,20 @@ module.exports = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
   },
+  spaceBetween: {
+    justifyContent: 'space-between',
+  },
+  emailSignup: {
+    alignItems: 'stretch',
+    position: 'relative',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
+  column: {
+    flexDirection: 'column',
+    flex: 1,
+  },
+
   pageContainer: {
       flex: 1,
       justifyContent: 'center',
@@ -39,6 +54,11 @@ module.exports = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  addImageButton: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingLeft: 20,
 
   },
   containerStyle: {
@@ -78,10 +98,14 @@ module.exports = StyleSheet.create({
     backgroundColor: AppConfig.darkGrey,
     flex: 1,
   },
+  containerBorder: {
+    borderWidth: 2,
+    borderColor:AppConfig.whiteColor,
+    borderRadius: 20,
+  },
   cardStyle: {
     borderWidth: 0,
-    backgroundColor: AppConfig.lightGrey,
-
+    backgroundColor: AppConfig.darkGrey,
     flexDirection: 'column',
     justifyContent: 'center',
     //'flex-start' || 'flex-end' || 'center' || 'space-around' || 'space-between'
@@ -117,7 +141,7 @@ module.exports = StyleSheet.create({
 
   },
   labelStyle: {
-    color: AppConfig.secondaryColor,
+    color: AppConfig.orangeColor,
     fontSize: 13,
     paddingLeft: 0,
     flex: 1,
@@ -170,6 +194,13 @@ module.exports = StyleSheet.create({
   backColor:{
     backgroundColor: AppConfig.greyBack,
   },
+  divider:{
+    flex: 1,
+    borderTopWidth: 1,
+    borderTopColor: AppConfig.blackColor,
+    borderBottomWidth: 1,
+    borderBottomColor: AppConfig.blackColor,
+  },
   modalBox: {
     paddingLeft: 0,
     justifyContent: 'center',
@@ -186,6 +217,10 @@ module.exports = StyleSheet.create({
   containerCentered: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  containerForm: {
+      alignItems: 'center',
+      marginTop: 10
   },
   windowSize: {
     height: AppConfig.windowHeight,
@@ -228,7 +263,7 @@ module.exports = StyleSheet.create({
     fontFamily: AppConfig.baseFont,
     fontSize: AppConfig.baseFontSize * 3,
     lineHeight: parseInt((AppConfig.baseFontSize * 3) + (AppConfig.baseFontSize * 0.5)),
-    color: AppConfig.blueColor,
+    color: AppConfig.whiteColor,
     fontWeight: '800',
     margin: 0,
     marginTop: 4,
@@ -241,14 +276,19 @@ module.exports = StyleSheet.create({
   },
   h2: {
     fontFamily: AppConfig.baseFont,
-    color: AppConfig.primaryColor,
-    fontSize: AppConfig.baseFontSize * 1.5,
-    lineHeight: parseInt((AppConfig.baseFontSize * 1.5) + (AppConfig.baseFontSize * 0.5)),
+    fontWeight: '800',
+    color: AppConfig.whiteColor,
+    fontSize: AppConfig.baseFontSize * 1,
+    lineHeight: parseInt((AppConfig.baseFontSize * 1) + (AppConfig.baseFontSize * 0.5)),
     margin: 0,
+    textAlign: 'center',
     marginTop: 4,
     marginBottom: 4,
     left: 0,
     right: 0,
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 1,
+    textShadowColor: '#000000'
   },
   h3: {
     fontFamily: AppConfig.baseFont,
@@ -276,7 +316,7 @@ module.exports = StyleSheet.create({
     marginBottom: 4,
     left: 0,
     right: 0,
-    textShadowOffset: {width: 2, height: 2},
+    textShadowOffset: {width: 1, height: 1},
     textShadowRadius: 1,
     textShadowColor: '#000000'
   },
@@ -291,7 +331,22 @@ module.exports = StyleSheet.create({
     marginBottom: 4,
     left: 0,
     right: 0,
-    textShadowOffset: {width: 2, height: 2},
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 1,
+    textShadowColor: '#000000'
+  },
+  h6: {
+    fontFamily: AppConfig.baseFont,
+    fontWeight: '800',
+    color: AppConfig.orangeColor,
+    fontSize: AppConfig.baseFontSize * 1,
+    lineHeight: parseInt((AppConfig.baseFontSize * 1) + (AppConfig.baseFontSize * 0.5)),
+    margin: 0,
+    marginTop: 4,
+    marginBottom: 4,
+    left: 0,
+    right: 0,
+    textShadowOffset: {width: 1, height: 1},
     textShadowRadius: 1,
     textShadowColor: '#000000'
   },
@@ -384,13 +439,15 @@ module.exports = StyleSheet.create({
     borderBottomColor : '#000000',
     borderBottomWidth : 1,
   },
-  searchBarBox: {
+  searchIcon: {
+    flex: 0.25,
     backgroundColor: AppConfig.greyBack,
   },
-  searchIcon: {
-    paddingRight: 5,
-    flex:0.2,
+  searchBarBox: {
+    backgroundColor: AppConfig.greyBack,
+    flex:3,
   },
+
   paddingVertical: {
     paddingVertical: 20,
   },
@@ -488,13 +545,20 @@ module.exports = StyleSheet.create({
         paddingVertical   : 1,
         paddingHorizontal : 1,
         width: AppConfig.windowWidth,
-        borderBottomColor : '#000000',
-        borderBottomWidth : 1,
+        //borderBottomColor : '#000000',
+        //borderBottomWidth : 1,
     },
   photo: {
     height: 80,
     width: 80,
     borderRadius: 20,
+    borderWidth:1,
+    borderColor: AppConfig.orangeColor,
+  },
+  roundImage: {
+    height: 100,
+    width: 100,
+    borderRadius: 50,
     borderWidth:1,
     borderColor: AppConfig.orangeColor,
   },

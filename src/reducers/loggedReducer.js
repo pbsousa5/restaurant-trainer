@@ -15,20 +15,19 @@ export default (state = INITIAL_STATE, action) => {
     case USER_IS_LOGGED_IN:
       return {
         ...state,
-        ...INITIAL_STATE,
         user: action.payload,
-        LoggedIn: !state.LoggedIn,
+        LoggedIn: true,
         hasResponded: true
       }
     case USER_IS_NOT_LOGGED_IN:
       return {
         ...state,
-        LoggedIn: LoggedIn,
+        LoggedIn: false,
         hasResponded: true
       }
     case LOG_OUT_USER:
       return Object.assign({}, state, {
-            LoggedIn: !state.LoggedIn
+            LoggedIn: false
           })
     default:
       return state;

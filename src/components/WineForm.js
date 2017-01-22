@@ -10,7 +10,8 @@ import {
   StyleSheet,
   TextInput,
   LayoutAnimation,
-  Switch
+  Switch,
+  ActivityIndicator
 } from 'react-native';
 import { connect } from 'react-redux';
 import { CardSection, Card, Input, CustomSwitch } from './common';
@@ -29,6 +30,7 @@ import Row from './common/Row';
 import DynamicListRow from './common/DynamicListRow'
 import AppStyles from '../configs/styles'
 import AppConfigs from '../configs/config'
+import ImageSelect from './common/ImageSelect'
 //import Modal from 'react-native-root-modal';
 import AnimationModal from './AnimationModal'
 import DetailModal from './common/DetailsModal'
@@ -48,6 +50,7 @@ import {
   Select,
 } from 'react-native-clean-form/redux-form-immutable'
 import _ from 'lodash'
+import  Lightbox  from 'react-native-lightbox'
 
 class WineForm extends Component {
   constructor(props){
@@ -127,8 +130,16 @@ class WineForm extends Component {
       console.log(data.join('\n','\n'))
       return data.join('\n')
     }
-
+    renderLightBoxImage = (image) => {
+      return(
+        <View style={AppStyles.photoContainer}>
+          <Image source={{ uri: this.CheckURI(image)}}
+            style={[AppStyles.hugePhoto ]}/>
+        </View>
+      )
+    }
   render() {
+    console.log("search: ", this.props.searching);
     if (!this.props.loaded) {
       return this.renderLoadingView();
     }
@@ -145,19 +156,26 @@ class WineForm extends Component {
             <View style={AppStyles.flex1}>
               <RootModal {...this.props} />
             </View>
-            <View style={AppStyles.searchBar}>
+            <View style={[AppStyles.searchBar, AppStyles.row]}>
+              <View style={AppStyles.searchIcon}/>
               <SearchBar
                 round
-                containerStyle={AppStyles.searchBarBox}
+                containerStyle={[AppStyles.searchBarBox]}
                 onChangeText={value => this.onSearchPress(value)}
                 placeholder='Search For Wines Here...' />
+                <View style={AppStyles.searchIcon}>
+                <ActivityIndicator
+                  color={AppConfigs.whiteColor}
+                  style={[AppStyles.searchIcon, {opacity: this.props.searching ? 1.0 : 0.0}]}
+                  size="small"/>
+                </View>
             </View>
 
             <View style={{ flex: 1 }}>
               <Spinner visible={this.props.loadingModal}
-                textContent={"Loading..."}
-                color={AppConfigs.orangeColor}
-                textStyle={{color: AppConfigs.orangeColor}}></Spinner>
+                textContent={"LOADING..."}
+                color={AppConfigs.whiteColor}
+                textStyle={AppStyles.h1}></Spinner>
             </View>
             <View style={[AppStyles.backColor, AppStyles.flex1]}>
             <ListView
@@ -210,34 +228,50 @@ class WineForm extends Component {
     // set the default values in the form
     // ONLY ONCE!!!
     // the timeout stops setState errors from firing
-    if(this.props.details.hasLoaded){
+    if(this.props.hasLoaded){
       setTimeout(
       () => { this.setFormFields() },
       500
       )
-      this.props.details.hasLoaded = false
+      this.props.hasLoaded = false
     }
 
     return(
       <View style={[AppStyles.flex1, AppStyles.container]}>
-          <View style={[AppStyles.searchBar]}>
-            <SearchBar
-              round
-              containerStyle={AppStyles.searchBarBox}
-              onChangeText={value => this.onSearchPress(value)}
-              placeholder='Search For Wines Here...' />
-          </View>
-          {this.props.details.hasLoaded ? <View style={AppStyles.paddingTop}/> :
+        <View style={[AppStyles.searchBar, AppStyles.row]}>
+          <View style={AppStyles.searchIcon}/>
+          <SearchBar
+            round
+            containerStyle={[AppStyles.searchBarBox]}
+            onChangeText={value => this.onSearchPress(value)}
+            placeholder='Search For Wines Here...' />
+            <View style={AppStyles.searchIcon}>
+            <ActivityIndicator
+              color={AppConfigs.whiteColor}
+              style={[AppStyles.searchIcon, {opacity: this.props.searching ? 1.0 : 0.0}]}
+              size="small"/>
+            </View>
+        </View>
+          {this.props.hasLoaded == true ? <View style={AppStyles.paddingTop}/> :
             <Text style={[AppStyles.paddedText, AppStyles.h4]}>
                You can search for wines first to populate the fields.
               If you cannot find the wine you can always enter the info below to create a new wine.
             </Text>
-
           }
 
           <Card style={[AppStyles.cardStyle]}>
-            <CardSection style={[AppStyles.backColor, AppStyles.paddingLeft, AppStyles.paddingBottom]}>
-              <Image source={{ uri: this.CheckURI(this.props.details.image)}} style={AppStyles.photo}/>
+            <CardSection style={[AppStyles.row, AppStyles.backColor, AppStyles.paddingLeft, AppStyles.paddingBottom]}>
+              { //check for local image added
+                this.props.image === null ?
+              <Lightbox onRequestClose={() => {alert("Modal has been closed.")}}>
+                  <Image source={{ uri: this.CheckURI(this.props.details.image)}} style={AppStyles.photo}/>
+              </Lightbox> :
+              <Lightbox onRequestClose={() => {alert("Modal has been closed.")}}>
+                <Image source={this.props.image} style={AppStyles.photo}/>
+              </Lightbox>
+              //END CHECK LOCAL IMAGE
+            }
+              <ImageSelect />
             </CardSection>
             <Form>
               <FieldsContainer style={AppStyles.fieldContainer}>
@@ -249,6 +283,8 @@ class WineForm extends Component {
                     defValue={this.props.details.name}
                     myLabelStyle={AppStyles.labelStyle}
                     viewStyle={AppStyles.containerStyle}
+                    lineNum= {2}
+                    multiline = {true}
                     label="Bottle name" placeholder="Bottle name"
                     component={ Input }
                     onChangeAction={this.props.onChangeAction}/>
@@ -302,6 +338,7 @@ class WineForm extends Component {
                 icon={{name: 'add'}}
                 backgroundColor= {AppConfigs.greenColor}
                 fontFamily= {AppConfigs.baseFont}
+                textStyle={AppStyles.h3}
                 buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
                 onPress={this.onCreatePress.bind(this)}
                 title='CREATE' />
@@ -344,8 +381,9 @@ WineForm = reduxForm({
 const selector = formValueSelector('wineDetailsForm');
 
 const mapStateToProps = (state) => {
-  const { name, description, results, loaded, search, details, loadingModal, glass } = state.wines
+  const { name, description, results, loaded, search, details, loadingModal, glass, searching, hasLoaded } = state.wines
   const { notes } = state.notes
+  const { image, imageAdded } = state.image
   const { toggle, bottle } = state.modal
   return {
     winename: selector(state, 'winename'),
@@ -354,7 +392,7 @@ const mapStateToProps = (state) => {
     winery: selector(state, 'winery'),
     region: selector(state, 'region'),
     winenotes: selector(state, 'winenotes'),
-    name, description, results, loaded, search, toggle, bottle, notes, details, loadingModal, glass }
+    name, image, imageAdded, description, results, loaded, search, toggle, bottle, notes, details, loadingModal, glass, searching, hasLoaded }
 };
 
 

@@ -2,7 +2,6 @@
 #
 .DS_Store
 
-
 # Xcode
 #
 build/
@@ -35,8 +34,7 @@ local.properties
 #
 node_modules/
 npm-debug.log
-src/configs/fb_config.js
-images/
+
 # BUCK
 buck-out/
 \.buckd/

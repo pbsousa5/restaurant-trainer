@@ -17,7 +17,8 @@ import {
   HIDE_MODAL_REFRESH,
   BY_THE_GLASS,
   SHOW_WINE_SELECT,
-  WINE_EDIT_SWITCH
+  WINE_EDIT_SWITCH,
+  WINE_SEARCHING
 } from '../actions/types';
 
 
@@ -28,6 +29,7 @@ const INITIAL_STATE = {
   type: '',
   search: '',
   results: null,
+  searching: false,
   loaded: false,
   wineListLoaded: false,
   loadingModal: false,
@@ -37,8 +39,8 @@ const INITIAL_STATE = {
   bottle: {},
   notes: null,
   glass: false,
+  hasLoaded: false,
   details: {
-    hasLoaded: false,
     name: null,
     region: null,
     varietal: null,
@@ -61,8 +63,8 @@ export default (state = INITIAL_STATE, action) => {
       return state;
     case WINE_SAVE_SUCCESS:
       return state;
-    case REQ_DATA:
-      return state
+    case WINE_SEARCHING:
+      return {...state, searching: !state.searching}
     case WINE_EDIT_SWITCH:
       return {...state, wineEdit: !state.wineEdit}
     case BY_THE_GLASS:
@@ -72,7 +74,7 @@ export default (state = INITIAL_STATE, action) => {
     case WINE_BOTTLE_DATA:
       return {...state, loadingModal: !state.loadingModal}
     case WINE_SEARCH_RESULTS:
-      return {...state, results: action.payload, loaded: true}//dataSource: this.state.dataSource.cloneWithRows(responseData.movies),
+      return {...state, results: action.payload, loaded: true, searching: !state.searching}//dataSource: this.state.dataSource.cloneWithRows(responseData.movies),
     case TOGGLE_MODAL:
       return {...state, toggle: !state.toggle, notes: null }
     case WINES_LOADED:
@@ -84,7 +86,7 @@ export default (state = INITIAL_STATE, action) => {
     case WINES_REFRESH:
       return {...state, loaded: false, notes: INITIAL_STATE.notes, details: INITIAL_STATE.details}
     case SHOW_WINE_SELECT:
-      return {...state, wineEdit: false , details: {
+      return {...state, wineEdit: false, hasLoaded: true, details: {
           glass: action.payload.glass,
           name: action.payload.name,
           hasLoaded: true,
@@ -101,7 +103,7 @@ export default (state = INITIAL_STATE, action) => {
         }
       }
     case HIDE_MODAL_REFRESH:
-      return {...state, loaded: false, details: {
+      return {...state, loaded: false, hasLoaded: true, details: {
           name: action.payload.name,
           hasLoaded: true,
           vintage: action.payload.vintage,

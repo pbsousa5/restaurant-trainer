@@ -9,6 +9,8 @@ export const winesRef = firebaseApp.database().ref('wines')
 export const databaseRef = firebaseApp.database();
 export const companyRef = firebaseApp.database().ref('companies')
 const connectedRef = firebaseApp.database().ref('.info/connected')
+const storage = firebase.storage();
+export const storageRef = storage.ref();
 
 export function syncFirebase(store) {
   itemsRef.on('child_added', (snapshot) => {

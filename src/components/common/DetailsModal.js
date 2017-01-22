@@ -17,7 +17,7 @@ import {
    FormGroup,
    Label,
  } from 'react-native-clean-form'
-import { CardSection, Card } from './';
+
 import { connect } from 'react-redux';
 import AppStyles from '../../configs/styles'
 import AppConfig from '../../configs/config'
@@ -27,8 +27,10 @@ import {
   FormLabel,
   FormInput,
   Icon,
-  Checkbox
+  Checkbox,
+  Card
 } from 'react-native-elements'
+import { Divider } from '@shoutem/ui'
 import  ReviewDetails  from './ReviewDetails'
 import Modal from 'react-native-root-modal';
 import { wineNoteAdd, wineNoteRemove, toggleModal } from '../../actions';
@@ -96,15 +98,17 @@ import { wineNoteAdd, wineNoteRemove, toggleModal } from '../../actions';
 
 //<Image source={this.props.wines.bottle.image} style={AppStyles.photo}/>
   render(){
+    const selectText = 'Select multiple or single Wine tasting notes below.'
     const dataSource = this.ds.cloneWithRows(this.props.reviews);
     if(this.state.visible){
       this.scaleModal()
     }else{
       this.hideModal()
     }
+    //<Image source={{uri: this.props.image}} style={AppStyles.largePhoto}/>
     return(
-      <View style={[AppStyles.container, AppStyles.cardStyle]}>
         <Animated.Modal {...this.props} visible={this.state.visible} style={[
+          AppStyles.flex1,
             AppStyles.modal, {
                 transform: [
                     {
@@ -112,81 +116,78 @@ import { wineNoteAdd, wineNoteRemove, toggleModal } from '../../actions';
                     }, {
                         translateX: this.state.x
                     }]}]}>
+              <View style={[{paddingTop:20}]}>
+              <Card
+                titleStyle={AppStyles.h3}
+                title={this.props.name.toUpperCase()}
+                containerStyle={[AppStyles.cardStyle,AppStyles.containerBorder]}
+                wrapperStyle={[{justifyContent: 'flex-start'},AppStyles.cardStyle]}>
+                <View style={AppStyles.row}>
+                  <View style={{paddingTop: 20}}>
+                    <Image source={{uri: this.props.image}} style={[AppStyles.largePhoto]}/>
+                  </View>
+                  <View style={[AppStyles.column, {paddingLeft:20}]}>
+                    <Text style={AppStyles.h4}>{this.props.winery}</Text>
+                    <Text style={AppStyles.h4}>{this.props.varietal}</Text>
+                    <Text style={AppStyles.h4}>{this.props.vintage}</Text>
+                    <Text style={AppStyles.h4}>{this.props.region}</Text>
+                  </View>
+                </View>
+              </Card>
+              </View>
 
-          <Fieldset label="Bottle details" style={[{color:AppConfig.greenColor}]}>
-
-            <View style={ [AppStyles.row, AppStyles.flex1] }>
-            <Image source={{uri: this.props.image}} style={AppStyles.largePhoto}/>
-
-            <View style={ AppStyles.paddingLeft,
-              AppStyles.paddingRight, AppStyles.column, AppStyles.flex1}>
-              <Text style={AppStyles.h4}>{this.props.name}</Text>
-              <Text style={AppStyles.h4}>{this.props.varietal}</Text>
-              <Text style={AppStyles.h4}>{this.props.vintage}</Text>
-              <Text style={AppStyles.h4}>{this.props.region}</Text>
-            </View>
-            </View>
-          </Fieldset>
-
-          <Fieldset label="WINE NOTES" style={{color:AppConfig.greenColor}}>
-
-              <Text style={AppStyles.h5}>Select multiple or single Wine tasting notes below</Text>
-              <Text style={AppStyles.h5}>You can edit these on the next page</Text>
-
-          </Fieldset>
+              <Text style={AppStyles.h6}>{selectText.toUpperCase()}</Text>
 
 
-          <ListView
-             dataSource={dataSource}
-             renderRow={this._renderRow}
-           />
+              <ListView
+                 dataSource={dataSource}
+                 renderRow={this._renderRow}
+               />
 
-           <View style={AppStyles.row}>
-           <Button
-             raised
-             buttonStyle={{
-               marginBottom: 10,
-               marginLeft: 15,
-               marginRight: 15,
-           }}
-            backgroundColor={AppConfig.redColor}
-            title='Cancel'
-            onPress={this._closeModal.bind(this, false)}/>
-            <Button
-              raised
-              buttonStyle={{
-
-                marginLeft: 15,
-                marginRight: 15,
-                marginBottom: 10
-            }}
-             backgroundColor={AppConfig.greenColor}
-             title='Select'
-             onPress={this._closeModal.bind(this, true)}/>
+           <View style={[AppStyles.row, {paddingTop:10}]}>
+             <Button
+               raised
+               buttonStyle={{
+                 marginBottom: 10,
+                 marginLeft: 15,
+                 marginRight: 15,
+             }}
+             textStyle={AppStyles.h3}
+              backgroundColor={AppConfig.redColor}
+              title='CANCEL'
+              onPress={this._closeModal.bind(this, false)}/>
+              <Button
+                raised
+                buttonStyle={{
+                  marginLeft: 15,
+                  marginRight: 15,
+                  marginBottom: 10
+              }}
+              textStyle={AppStyles.h3}
+               backgroundColor={AppConfig.greenColor}
+               title='SELECT'
+               onPress={this._closeModal.bind(this, true)}/>
           </View>
        </Animated.Modal>
-      </View>
+
     )
   }
 
   _renderRow = (rowData, sectionID, rowID) => {
-    //console.log(rowID);
-    if(rowData.body === ""){
+    // ignore empty fields and also ones that are too short
+    if(rowData.body === "" || rowData.body.length <= 60){
       return null
     }
     //<TouchableOpacity onPress={this._addWineNote.bind(this, rowData.body,rowID)}>
     //</TouchableOpacity>
     return (
       <View style={AppStyles.rowStyle}>
-
         <ReviewDetails
           _addWineNote={this._addWineNote.bind(this)}
           _removeWineNote={this._removeWineNote.bind(this)}
           { ...rowData }
           id={rowID}
-
           />
-
       </View>
     )
   }

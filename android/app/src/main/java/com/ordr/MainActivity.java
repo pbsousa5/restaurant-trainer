@@ -1,4 +1,4 @@
-package com.exp_nav;
+package com.ordr;
 
 import com.facebook.react.ReactActivity;
 
@@ -10,6 +10,6 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return "Exp_Nav";
+        return "ordr";
     }
 }

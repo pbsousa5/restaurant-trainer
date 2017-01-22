@@ -34,10 +34,16 @@ export const passwordChanged = (text) => {
   };
 };
 export const logOutUser = () => {
+  console.log("LOG OUT USER!!!");
   return (dispatch) => {
+    firebase.auth().signOut().then(function() {
+      console.log('SIGN OUT SUCCESS');
+    }, function(error) {
+      console.log('SIGN OUT ERROR ', error.message);
+    })
     dispatch({ type: LOG_OUT_USER });
-    firebase.auth().signOut();
   }
+
 }
 export const UpdateLocalID = () => {
   var user = firebase.auth().currentUser
@@ -85,7 +91,7 @@ export const loginUser = ( email, password, firstName, lastName ) => {
           });
           LocalStore.get('localID').then(localID => {
               if (!localID) {
-                  console.log('houston we have a problem!');
+                  console.log('Local ID does not exist.');
               }
               else{
                 // add a currentID of this company

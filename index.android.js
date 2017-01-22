@@ -12,4 +12,4 @@ const App = () => (
     <NavigationRootContainer />
   </Provider>
 )
-AppRegistry.registerComponent('Exp_Nav', () => App)
+AppRegistry.registerComponent('ordr', () => App)

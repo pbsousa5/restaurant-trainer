@@ -1,18 +1,16 @@
-package com.exp_nav;
+package com.ordr;
 
 import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
-import com.BV.LinearGradient.LinearGradientPackage;
-
-import com.oblador.vectoricons.VectorIconsPackage;
-
+import com.imagepicker.ImagePickerPackage;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
-
+import com.RNFetchBlob.RNFetchBlobPackage;
 import com.magus.fblogin.FacebookLoginPackage;
 import cl.json.RNSharePackage;
-
+import com.BV.LinearGradient.LinearGradientPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -34,12 +32,13 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-          new LinearGradientPackage(),
-          new VectorIconsPackage(),
-          new RNGoogleSigninPackage(),
-          new FacebookLoginPackage(),
-          new RNSharePackage()
-
+            new ImagePickerPackage(),
+            new RNGoogleSigninPackage(),
+            new RNFetchBlobPackage(),
+            new FacebookLoginPackage(),
+            new RNSharePackage(),
+            new LinearGradientPackage(),
+            new VectorIconsPackage()
       );
     }
   };

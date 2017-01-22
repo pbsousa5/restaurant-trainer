@@ -1,15 +1,16 @@
 import React, {Component} from 'react'
 import AppStyles from '../configs/styles'
 import AppUtil from '../configs/util';
+import * as firebase from 'firebase';
 import {View, Text, StyleSheet, Image, TouchableOpacity, TextInput} from 'react-native'
 import {Icon, NavigationBar, Title} from '@shoutem/ui';
 import {List, ListItem, Button, Card, FormLabel, FormInput} from 'react-native-elements'
 
-import {logOutUser, CheckForCompanyExist,
-  CompanyCreated, NoCompanyCreated, CompanyExists, UpdateLocalID} from '../actions'
+import {logOutUser, CheckForCompanyExist, CheckName, DisplayFirebaseImage,
+  createCompanyName, NoCompanyCreated, CompanyExists, UpdateLocalID, DeleteCompany, LocalCompanyCheck } from '../actions'
 import {connect} from 'react-redux'
 import LocalStore from 'react-native-simple-store';
-
+import ImageSelect from './common/ImageSelect'
 class HomeClass extends Component {
 
     constructor(props) {
@@ -21,30 +22,32 @@ class HomeClass extends Component {
     componentDidMount() {
         //Listen for firebase auth change
         console.log('home');
-        this.props.CheckForCompanyExist()
-        LocalStore.get('localID').then(localID => {
-            if (!localID) {
-                console.log('localID is null: ' + localID);
-                const id = Math.random().toString(36).substring(7);
-                LocalStore.save('localID', {value: id});
-                this.props.NoCompanyCreated(id)
-            } else {
-                console.log('localID value: ' + localID.value);
-                this.props.CompanyExists(localID.value)
-            }
-        }).catch(error => {
-        console.log(error.message);
-      });
-
-
+        // this.props.CheckForCompanyExist()
+        // FIRST CHECK IF USER HAS ADDED A LOCAL COMPANY
+        // THIS IS SO WE CAN SHOW THE ADD NAME FIELD IF THE
+        // APP CRASHES DURING SIGN IN
+        this.props.CheckName()
+        // check for company ID
+        // WILL CREATE IF DOESNT EXIST
+        this.props.LocalCompanyCheck()
     }
 
     _submitCompany(){
-      console.log(this.state.companyName);
-      this.props.CompanyCreated(this.props.companyID, this.state.companyName)
+      console.log('this.props.companyID ',this.props.companyID);
+      const coID = this.props.companyID
+      const coName = this.state.companyName
+      const image = 'some random url'
+      this.props.createCompanyName({coID, coName, image})
+
     }
     _deleteCompany(){
-      LocalStore.delete('localID')
+      this.props.DeleteCompany()
+      //TODO reroute to login for testing
+      this.routeToLogin()
+
+    }
+    renderUploadedImage = () =>{
+    //  console.log('UPLOAD IMAGE: ',this.props.fetchUrl(this.props.imageAdded));
     }
     routeToLogin = () => {
         route = {
@@ -54,22 +57,24 @@ class HomeClass extends Component {
                 title: 'LOGIN'
             }
         }
-        this.props.logOutUser
+        this.props.logOutUser()
         this.props._handleNavigate(route)
     }
+
     render() {
-      if(this.props.myCompany){
-        //console.log('this.state.company');
-      //  console.log(this.props.myCompany);
+      //TODO better way to handle companyID creation currently I just check
+      // if it has not been created yet.  This only comes into effect
+      // after logging out and deleting the user.
+      !this.props.companyID ? this.props.LocalCompanyCheck() : null
+      if(this.props.localName == true){
         return(
           <View style={[AppStyles.pageContainer, AppStyles.backColor]}>
-
           <Image style={AppStyles.imageContainer} source={require('../images/lights-bokeh-small.jpg')}>
-
           <Card
             title='WELCOME TO RESTARAUNT TRAINER'>
+
             <Text style={{marginBottom: 10}}>
-              You will need to create a company name so we can start buidling the database.
+              Start adding items to your database by selecting a section in the menu under the top left icon.
             </Text>
             <Button
               icon={{name: 'code'}}
@@ -84,21 +89,37 @@ class HomeClass extends Component {
               fontFamily='Lato'
               buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
               onPress={this._deleteCompany.bind(this)}
-              title='LOGOUT' />
+              title='DELETE COMPANY' />
           </Card>
           </Image>
         </View>)
       }else{
         //console.log(this.props.myCompany);
         return(<View style={AppStyles.pageContainer}>
+          <Image style={AppStyles.imageContainer} source={require('../images/lights-bokeh-small.jpg')}>
+
           <Card
             title='WELCOME TO RESTARAUNT TRAINER'>
-            <View style={styles.containerForm}>
+
+            <View style={AppStyles.containerForm}>
             <Text style={{marginBottom: 10}}>
-              You will need to create a company name so we can start buidling the database.
+              You will need to create a company name so we can start buidling the database. Any information entered below can be changed later.
             </Text>
-            <FormLabel>Company ID</FormLabel>
+            <FormLabel>Your Company ID</FormLabel>
             <Text>{this.props.companyID}</Text>
+            <FormLabel>Upload an image for your restaurant</FormLabel>
+            <View>
+              {this.props.imageAdded ? this.renderUploadedImage() : null}
+            </View>
+            <View style={AppStyles.row}>
+              {
+                this.props.image === null ?
+              <Image source={require('../../images/res5.jpg')} style={AppStyles.roundImage}/>
+              :
+              <Image source={this.props.image} style={AppStyles.roundImage}/>
+            }
+              <ImageSelect />
+            </View>
             <FormLabel>Company Name</FormLabel>
             </View>
             <TextInput
@@ -117,53 +138,30 @@ class HomeClass extends Component {
                 </View>
 
           </Card>
+          </Image>
         </View>)
       }
-        return (
-            <View style={AppStyles.pageContainer}>
-                <View style={AppStyles.pageContainer}>
-                    <Text style={styles.welcome}>
-                        Welcome to React Native! {this.props.LoggedIn}
-                    </Text>
-                    <Text style={styles.instructions}>
-                        To get started, edit index.ios.js
-                    </Text>
-                    <Text style={styles.instructions}>
-                        Press Cmd+R to reload,{'\n'}
-                        Cmd+Control+Z for dev menu
-                    </Text>
-                    <Text style={styles.instructions}>
-                        Test
-                    </Text>
-                </View>
-                <Text style={styles.title}>Home</Text>
-                <Button raised onPress={this.routeToLogin} buttonStyle={{
-                    borderRadius: 20,
-                    marginLeft: 15,
-                    marginRight: 15,
-                    marginBottom: 10
-                }} backgroundColor="#dd4b39" title='LOG OUT'/>
-            </View>
-        )
+
 
     }
 }
 const mapStateToProps = state => {
-    return {
-      userLogged: state.userLogged,
-      LoggedIn: state.LoggedIn,
-      myCompany: state.myCompany.company,
-      companyID:state.myCompany.companyID
-    };
-};
+  const { userLogged, LoggedIn, company, companyID, localName } = state.myCompany
+  const { image, imageAdded } = state.image
+  return { userLogged, LoggedIn, company, companyID, localName, imageAdded, image }
+}
 
 export default connect(mapStateToProps, {
   NoCompanyCreated,
+  DeleteCompany,
   logOutUser,
   CheckForCompanyExist,
-  CompanyCreated,
+  createCompanyName,
   CompanyExists,
-  UpdateLocalID
+  LocalCompanyCheck,
+  UpdateLocalID,
+  CheckName,
+  DisplayFirebaseImage
 })(HomeClass);
 
 const styles = StyleSheet.create({

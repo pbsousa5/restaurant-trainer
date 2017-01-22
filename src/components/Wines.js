@@ -48,7 +48,7 @@ class Wines extends Component {
     if(this.props.wineListLoaded == true){
       Object.keys(wines).map(function(wineItem) {
         //const item = this.props.wines[wineItem]
-        console.log('wineItem ' , wines[wineItem]);
+        //console.log('wineItem ' , wines[wineItem]);
         if (!wineCategoryMap[wines[wineItem].varietal]) {
           // Create an entry in the map for the varietal if it hasn't yet been created
           wineCategoryMap[wines[wineItem].varietal] = []

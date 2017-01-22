@@ -12,7 +12,7 @@ import {
   View
 } from 'react-native';
 
-export default class Exp_Nav extends Component {
+export default class ordr extends Component {
   render() {
     return (
       <View style={styles.container}>
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('Exp_Nav', () => Exp_Nav);
+AppRegistry.registerComponent('ordr', () => ordr);

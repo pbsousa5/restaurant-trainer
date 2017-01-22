@@ -7,12 +7,16 @@ import companyReducer from './companyReducer'
 import wineEdit from './wineReducer'
 import wineNotes from './noteReducer'
 import modal from './modalReducer'
+import image from './imageReducer'
+import admin from './adminReducer'
 import { reducer as forms } from 'redux-form';
 
 const reducer = combineReducers({
   form: forms,
   navReducer,
   items,
+  admin: admin,
+  image: image,
   auth: emailReducer,
   userLogged: loggedReducer,
   myCompany: companyReducer,

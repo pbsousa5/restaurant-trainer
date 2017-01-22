@@ -39,10 +39,10 @@ class EditWine extends Component {
     }
     console.log("this.props.details.glass ", this.props.details.glass);
   }
-  renderLightBoxImage = () => {
+  renderLightBoxImage = (image) => {
     return(
       <View style={AppStyles.photoContainer}>
-        <Image source={{ uri: this.CheckURI(this.props.details.image)}}
+        <Image source={{ uri: this.CheckURI(image)}}
           style={[AppStyles.hugePhoto ]}/>
       </View>
     )
@@ -93,20 +93,20 @@ class EditWine extends Component {
           <Card style={[AppStyles.cardStyle]}>
             <CardSection style={[AppStyles.backColor,
               AppStyles.paddingLeft, AppStyles.paddingBottom,{paddingTop:10}, AppStyles.row]}>
-              <Lightbox onRequestClose={null} renderContent={this.renderLightBoxImage}>
+              <Lightbox onRequestClose={null} renderContent={this.renderLightBoxImage.bind(this, this.props.details.image)}>
                 <Image source={{ uri: this.CheckURI(this.props.details.image)}}
                   style={AppStyles.photo}/>
               </Lightbox>
-              <View style={[AppStyles.column, {paddingLeft:30, justifyContent: "center"}]}>
+              <View style={[AppStyles.row, AppStyles.flex1, {paddingLeft:30, justifyContent: "space-around", alignItems: 'center'}]}>
                 <Button
                   icon={{name: 'link'}}
                   raised
-                  textStyle={AppStyles.h3}
+                  textStyle={AppStyles.h2}
                   backgroundColor= {AppConfigs.blueColor}
-                  fontFamily= {AppConfigs.baseFont}
-                  buttonStyle={{borderRadius: 5, marginLeft: 0, marginRight: 0, marginBottom: 0, height: 50, width: 170}}
+                  buttonStyle={{borderRadius: 5, marginLeft: 0, marginRight: 0, marginBottom: 0, height: 40, width: 100}}
                   onPress={this._goToURL}
-                  title='MORE INFO' />
+                  title='INFO' />
+
               </View>
             </CardSection>
             <Form>

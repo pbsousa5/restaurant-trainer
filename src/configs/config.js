@@ -47,7 +47,8 @@ export default {
 	redColor: "#BB0D17",
 	primaryColor: "#FFB333",
 	secondaryColor: "#FFE229",
-	darkGrey: "#333333",
+	darkGrey: "#2F2F2F",
+	blackColor: "#000000",
 	whiteColor: "#ffffff",
 	greyBack: "#393e42",//303337 //404040 //393e42
 	lightGrey: "#E5E5E5",

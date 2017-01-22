@@ -30,6 +30,7 @@ import {
 } from '@shoutem/ui';
 import {Button, SocialIcon, Card, FormLabel, FormInput} from 'react-native-elements'
 import Modal from 'react-native-root-modal';
+import AppStyles from '../configs/styles'
 
 const route = {
     type: 'push',
@@ -157,7 +158,7 @@ class Login extends Component {
         } else {
         */
         return (
-            <View>
+            <View style={AppStyles.appContainer}>
                 <Animated.Modal visible={this.state.visible} style={[
                     styles.modal, {
                         transform: [

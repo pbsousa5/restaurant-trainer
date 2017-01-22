@@ -1,12 +1,3 @@
-/**
- * Form SCREEN
- *
- * React Native Starter App
- * https://github.com/mcnamee/react-native-starter-app
- */
-'use strict';
-
-/* Setup ==================================================================== */
 import React, { Component } from 'react'
 import {
   StyleSheet,
@@ -61,7 +52,7 @@ class Form extends Component {
 
   constructor(props) {
     super(props);
-
+    this.navigateHome = this.navigateHome.bind(this)
     // Email Validation
     var valid_email = FormValidation.refinement(
       FormValidation.String, function (email) {
@@ -189,7 +180,7 @@ class Form extends Component {
             this.props.loginUser(values.Email, values.Password, values.First_name, values.Last_name );
             //this.props._goBack();
             // GO TO HOME SCREEN ON LOGIN
-            this.props._handleNavigate(route)
+
             /*
             // Show save message
             this.setState({
@@ -216,17 +207,20 @@ class Form extends Component {
     console.log('password ' + text);
     this.props.passwordChanged(text);
   }
+  navigateHome = () => {
+    setTimeout(function(){this.props._handleNavigate(route) }, 500)
+  }
   /**
   * RENDER
   */
   render = () => {
     var Form = FormValidation.form.Form;
-
+    this.props.loading == true ? this.props._handleNavigate(route) : null
     return (
       <ScrollView automaticallyAdjustContentInsets={false}
         ref={'scrollView'}
-        style={[AppStyles.container]}
-        contentContainerStyle={[AppStyles.containerCentered, styles.container]}>
+        style={[AppStyles.column, {paddingTop:70}, AppStyles.appContainer]}
+        contentContainerStyle={[AppStyles.containerCentered, AppStyles.emailSignup]}>
         <Card title={this.state.form_values.First_name == '' ? "Sign Up" : "Update Profile"} >
         <View style={[AppStyles.paddingHorizontal]}>
 
@@ -244,25 +238,20 @@ class Form extends Component {
             options={this.state.options} />
         </View>
 
-        <View style={[AppStyles.row]}>
-          <View style={[AppStyles.flex1, AppStyles.paddingLeft]}>
-
+        <View style={[AppStyles.row, AppStyles.spaceBetween, {paddingLeft: 30, paddingRight: 30}]}>
             <Button
               raised
               buttonStyle={{borderRadius: 20, marginLeft: 15, marginRight: 15, marginBottom: 10}}
               backgroundColor="#dd4b39"
               title='CLEAR'
               onPress={this._deleteData}/>
-          </View>
-
-          <View style={[AppStyles.flex1, AppStyles.paddingRight]}>
             <Button
               raised
               buttonStyle={{borderRadius: 20, marginLeft: 15, marginRight: 15, marginBottom: 10}}
               backgroundColor="#22a3ed"
               title='SUBMIT'
               onPress={this._signUp}/>
-          </View>
+
         </View>
       </Card>
       </ScrollView>

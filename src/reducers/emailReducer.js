@@ -3,6 +3,7 @@ import {
   PASSWORD_CHANGED,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAIL,
+  LOG_OUT_USER,
   LOGIN_USER,
   COMPANY_CHANGED,
   CREATE_USER_SUCCESS
@@ -32,7 +33,16 @@ export default (state = INITIAL_STATE, action) => {
       case CREATE_USER_SUCCESS:
         return { ...state, ...INITIAL_STATE, user: action.payload };
     case LOGIN_USER_FAIL:
-      return { ...state, error: 'Authentication Foo.', password: '', loading: false };
+      return { ...state, error: 'auth error', password: '', loading: false };
+    case LOG_OUT_USER:
+      return {
+        email: '',
+        password: '',
+        user: null,
+        error: '',
+        company: '',
+        loading: false
+      }
     default:
       return state;
   }

@@ -54,10 +54,10 @@ class LoadingScreen extends Component {
         <Image style={AppStyles.imageContainer} source={require('../../images/lights-bokeh-small.jpg')}>
           <ActivityIndicator
             animating={this.state.animating}
-            color={AppConfig.blueColor}
+            color={AppConfig.whiteColor}
             style={[styles.centering, {height: 200}]}
             size="large"/>
-          <Text style={AppStyles.h1}>Loading...</Text>
+          <Text style={AppStyles.h1}>LOADING...</Text>
         </Image>
       </View>
     )

@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "Exp_Nav.app"
-               BlueprintName = "Exp_Nav"
-               ReferencedContainer = "container:Exp_Nav.xcodeproj">
+               BuildableName = "ordr.app"
+               BlueprintName = "ordr"
+               ReferencedContainer = "container:ordr.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "Exp_NavTests.xctest"
-               BlueprintName = "Exp_NavTests"
-               ReferencedContainer = "container:Exp_Nav.xcodeproj">
+               BuildableName = "ordrTests.xctest"
+               BlueprintName = "ordrTests"
+               ReferencedContainer = "container:ordr.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -61,9 +61,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "Exp_NavTests.xctest"
-               BlueprintName = "Exp_NavTests"
-               ReferencedContainer = "container:Exp_Nav.xcodeproj">
+               BuildableName = "ordrTests.xctest"
+               BlueprintName = "ordrTests"
+               ReferencedContainer = "container:ordr.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -71,9 +71,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Exp_Nav.app"
-            BlueprintName = "Exp_Nav"
-            ReferencedContainer = "container:Exp_Nav.xcodeproj">
+            BuildableName = "ordr.app"
+            BlueprintName = "ordr"
+            ReferencedContainer = "container:ordr.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -94,9 +94,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Exp_Nav.app"
-            BlueprintName = "Exp_Nav"
-            ReferencedContainer = "container:Exp_Nav.xcodeproj">
+            BuildableName = "ordr.app"
+            BlueprintName = "ordr"
+            ReferencedContainer = "container:ordr.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -113,9 +113,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Exp_Nav.app"
-            BlueprintName = "Exp_Nav"
-            ReferencedContainer = "container:Exp_Nav.xcodeproj">
+            BuildableName = "ordr.app"
+            BlueprintName = "ordr"
+            ReferencedContainer = "container:ordr.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
