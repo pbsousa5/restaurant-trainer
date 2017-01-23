@@ -36,7 +36,7 @@ class HomeClass extends Component {
       console.log('this.props.companyID ',this.props.companyID);
       const coID = this.props.companyID
       const coName = this.state.companyName
-      const image = 'some random url'
+      const image = this.props.uploadedImage
       this.props.createCompanyName({coID, coName, image})
 
     }
@@ -46,8 +46,11 @@ class HomeClass extends Component {
       this.routeToLogin()
 
     }
+    //TODO remove this is for testing uploaded image
     renderUploadedImage = () =>{
-    //  console.log('UPLOAD IMAGE: ',this.props.fetchUrl(this.props.imageAdded));
+      return(
+        <Image source={{uri: this.props.uploadedImage}} style={AppStyles.roundImage}/>
+      )
     }
     routeToLogin = () => {
         route = {
@@ -109,6 +112,8 @@ class HomeClass extends Component {
             <Text>{this.props.companyID}</Text>
             <FormLabel>Upload an image for your restaurant</FormLabel>
             <View>
+              {//TODO remove this is for testing and displaying uploaded image
+              }
               {this.props.imageAdded ? this.renderUploadedImage() : null}
             </View>
             <View style={AppStyles.row}>
@@ -147,8 +152,8 @@ class HomeClass extends Component {
 }
 const mapStateToProps = state => {
   const { userLogged, LoggedIn, company, companyID, localName } = state.myCompany
-  const { image, imageAdded } = state.image
-  return { userLogged, LoggedIn, company, companyID, localName, imageAdded, image }
+  const { image, imageAdded, uploadedImage } = state.image
+  return { userLogged, LoggedIn, company, companyID, localName, imageAdded, image, uploadedImage }
 }
 
 export default connect(mapStateToProps, {

@@ -6,6 +6,7 @@ import AppConfigs from '../../configs/config'
 import { connect } from 'react-redux';
 import { Lightbox } from '@shoutem/ui'
 import { Icon, Button} from 'react-native-elements'
+import ImageSelect from './ImageSelect'
 import {
   FieldsContainer,
   Fieldset,
@@ -54,8 +55,10 @@ class EditWine extends Component {
   onUpdatePress = () => {
     const { winename, winery, varietal, vintage, winenotes, region,  winelink } = this.props;
     //{ winename, winery, varietal, vintage, winenotes, region, image, glass, key, link }
+    let image = null
     const key = this.props.details.key
-    const image = this.props.details.image
+    // ADD CUSTOM IMAGE URL IF ONE WAS SELECTED
+    this.props.imageAdded ? image = this.props.uploadedImage : image = this.props.details.image
     const glass = this.props.details.glass
     this.props.wineUpdate({ winename, winery, varietal, vintage, winenotes, region, image, glass, key, winelink });
   }
@@ -181,13 +184,23 @@ class EditWine extends Component {
       <ScrollView style={AppStyles.backColor}>
       <View style={[AppStyles.flex1, AppStyles.container, AppStyles.backColor, {paddingTop:70}]}>
           <Card style={[AppStyles.cardStyle]}>
-            <CardSection style={[AppStyles.backColor, AppStyles.paddingLeft,
-              AppStyles.paddingBottom, {paddingTop:10}]}>
-              <Image source={{ uri: this.CheckURI(this.props.details.image)}} style={AppStyles.photo}/>
-              <View style={[AppStyles.column, {paddingLeft:30, justifyContent: "center"}]}>
-
+            <CardSection style={[AppStyles.backColor,
+              AppStyles.paddingLeft, AppStyles.paddingBottom,{paddingTop:10}, AppStyles.row]}>
+              { // IF CUSTOM IMAGE SELECTED DISPLAY THAT
+                this.props.imageAdded ?
+                <Lightbox onRequestClose={null} renderContent={this.renderLightBoxImage.bind(this, this.props.image)}>
+                  <Image source={this.props.image}
+                  style={AppStyles.photo}/></Lightbox>
+                   :
+                <Lightbox onRequestClose={null} renderContent={this.renderLightBoxImage.bind(this, this.props.details.image)}>
+                 <Image source={{ uri: this.CheckURI(this.props.details.image)}}
+                 style={AppStyles.photo}/></Lightbox>
+              }
+              <View style={[AppStyles.row, AppStyles.flex1, {paddingLeft:30, justifyContent: "space-around", alignItems: 'center'}]}>
+                <ImageSelect />
               </View>
             </CardSection>
+
             <Form>
               <FieldsContainer style={AppStyles.fieldContainer}>
                 <Fieldset label="Bottle details">
@@ -292,7 +305,7 @@ class EditWine extends Component {
     )
   }
   CheckURI(uri){
-    if(uri === ""){
+    if(uri === "" ){
       //TODO replace this with a local default wine bottle image
       return "https://static.vecteezy.com/system/resources/previews/000/000/624/original/red-wine-bottle-vector.jpg"
     }else{
@@ -309,6 +322,7 @@ const selector = formValueSelector('wineUpdateForm');
 
 const mapStateToProps = (state) => {
   const { name, description, results, loaded, search, details, loadingModal, glass, wineEdit } = state.wines
+  const { image, imageAdded, uploadedImage } = state.image
   return {
     winelink: selector(state, 'winelink'),
     winename: selector(state, 'winename'),
@@ -317,7 +331,7 @@ const mapStateToProps = (state) => {
     winery: selector(state, 'winery'),
     region: selector(state, 'region'),
     winenotes: selector(state, 'winenotes'),
-    name, description, results, loaded, search, details, loadingModal, glass, wineEdit }
+    name, description, results, loaded, search, details, loadingModal, glass, wineEdit, image, imageAdded, uploadedImage }
 };
 
 

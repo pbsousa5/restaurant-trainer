@@ -23,7 +23,8 @@ import {
   wineData,
   wineNoteAdd,
   wineNoteRemove,
-  byTheGlass } from '../actions';
+  byTheGlass
+  } from '../actions';
 import { SearchBar, Icon, Button} from 'react-native-elements'
 import Row from './common/Row';
 //import AnimatedList from 'react-native-animated-list';
@@ -208,8 +209,10 @@ class WineForm extends Component {
   }
   onCreatePress = () => {
     const { winename, winery, varietal, vintage, winenotes, region } = this.props;
+    let image = null
     const glass = this.props.glass
-    const image = this.props.details.image
+    // CHECK IF CUSTOM IMAGE WAS UPLOADED
+    this.props.imageAdded ? image = this.props.uploadedImage : image = this.props.details.image
     const link = this.props.details.link
     const code = this.props.details.code
     this.props.wineCreate({ winename, winery, varietal, vintage, winenotes, region, image, glass, link, code });
@@ -383,7 +386,7 @@ const selector = formValueSelector('wineDetailsForm');
 const mapStateToProps = (state) => {
   const { name, description, results, loaded, search, details, loadingModal, glass, searching, hasLoaded } = state.wines
   const { notes } = state.notes
-  const { image, imageAdded } = state.image
+  const { image, imageAdded, uploadedImage } = state.image
   const { toggle, bottle } = state.modal
   return {
     winename: selector(state, 'winename'),
@@ -392,7 +395,7 @@ const mapStateToProps = (state) => {
     winery: selector(state, 'winery'),
     region: selector(state, 'region'),
     winenotes: selector(state, 'winenotes'),
-    name, image, imageAdded, description, results, loaded, search, toggle, bottle, notes, details, loadingModal, glass, searching, hasLoaded }
+    name, image, imageAdded, uploadedImage, description, results, loaded, search, toggle, bottle, notes, details, loadingModal, glass, searching, hasLoaded }
 };
 
 

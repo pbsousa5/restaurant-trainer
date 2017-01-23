@@ -22,10 +22,9 @@ export default(state = INITIAL_STATE, action) => {
               ...state,
               company: action.payload.company,
               companyID: action.payload.companyID,
-              localName: action.localName
+              localName: action.payload.localName
             };
         case COMPANY_DID_NOT_EXIST:
-
             return {
               ...state,
               company: action.payload.company,
@@ -45,6 +44,7 @@ export default(state = INITIAL_STATE, action) => {
             localName: false
           }
         case CHECK_COMPANY_NAME:
+        console.log('LOCAL NAME: ', action.payload);
           return{
             ...state,
             localName: action.payload

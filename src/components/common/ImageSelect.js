@@ -14,7 +14,7 @@ import AppStyles from '../../configs/styles'
 import AppConfigs from '../../configs/config'
 import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
-import { addImage, UploadImage } from '../../actions'
+import { addImage, UploadImage, UploadImage_notworking } from '../../actions'
 class ImageSelect extends React.Component {
 
   state = {
@@ -58,6 +58,7 @@ class ImageSelect extends React.Component {
         }
         console.log('uri source: ', source);
         this.props.addImage(source)
+        //this.props.UploadImage_notworking(source)
         this.props.UploadImage(source)
         this.setState({
           avatarSource: source
@@ -129,7 +130,7 @@ const mapStateToProps = (state) => {
 
 ImageSelect =  connect(
   mapStateToProps, {
-    addImage, UploadImage
+    addImage, UploadImage, UploadImage_notworking
 })(ImageSelect);
 
 export default ImageSelect

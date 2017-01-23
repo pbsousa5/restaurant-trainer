@@ -64,11 +64,11 @@ const createLocalName = () => {
     LocalStore.get('localCompany').then(localCompany => {
         if (!localCompany) {
             LocalStore.save('localCompany', {value: true});
-            return dispatch(localNameValueAdded())
+            return dispatch(localNameValueAdded(true))
         } else {
             // VALUE EXISTS FORCE IT TO TRUE
             LocalStore.save('localCompany', {value: true});
-            return dispatch(localNameValueAdded())
+            return dispatch(localNameValueAdded(true))
         }
     }).catch(error => {
       console.log(error.message);
@@ -110,7 +110,8 @@ function creatingLocalName() {
     type: 'CREATING_LOCAL_NAME_VALUE'
   }
 }
-function localNameValueAdded() {
+function localNameValueAdded(value) {
+  console.log("LOCAL_NAME_VALUE_ADDED: ", value);
   return{
     type: 'LOCAL_NAME_VALUE_ADDED'
   }
@@ -127,6 +128,10 @@ function checkCompanyName(exists){
   }
 }
 function submittingCompanyName(){
+  //TODO add local company name true
+  return (dispatch) => {
+    dispatch(createLocalName())
+  }
   return{
     type: 'SUBMITTING_COMPANY_NAME_TO_DATABASE'
   }
@@ -139,10 +144,10 @@ function checkForCompanyExist(){
 function successfullyAddedCompanyToDatabase(coID){
   return{
     type: COMPANY_NAME_ADDED,
-    localName: true,
     payload: {
       company:true,
-      companyID: coID
+      companyID: coID,
+      localName: true,
     }
   }
 }
@@ -208,7 +213,7 @@ export function CompanyExists(coID){
     type: COMPANY_EXISTS,
     payload: {
       company:true,
-      companyID:coID
+      companyID:coID,
     }
   }
 }
@@ -231,8 +236,6 @@ export const DeleteCompany = () => {
 function CreatingCompanyID (coID){
   // SET LOCAL NAME TO BE true
   console.log('LOCAL ID SET: ', coID);
-  createLocalName()
-  console.log('createLocalName');
   return{
     type: COMPANY_DID_NOT_EXIST,
     payload:{

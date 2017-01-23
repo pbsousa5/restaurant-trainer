@@ -148,7 +148,7 @@ export function wineData(search) {
   return function(dispatch) {
     dispatch(requestData("wines_modal"))
 
-  return fetch(wineDetails+search.code) 
+  return fetch(wineDetails+search.code)
     .then((response) => response.json())
     .then((responseJson) => {
       return responseJson
@@ -228,7 +228,7 @@ function getWineRejectedAction() {
 }
 
 function getWineFulfilledAction(wines) {
-  console.log('wines ', wines)
+  //console.log('wines ', wines)
   return {
     type: WINES_LOADED,
     payload: wines
@@ -361,7 +361,7 @@ export const wineUpdate = ({ winename, winery,
     dispatch(updateWineAction())
     return idRef.once('value',function(snapshot){
       currentLocalID = snapshot.val()
-      console.log('idRef ', currentLocalID)
+      //console.log('idRef ', currentLocalID)
       const winesRef = companyRef.child(`${currentLocalID}`).child('wines').child(key)
       winesRef.update({
         name: winename,

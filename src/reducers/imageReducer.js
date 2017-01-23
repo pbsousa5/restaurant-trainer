@@ -1,6 +1,8 @@
 import {
   ADD_IMAGE,
-  UPLOADED_IMAGE
+  UPLOADED_IMAGE,
+  RESET_IMAGE,
+  WINES_LOADED
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -21,6 +23,15 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         uploadedImage: action.payload
+      }
+    case WINES_LOADED:
+    // resetting image state when wines page loads
+    // TODO find a better way to reset this state 
+      return {
+        ...state,
+        image: null,
+        imageAdded: false,
+        uploadedImage: null,
       }
     default:
       return state
