@@ -5,6 +5,9 @@ import {
   Image,
   ListView
 } from 'react-native'
+import {
+  loadCompanies,
+} from '../actions'
 import AppStyles from '../configs/styles'
 import AppConfig from '../configs/config'
 import AppUtil from '../configs/util';
@@ -23,13 +26,16 @@ class AdminPage extends Component {
     this.changeTab = this.changeTab.bind(this)
 
   }
+  componentDidMount(){
 
+  }
   changeTab (selectedTab) {
     this.setState({selectedTab})
   }
 
 
   render() {
+
     const { selectedTab } = this.state
     return(
       <View style={AppStyles.appContainer}>
@@ -59,6 +65,7 @@ class AdminPage extends Component {
       </View>
     )
   }
+
 }
 
 const mapStateToProps = state => {

@@ -8,6 +8,7 @@ export const itemsRef = firebaseApp.database().ref('items')
 export const winesRef = firebaseApp.database().ref('wines')
 export const databaseRef = firebaseApp.database();
 export const companyRef = firebaseApp.database().ref('companies')
+export const usersRef = firebaseApp.database().ref('users')
 const connectedRef = firebaseApp.database().ref('.info/connected')
 const storage = firebase.storage();
 export const storageRef = storage.ref();

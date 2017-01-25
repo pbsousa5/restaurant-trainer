@@ -8,8 +8,11 @@ import LoadingScreen from './common/LoadingScreen'
 import AnimatedModal from './AnimationModal'
 import ValidationForm from './social/validationForm'
 import CreateWine from './CreateWine'
+import CreateApps from './common/CreateApps'
 import AdminPage from './AdminPage'
 import EditWine from './common/EditWine'
+
+import Appetizers from './Appetizers'
 import Wines from './Wines'
 import {connect} from 'react-redux'
 import { refreshingWines, wineEditSwitch } from '../actions'
@@ -64,8 +67,10 @@ class NavRoot extends Component {
     }
 
     onMenuItemSelected = (key, title) => {
+      //console.log('menu key: ', key);
         this.setState({isOpen: false, selectedItem: key});
         route = {
+            index:0,
             type: 'push',
             route: {
                 key: key,
@@ -75,15 +80,26 @@ class NavRoot extends Component {
         this._handleNavigate(route)
         //console.log('menu ' + key);
     }
-    _sceneNavigate = () => {
-      console.log('refreshing wines');
-      this.props.refreshingWines()
-      this.onMenuItemSelected('createwine', 'ADD WINE')
+    _sceneNavigateEdits = (go) => {
+
+      //console.log('_sceneNavigate ', go);
+
+      switch(go){
+        case "createwine":
+          this.props.refreshingWines()
+          this.onMenuItemSelected('createwine', 'ADD WINE')
+        case "beers":
+          return
+        case "createapps":
+          this.onMenuItemSelected('createapps', 'ADD APPETIZER')
+      }
+
     }
 
     _renderScene(props) {
         const {route} = props.scene
-        const menu = <Menu onItemSelected={this.onMenuItemSelected.bind(this)}/>;
+        const menu = <Menu onItemSelected={this.onMenuItemSelected.bind(this)}/>
+        //console.log('_renderScene route: ', route.key);
         switch (route.key) {
             case 'loading':
               return (<LoadingScreen  _handleNavigate={this._handleNavigate.bind(this)}/>)
@@ -104,6 +120,15 @@ class NavRoot extends Component {
                     </View>
 
                 )
+            case 'appetizers':
+                return (
+                    <View style={styles.container}>
+                        <SideMenu menu={menu} isOpen={this.state.isOpen}
+                          onChange={(isOpen) => this.updateMenuState(isOpen)}>
+                            <Appetizers _handleNavigate={this._handleNavigate.bind(this)}/>
+                        </SideMenu>
+                    </View>
+                )
             case 'beers':
               return(
                 <View style={styles.container}>
@@ -120,9 +145,12 @@ class NavRoot extends Component {
             case 'modal':
                 return (<AnimatedModal/>)
             case 'validate':
-                return <ValidationForm _goBack={this._handleBackAction.bind(this)} _handleNavigate={this._handleNavigate.bind(this)}/>
+                return <ValidationForm _goBack={this._handleBackAction.bind(this)}
+                  _handleNavigate={this._handleNavigate.bind(this)}/>
             case 'createwine':
                 return (<CreateWine/>)
+            case 'createapps':
+                return (<CreateApps/>)
             case 'editwine':
                 return (<EditWine _handleNavigate={this._handleNavigate.bind(this)}/>)
             case 'admin':
@@ -153,28 +181,38 @@ class NavRoot extends Component {
               }else{
                 // company is created so show side menu
                 return <NavigationBar styleName="fade" leftComponent={(
-                    <TouchableOpacity onPress={this._toggleSideMenu}>
+                    <TouchableOpacity onPress={() => this._toggleSideMenu()}>
                         <Icon type='ionicon' name="md-menu" iconStyle={AppStyles.iconColor}/>
                     </TouchableOpacity>
                 )} centerComponent={< Title > HOME < /Title>}/>
               }
             case "beers":
               return <NavigationBar leftComponent={(
-                  <TouchableOpacity onPress={this._toggleSideMenu}>
+                  <TouchableOpacity onPress={() =>this._toggleSideMenu()}>
                       <Icon type='ionicon' name="md-menu" iconStyle={AppStyles.iconColor}/>
                   </TouchableOpacity>
               )} centerComponent={< Title > BEERS < /Title>} rightComponent={(
-                  <TouchableOpacity onPress={this._sceneNavigate}>
+                  <TouchableOpacity onPress={() =>this._sceneNavigateEdits('beers')}>
                       <Icon type='ionicon' name="md-add" iconStyle={AppStyles.iconColor}/>
                   </TouchableOpacity>
               )}/>
             case 'wines':
                 return <NavigationBar leftComponent={(
-                    <TouchableOpacity onPress={this._toggleSideMenu}>
+                    <TouchableOpacity onPress={() =>this._toggleSideMenu()}>
                         <Icon type='ionicon' name="md-menu" iconStyle={AppStyles.iconColor}/>
                     </TouchableOpacity>
                 )} centerComponent={< Title > WINES < /Title>} rightComponent={(
-                    <TouchableOpacity onPress={this._sceneNavigate}>
+                    <TouchableOpacity onPress={() =>this._sceneNavigateEdits('createwine')}>
+                        <Icon type='ionicon' name="md-add" iconStyle={AppStyles.iconColor}/>
+                    </TouchableOpacity>
+                )}/>
+            case 'appetizers':
+                return <NavigationBar leftComponent={(
+                    <TouchableOpacity onPress={() =>this._toggleSideMenu()}>
+                        <Icon type='ionicon' name="md-menu" iconStyle={AppStyles.iconColor}/>
+                    </TouchableOpacity>
+                )} centerComponent={< Title > APPETIZERS < /Title>} rightComponent={(
+                    <TouchableOpacity onPress={() =>this._sceneNavigateEdits('createapps')}>
                         <Icon type='ionicon' name="md-add" iconStyle={AppStyles.iconColor}/>
                     </TouchableOpacity>
                 )}/>
@@ -188,36 +226,31 @@ class NavRoot extends Component {
                 return <NavigationBar leftComponent={(
                   <Icon name='md-arrow-round-back'
                     type='ionicon' iconStyle={AppStyles.iconColor}
-                    onPress={this._handleBackAction}/>)}
+                    onPress={() =>this._handleBackAction()}/>)}
                     title="ADD WINE"></NavigationBar>
+            case 'createapps':
+                return <NavigationBar leftComponent={(
+                  <Icon name='md-arrow-round-back'
+                    type='ionicon' iconStyle={AppStyles.iconColor}
+                    onPress={() =>this._handleBackAction()}/>)}
+                    title="ADD APPETIZER"></NavigationBar>
+
             case 'editwine':
               return <NavigationBar leftComponent={(
-                  <TouchableOpacity onPress={this._handleBackAction}>
+                  <TouchableOpacity onPress={() =>his._handleBackAction()}>
                       <Icon type='ionicon' name="md-arrow-round-back" iconStyle={AppStyles.iconColor}/>
                   </TouchableOpacity>
               )} centerComponent={< Title > VIEW WINE < /Title>} rightComponent={(
-                  <TouchableOpacity onPress={this.props.wineEditSwitch}>
+                  <TouchableOpacity onPress={() =>this.props.wineEditSwitch()}>
                       <Icon type='ionicon' name="md-clipboard" iconStyle={AppStyles.iconColor}/>
                   </TouchableOpacity>
               )}/>
             case "admin":
               return <NavigationBar leftComponent={(
-                  <TouchableOpacity onPress={this._toggleSideMenu}>
+                  <TouchableOpacity onPress={() =>this._toggleSideMenu()}>
                       <Icon type='ionicon' name="md-menu" iconStyle={AppStyles.iconColor}/>
                   </TouchableOpacity>
               )} centerComponent={< Title > ADMIN < /Title>} />
-
-            /*
-                return <NavigationBar leftComponent={(
-                    <Icon name='md-arrow-round-back'
-                      type='ionicon' iconStyle={AppStyles.iconColor}
-                      onPress={this._handleBackAction}/>)}
-                      >
-                  )} centerComponent={< Title > VIEW WINE < /Title>} rightComponent={(
-                      <TouchableOpacity onPress={this._sceneNavigate}>
-                          <Icon type='ionicon' name="md-add" iconStyle={AppStyles.iconColor}/>
-                      </TouchableOpacity>
-                  )}/></NavigationBar> */
             default:
                 return null
         }
@@ -247,6 +280,8 @@ class NavRoot extends Component {
               return this.props.popRoute(action.route)
             case 'replace':
               return this.props.replaceRoute(action.route)
+            case 'jump':
+              return this.props.jumpRoute(action.route)
             default:
               return false
         }

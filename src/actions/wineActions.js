@@ -202,10 +202,9 @@ export function getWineDetails({search}) {
   }
 }
 
-
 //Load wines from firebase
 export function loadWines (currentLocalID) {
-  return dispatch => {
+  return function (dispatch){
     dispatch(getWineRequestedAction())
     const winesRef = companyRef.child(`${currentLocalID}`).child('wines')
     return winesRef.on('value', snap => {
@@ -226,7 +225,11 @@ function getWineRejectedAction() {
     type: WINES_REJECTED
   }
 }
-
+function wineLoadError() {
+  return {
+    type: "ERROR_LOADING_WINES"
+  }
+}
 function getWineFulfilledAction(wines) {
   //console.log('wines ', wines)
   return {

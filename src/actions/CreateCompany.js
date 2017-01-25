@@ -169,7 +169,7 @@ export function createCompanyName({coID, coName, image}){
     dispatch(submittingCompanyName())
     const currUID = firebase.auth().currentUser.uid;
     const currEmail = firebase.auth().currentUser.email;
-    const companyRef = databaseRef.ref('companies').child(coID)
+    const companyRef = databaseRef.ref('companies').child(coID).child('info')
     const userRef = databaseRef.ref('users').child(currUID)
     companyRef.set({
       // SET NEW COMPANY NAME
@@ -177,7 +177,10 @@ export function createCompanyName({coID, coName, image}){
       name: coName,
       active: true,
       id: coID,
-      image: image
+      image: image,
+      address: "",
+      phone: "",
+      email: ""
     })
     .then(() => {
       // SET THIS USER AS ADMIN TO COMPANY
@@ -196,6 +199,7 @@ export function createCompanyName({coID, coName, image}){
       // ADD COMPANY ID TO EMPLOYESS INFO
       userRef.child('companies').child(coID).set({
         admin: true,
+        id: coID
       })
       dispatch(successfullyAddedCompanyToDatabase(coID))
     })

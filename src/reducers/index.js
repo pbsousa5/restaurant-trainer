@@ -9,12 +9,14 @@ import wineNotes from './noteReducer'
 import modal from './modalReducer'
 import image from './imageReducer'
 import admin from './adminReducer'
+import appetizer from './appetizerReducer'
 import { reducer as forms } from 'redux-form';
 
 const reducer = combineReducers({
   form: forms,
   navReducer,
   items,
+  appetizer: appetizer,
   admin: admin,
   image: image,
   auth: emailReducer,

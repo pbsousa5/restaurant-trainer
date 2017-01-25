@@ -1,13 +1,17 @@
-import { POP_ROUTE, PUSH_ROUTE, REPLACE } from './types'
+import { POP_ROUTE, PUSH_ROUTE, REPLACE, JUMP_TO } from './types'
 
 export function push (route) {
-  console.log("PUSHING ROUTE: ", route);
   return {
     type: PUSH_ROUTE,
     route
   }
 }
-
+export function jump(route){
+  return {
+    type: JUMP_TO,
+    route
+  }
+}
 export function pop () {
   return {
     type: POP_ROUTE,

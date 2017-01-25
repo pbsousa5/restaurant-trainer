@@ -9,10 +9,14 @@ import AppStyles from '../../configs/styles'
 import AppUtil from '../../configs/util';
 import {connect} from 'react-redux'
 import { Card, Tab, Icon, List, ListItem } from 'react-native-elements'
+import {
+  loadCompanies,
+} from '../../actions'
 
 class Companies extends Component {
   constructor(props) {
     super(props)
+    this.props.loadCompanies()
     this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
   }
   renderRow (rowData, sectionID) {
@@ -27,6 +31,11 @@ class Companies extends Component {
     )
   }
   render(){
+    this.props.companies ? this.renderLoadedView() : this.renderNotLoadedView()
+    return null
+  }
+  renderLoadedView(){
+    console.log('renderLoadedView');
     const dataSource = this.ds.cloneWithRows(this.props.companies);
     return(
       <View style={AppStyles.appContainer}>
@@ -39,6 +48,14 @@ class Companies extends Component {
       </View>
     )
   }
+  renderNotLoadedView(){
+    console.log('renderNotLoadedView');
+    return(
+      <View style={AppStyles.appContainer}>
+
+      </View>
+    )
+  }
 
 }
 const mapStateToProps = state => {
@@ -47,5 +64,5 @@ const mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps, {
-
+  loadCompanies
 })(Companies);

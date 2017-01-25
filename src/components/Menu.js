@@ -28,7 +28,7 @@ const MenuIems = [
   {id: 1, key: 'home' ,title: 'Home', content: 'Welcome to learning React!', icon: 'ios-home'},
   {id: 2, key: 'wines' ,title: 'Wines', content: 'Here you can view the wine list.', icon: 'ios-wine'},
   {id: 3, key: 'beers' ,title: 'Beers', content: 'Here you can view the beer list.', icon: 'ios-beer'},
-  {id: 4, key: 'apps' ,title: 'Appetizers', content: 'Here you can view the appetizers.', icon: 'ios-pizza'},
+  {id: 4, key: 'appetizers' ,title: 'Appetizers', content: 'Here you can view the appetizers.', icon: 'ios-pizza'},
   {id: 5, key: 'entrees' ,title: 'Entrees', content: 'Here you can view the entrees.', icon: 'ios-pizza-outline'},
   {id: 6, key: 'salads' ,title: 'Salads', content: 'Here you can view the salads.', icon: 'ios-nutrition'},
   {id: 7, key: 'desserts' ,title: 'Desserts', content: 'Here you can view the desserts.', icon: 'ios-ice-cream'},

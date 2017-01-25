@@ -43,8 +43,13 @@ class EditWine extends Component {
   renderLightBoxImage = (image) => {
     return(
       <View style={AppStyles.photoContainer}>
-        <Image source={{ uri: this.CheckURI(image)}}
-          style={[AppStyles.hugePhoto ]}/>
+        {this.props.imageAdded ?
+          <Image source={image} style={[AppStyles.hugePhoto ]}/>
+            :
+          <Image source={{ uri: this.CheckURI(image)}}
+            style={[AppStyles.hugePhoto ]}/>
+          }
+
       </View>
     )
   }

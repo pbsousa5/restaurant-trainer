@@ -23,6 +23,15 @@ module.exports = StyleSheet.create({
   iconColor: {
       color: '#ffc100'
   },
+  appetizerRowStyle : {
+        backgroundColor   : '#000000',
+        paddingVertical   : 1,
+        paddingHorizontal : 1,
+        width: AppConfig.windowWidth,
+        borderBottomColor : '#000000',
+        borderBottomWidth : 1,
+        flexDirection     : 'row'
+    },
 	/* Default */
 	container: {
     position: 'relative',
