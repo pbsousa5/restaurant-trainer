@@ -237,7 +237,7 @@ class NavRoot extends Component {
 
             case 'editwine':
               return <NavigationBar leftComponent={(
-                  <TouchableOpacity onPress={() =>his._handleBackAction()}>
+                  <TouchableOpacity onPress={() => this._handleBackAction()}>
                       <Icon type='ionicon' name="md-arrow-round-back" iconStyle={AppStyles.iconColor}/>
                   </TouchableOpacity>
               )} centerComponent={< Title > VIEW WINE < /Title>} rightComponent={(

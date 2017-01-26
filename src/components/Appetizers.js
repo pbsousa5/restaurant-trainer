@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import {View, Text, Image, ListView } from 'react-native'
+import {View, Text, Image, ListView, TouchableOpacity } from 'react-native'
 import { Card } from 'react-native-elements'
 import SearchBarExport from './common/SearchBar'
+import AppsRow from './common/AppsRow'
 import { connect } from 'react-redux';
-import { loadAppetizers, showAppetizer } from '../actions';
+import { loadAppetizers, showAppetizer, showAppSelect } from '../actions';
 
 import AppConfig from '../configs/config'
 import AppStyles from '../configs/styles'
@@ -20,7 +21,7 @@ class Appetizers extends Component {
 
   _loadAppsScreen = (data) => {
     console.log('load apps screen ' , data);
-    this.props.showWineSelect(data)
+    this.props.showAppSelect(data)
     route = {
         type: 'push',
         route: {
@@ -34,16 +35,14 @@ class Appetizers extends Component {
     const appsCategoryMap = {} // Create the blank map
     //console.log('wine ', this.props.wines);
     console.log(this.props.appetizersLoaded);
-    const appetziers = this.props.appetziers
+    const appetizers = this.props.appetizers
     if(this.props.appetizersLoaded == true){
-      Object.keys(appetziers).map(function(appItem) {
-        //const item = this.props.wines[wineItem]
-        //console.log('wineItem ' , wines[wineItem]);
-        if (!appsCategoryMap[appetziers[appItem].type]) {
-          // Create an entry in the map for the varietal if it hasn't yet been created
-          appsCategoryMap[appetziers[appItem].type] = []
+      Object.keys(appetizers).map(function(appItem) {
+        if (!appsCategoryMap[appetizers[appItem].category]) {
+          // Create an entry in the map for the category if it hasn't yet been created
+          appsCategoryMap[appetizers[appItem].category] = []
         }
-        appsCategoryMap[appetziers[appItem].type].push(appetziers[appItem])
+        appsCategoryMap[appetizers[appItem].category].push(appetizers[appItem])
       })
     }
     return appsCategoryMap;
@@ -51,11 +50,10 @@ class Appetizers extends Component {
   _renderRow(rowData, sectionID, rowID) {
     return (
       <View style={AppStyles.appetizerRowStyle}>
-      <TouchableOpacity
-        onPress={this._loadAppsScreen.bind(this, rowData)}>
-          {// <WineRow {...rowData} />
-          }
-      </TouchableOpacity>
+        <TouchableOpacity
+          onPress={this._loadAppsScreen.bind(this, rowData)}>
+          <AppsRow {...rowData} />
+        </TouchableOpacity>
       </View>
     );
   }
@@ -96,7 +94,7 @@ class Appetizers extends Component {
     }
     //if(this.props.wineListLoaded == true){
 
-      const dataSource = this.ds.cloneWithRowsAndSections(this.convertWineArrayToMap())
+      const dataSource = this.ds.cloneWithRowsAndSections(this.convertAppsArrayToMap())
       return(
         <View style={[AppStyles.pageContainer, AppStyles.backColor]}>
             <ListView
@@ -111,9 +109,9 @@ class Appetizers extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { details, appetizersLoaded } = state.appetizer;
+  const { details, appetizersLoaded, appetizers } = state.appetizer;
   const { companyID } = state.myCompany;
-  return { details, appetizersLoaded, companyID };
+  return { details, appetizersLoaded, companyID, appetizers };
 };
 
-export default connect(mapStateToProps, { loadAppetizers, showAppetizer })(Appetizers);
+export default connect(mapStateToProps, { loadAppetizers, showAppetizer, showAppSelect })(Appetizers);

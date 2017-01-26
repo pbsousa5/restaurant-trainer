@@ -16,7 +16,6 @@ import {
   WINE_FETCH_SUCCESS,
   WINE_SAVE_SUCCESS,
   REQ_DATA,
-  ULTS,
   TOGGLE_MODAL,
   WINES_LOADED,
   WINES_REQUESTED,
@@ -96,7 +95,7 @@ export function deleteWine(data){
   }
 }
 export function byTheGlass(){
-  return{
+  return {
     type: BY_THE_GLASS
   }
 }

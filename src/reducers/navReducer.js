@@ -10,9 +10,9 @@ const initialState = {
   routes: [
     {
       key: 'loading',
-      title: 'LOADING'
-    }
-  ]
+      title: 'LOADING',
+    },
+  ],
 }
 
 function navigationState (state = initialState, action) {
@@ -24,16 +24,27 @@ function navigationState (state = initialState, action) {
 
   switch (action.type) {
     case PUSH_ROUTE:
-      if (state.routes[state.index].key === (action.route && action.route.key)) return state
-      if( NavigationStateUtils.has(state, action.route.key)) return NavigationStateUtils.pop(state)
+      if (state.routes[state.index].key === (action.route && action.route.key)){
+        return state
+      }
+      if( NavigationStateUtils.has(state, action.route.key)){
+        // IF WE LAREADY HAVE THE KEY THEN JUMP TO
+        return NavigationStateUtils.jumpTo(state, action.route.key)
+        //return NavigationStateUtils.pop(state)
+      }
+      // DEFAULT PUSH
       return NavigationStateUtils.push(state, action.route)
     case POP_ROUTE:
-      if (state.index === 0 || state.routes.length === 1) return state
+      if (state.index === 0 || state.routes.length === 1){
+        console.log("returning state");
+        return state
+      }
+      console.log("returning pop");
       return NavigationStateUtils.pop(state)
     case JUMP_TO:
       console.log('index: ', state);
       if( NavigationStateUtils.has(state, action.route.key)) return NavigationStateUtils.pop(state)
-      return NavigationStateUtils.jumpTo(state, {key: action.route.key})
+      return NavigationStateUtils.jumpTo(state, action.key)
     case REPLACE:
       return NavigationStateUtils.replace(state, action.route);
     default:

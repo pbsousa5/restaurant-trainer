@@ -8,7 +8,7 @@ import { Card } from 'react-native-elements'
 import Gradient from './GradientImage'
 import LinearGradient from 'react-native-linear-gradient'
 
-const WineRow = (props) => (
+const AppsRow = (props) => (
   <View style={[AppStyles.rowHeight, AppStyles.leftAligned, AppStyles.backColor, AppStyles.fullWindowWidth]}>
     <LinearGradient colors={AppConfig.greyGradient} style={{paddingBottom: 10}}>
     <View style={[AppStyles.wineRow,AppStyles.fullWindowWidth]}>
@@ -20,7 +20,7 @@ const WineRow = (props) => (
       </View>
       <View style={[AppStyles.paddingLeft, AppStyles.container, AppStyles.wrapText, AppStyles.paddingRight]}>
         <Text numberOfLines={2} style={[AppStyles.h4]}>{props.name}</Text>
-        <Text style={AppStyles.h5}>{`${props.varietal}`}</Text>
+        <Text numberOfLines={1} style={AppStyles.h5}>{`${props.appnotes}`}</Text>
       </View>
     </View>
     </LinearGradient>
@@ -28,4 +28,4 @@ const WineRow = (props) => (
 
 )
 
-export default WineRow
+export default AppsRow

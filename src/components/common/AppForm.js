@@ -15,16 +15,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { CardSection, Card, Input, CustomSwitch } from './';
-import {
-  wineUpdate,
-  wineCreate,
-  searchWine,
-  toggleModal,
-  wineData,
-  wineNoteAdd,
-  wineNoteRemove,
-  byTheGlass
-} from '../../actions';
+
 import {  Icon, Button} from 'react-native-elements'
 import Row from './Row';
 //import AnimatedList from 'react-native-animated-list';
@@ -52,11 +43,15 @@ import {
 } from 'react-native-clean-form/redux-form-immutable'
 import _ from 'lodash'
 import  Lightbox  from 'react-native-lightbox'
+import {
+  appCreate,
+  toggleModal,
+  glutenFree
+} from '../../actions';
 
 class AppForm extends Component {
   constructor(props){
     super(props)
-    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
         opacity: new Animated.Value(0),
         visible: false,
@@ -64,21 +59,15 @@ class AppForm extends Component {
         x: new Animated.Value(0),
         spinner: false
     }
-    this.onSearchPress = _.debounce(this.onSearchPress, 300)
+
     this.props.hideModal = this.hideModal.bind(this)
-    this._addWineNote = this._addWineNote.bind(this)
-    this._removeWineNote = this._removeWineNote.bind(this)
+
     const {
-      appname, winery
+      appname
     } = props
   }
 
-  _addWineNote = (note, id) => {
-    this.props.wineNoteAdd(note, id)
-  }
-  _removeWineNote = (note, id) => {
-    this.props.wineNoteRemove(note, id)
-  }
+
   slideModal = () => {
 
       this.state.x.setValue(-320);
@@ -111,34 +100,16 @@ class AppForm extends Component {
   setModalVisible(visible) {
       this.setState({visible: visible})
   }
-  _renderRow(rowData, sectionID, rowID) {
-    //<DynamicListRow>  </DynamicListRow>
-        return (
-              <TouchableOpacity
-                onPress={this.props.wineData.bind(this,rowData)}>
-              <View style={AppStyles.rowStyle}>
-                    <Row {...rowData} />
-              </View>
-              </TouchableOpacity>
-        );
-    }
-    onSearchPress(search){
-      console.log('searching');
-      //const { search } = this.props
-      this.props.searchWine({search})
-    }
-    displayNotes = (data) => {
-      console.log(data.join('\n','\n'))
-      return data.join('\n')
-    }
-    renderLightBoxImage = (image) => {
-      return(
-        <View style={AppStyles.photoContainer}>
-          <Image source={{ uri: this.CheckURI(image)}}
-            style={[AppStyles.hugePhoto ]}/>
-        </View>
-      )
-    }
+
+
+  renderLightBoxImage = (image) => {
+    return(
+      <View style={AppStyles.photoContainer}>
+        <Image source={{ uri: this.CheckURI(image)}}
+          style={[AppStyles.hugePhoto ]}/>
+      </View>
+    )
+  }
   render() {
     return this.renderLoadingView();
   }
@@ -156,28 +127,19 @@ class AppForm extends Component {
   }
   onSwitchChange = () => {
     console.log('switch');
-    this.props.byTheGlass()
+    this.props.glutenFree()
   }
   onCreatePress = () => {
-    const { appname, winery, varietal, vintage, winenotes, region } = this.props;
+    const {  appname, category, allergies, appnotes, ingredients, } = this.props;
     let image = null
-    const glass = this.props.glass
+    const gluten = this.props.gluten
     // CHECK IF CUSTOM IMAGE WAS UPLOADED
-    this.props.imageAdded ? image = this.props.uploadedImage : image = this.props.details.image
-    const link = this.props.details.link
-    const code = this.props.details.code
-    this.props.wineCreate({ appname, winery, varietal, vintage, winenotes, region, image, glass, link, code });
+    this.props.imageAdded ? image = this.props.uploadedImage : image = this.CheckURI("")
+
+    this.props.appCreate({ appname, category,
+      allergies, gluten, appnotes, ingredients, image });
   }
-  setFormFields = () => {
-    console.log('setting form values ');
-    //TODO this isnt used anymore but is how you can update form from code
-    this.props.change("appname", this.props.details.name)
-    this.props.change("winery", this.props.details.producer)
-    this.props.change("region", this.props.details.region)
-    this.props.change("varietal", this.props.details.varietal)
-    this.props.change("vintage", this.props.details.vintage)
-    this.props.change("winenotes", this.displayNotes(this.props.notes))
-  }
+
   renderLoadingView() {
     return(
       <View style={[AppStyles.flex1, AppStyles.container, {paddingTop:20}]}>
@@ -187,7 +149,7 @@ class AppForm extends Component {
               { //check for local image added
                 this.props.image === null ?
               <Lightbox onRequestClose={() => {alert("Modal has been closed.")}}>
-                  <Image source={{ uri: this.CheckURI(this.props.details.image)}} style={AppStyles.photo}/>
+                  <Image source={{ uri: this.CheckURI("")}} style={AppStyles.photo}/>
               </Lightbox> :
               <Lightbox onRequestClose={() => {alert("Modal has been closed.")}}>
                 <Image source={this.props.image} style={AppStyles.photo}/>
@@ -203,7 +165,7 @@ class AppForm extends Component {
                   <Field
                     name="appname"
                     myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
-                    defValue={this.props.details.name}
+                    defValue={""}
                     myLabelStyle={AppStyles.labelStyle}
                     viewStyle={AppStyles.containerStyle}
                     lineNum= {2}
@@ -212,7 +174,7 @@ class AppForm extends Component {
                     component={ Input }
                     onChangeAction={this.props.onChangeAction}/>
                   <Field name="category" myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
-                    defValue={this.props.details.producer}
+                    defValue={""}
                     myLabelStyle={AppStyles.labelStyle}
                     viewStyle={AppStyles.containerStyle}
                     label="Category" placeholder="Category for this appetizer"
@@ -221,7 +183,7 @@ class AppForm extends Component {
                   <Field name="allergies"
                     myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
                     myLabelStyle={AppStyles.labelStyle}
-                    defValue={this.props.details.vintage}
+                    defValue={""}
                     viewStyle={AppStyles.containerStyle}
                     label="Allergies" placeholder="Any allergy notes?"
                     component={ Input }/>
@@ -233,7 +195,7 @@ class AppForm extends Component {
                   <Field name="appnotes"
                     myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
                     myLabelStyle={AppStyles.labelStyle}
-                    defValue={this.displayNotes(this.props.notes)}
+                    defValue={""}
                     multiline = {true}
                     lineNum= {10}
                     viewStyle={AppStyles.paraStyle}
@@ -241,10 +203,10 @@ class AppForm extends Component {
                     component={ Input }/>
                 </Fieldset>
                 <Fieldset label="key ingredients" last>
-                  <Field name="appingredients"
+                  <Field name="ingredients"
                     myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
                     myLabelStyle={AppStyles.labelStyle}
-                    defValue={this.displayNotes(this.props.notes)}
+                    defValue={""}
                     multiline = {true}
                     lineNum= {10}
                     viewStyle={AppStyles.paraStyle}
@@ -273,37 +235,31 @@ class AppForm extends Component {
 
 
 AppForm = reduxForm({
-  form: 'wineDetailsForm'  // a unique identifier for this form
+  form: 'appDetailsForm'  // a unique identifier for this form
 })(AppForm)
-const selector = formValueSelector('wineDetailsForm');
+const selector = formValueSelector('appDetailsForm');
 
 const mapStateToProps = (state) => {
-  const { name, description, results, loaded, search, details, loadingModal, glass, searching, hasLoaded } = state.wines
-  const { notes } = state.notes
+
+  const { gluten } = state.appetizer
   const { image, imageAdded, uploadedImage } = state.image
-  const { toggle, bottle } = state.modal
+  const { toggle } = state.modal
   return {
     appname: selector(state, 'appname'),
-    vintage: selector(state, 'vintage'),
-    varietal: selector(state, 'varietal'),
-    winery: selector(state, 'winery'),
-    region: selector(state, 'region'),
-    winenotes: selector(state, 'winenotes'),
-    name, image, imageAdded, uploadedImage, description, results, loaded, search, toggle, bottle, notes, details, loadingModal, glass, searching, hasLoaded }
+    category: selector(state, 'category'),
+    allergies: selector(state, 'allergies'),
+    appnotes: selector(state, 'appnotes'),
+    ingredients: selector(state, 'ingredients'),
+    image, imageAdded, uploadedImage, toggle, gluten }
 };
-
-
 
 
 AppForm =  connect(
   mapStateToProps, {
-  wineUpdate,
-  searchWine,
+  appCreate,
   toggleModal,
-  wineData,
-  wineNoteAdd,
-  wineNoteRemove,
-  byTheGlass
+  glutenFree,
+
 })(AppForm);
 
 export default AppForm
