@@ -142,7 +142,7 @@ class EditWine extends Component {
                     </View>
                   </View>
                 </Fieldset>
-                <Fieldset label="Wine tasting notes" last>
+                <Fieldset label="Wine tasting notes" >
                   <View style={AppStyles.flex1}>
                     <Text style={[AppStyles.flex1, AppStyles.inputText]} numberOfLines={20}>{this.props.details.winenotes}</Text>
                   </View>
@@ -157,7 +157,6 @@ class EditWine extends Component {
     )
   }
   render(){
-
     return(
       this.props.wineEdit ? this._renderEditView() : this._renderNormalView()
     )

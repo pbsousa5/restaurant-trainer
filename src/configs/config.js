@@ -21,7 +21,7 @@ export default {
 	// Window Dimensions
 	windowHeight: window.height,
 	windowWidth: window.width,
-
+	percentWidth: window.width*0.9,
 	// Grid
 	windowWidthHalf: window.width * 0.5,
 	windowWidthYhird: window.width * 0.333,
@@ -50,7 +50,7 @@ export default {
 	darkGrey: "#2F2F2F",
 	blackColor: "#000000",
 	whiteColor: "#ffffff",
-	greyBack: "#393e42",//303337 //404040 //393e42
+	greyBack: "#393e42",//303337 //404040 //393e42 // #CCCCCC
 	lightGrey: "#E5E5E5",
 	menuColor: "#2d2d2d",
 	secondaryTextColor: "#e7e7e7",

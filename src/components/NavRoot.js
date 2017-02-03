@@ -11,11 +11,11 @@ import CreateWine from './CreateWine'
 import CreateApps from './common/CreateApps'
 import AdminPage from './AdminPage'
 import EditWine from './common/EditWine'
-
+import EditApps from './common/EditApps'
 import Appetizers from './Appetizers'
 import Wines from './Wines'
 import {connect} from 'react-redux'
-import { refreshingWines, wineEditSwitch } from '../actions'
+import { refreshingWines, wineEditSwitch, appEditSwitch } from '../actions'
 import {BackAndroid, NavigationExperimental, View, StyleSheet, TouchableOpacity} from 'react-native'
 //import { NavigationBar } from '@shoutem/ui/navigation';
 import {
@@ -68,7 +68,7 @@ class NavRoot extends Component {
 
     onMenuItemSelected = (key, title) => {
       //console.log('menu key: ', key);
-        this.setState({isOpen: false, selectedItem: key});
+        this.setState({isOpen: false, selectem: key});
         route = {
             index:0,
             type: 'push',
@@ -153,6 +153,8 @@ class NavRoot extends Component {
                 return (<CreateApps/>)
             case 'editwine':
                 return (<EditWine _handleNavigate={this._handleNavigate.bind(this)}/>)
+            case 'editapps':
+                return (<EditApps _handleNavigate={this._handleNavigate.bind(this)}/>)
             case 'admin':
                 return (<View style={styles.container}>
                     <SideMenu menu={menu} isOpen={this.state.isOpen} onChange={(isOpen) => this.updateMenuState(isOpen)}>
@@ -184,14 +186,14 @@ class NavRoot extends Component {
                     <TouchableOpacity onPress={() => this._toggleSideMenu()}>
                         <Icon type='ionicon' name="md-menu" iconStyle={AppStyles.iconColor}/>
                     </TouchableOpacity>
-                )} centerComponent={< Title > HOME < /Title>}/>
+                )} centerComponent={< Title >HOME< /Title>}/>
               }
             case "beers":
               return <NavigationBar leftComponent={(
                   <TouchableOpacity onPress={() =>this._toggleSideMenu()}>
                       <Icon type='ionicon' name="md-menu" iconStyle={AppStyles.iconColor}/>
                   </TouchableOpacity>
-              )} centerComponent={< Title > BEERS < /Title>} rightComponent={(
+              )} centerComponent={< Title >BEERS< /Title>} rightComponent={(
                   <TouchableOpacity onPress={() =>this._sceneNavigateEdits('beers')}>
                       <Icon type='ionicon' name="md-add" iconStyle={AppStyles.iconColor}/>
                   </TouchableOpacity>
@@ -201,7 +203,7 @@ class NavRoot extends Component {
                     <TouchableOpacity onPress={() =>this._toggleSideMenu()}>
                         <Icon type='ionicon' name="md-menu" iconStyle={AppStyles.iconColor}/>
                     </TouchableOpacity>
-                )} centerComponent={< Title > WINES < /Title>} rightComponent={(
+                )} centerComponent={< Title >WINES< /Title>} rightComponent={(
                     <TouchableOpacity onPress={() =>this._sceneNavigateEdits('createwine')}>
                         <Icon type='ionicon' name="md-add" iconStyle={AppStyles.iconColor}/>
                     </TouchableOpacity>
@@ -211,15 +213,15 @@ class NavRoot extends Component {
                     <TouchableOpacity onPress={() =>this._toggleSideMenu()}>
                         <Icon type='ionicon' name="md-menu" iconStyle={AppStyles.iconColor}/>
                     </TouchableOpacity>
-                )} centerComponent={< Title > APPETIZERS < /Title>} rightComponent={(
+                )} centerComponent={< Title >APPETIZERS< /Title>} rightComponent={(
                     <TouchableOpacity onPress={() =>this._sceneNavigateEdits('createapps')}>
                         <Icon type='ionicon' name="md-add" iconStyle={AppStyles.iconColor}/>
                     </TouchableOpacity>
                 )}/>
             case 'about':
-                return <NavigationBar centerComponent={< Title > ABOUT < /Title>}/>
+                return <NavigationBar centerComponent={< Title >ABOUT< /Title>}/>
             case 'login':
-                return <NavigationBar centerComponent={< Title > LOGIN < /Title>}/>
+                return <NavigationBar centerComponent={< Title >LOGIN< /Title>}/>
             case 'validate':
                 return <NavigationBar leftComponent={(<Icon name='md-arrow-round-back' type='ionicon' iconStyle={AppStyles.iconColor} onPress={this._handleBackAction}/>)} title="SIGNUP"></NavigationBar>
             case 'createwine':
@@ -240,8 +242,18 @@ class NavRoot extends Component {
                   <TouchableOpacity onPress={() => this._handleBackAction()}>
                       <Icon type='ionicon' name="md-arrow-round-back" iconStyle={AppStyles.iconColor}/>
                   </TouchableOpacity>
-              )} centerComponent={< Title > VIEW WINE < /Title>} rightComponent={(
+              )} centerComponent={< Title >VIEW WINE< /Title>} rightComponent={(
                   <TouchableOpacity onPress={() =>this.props.wineEditSwitch()}>
+                      <Icon type='ionicon' name="md-clipboard" iconStyle={AppStyles.iconColor}/>
+                  </TouchableOpacity>
+              )}/>
+            case 'editapps':
+              return <NavigationBar leftComponent={(
+                  <TouchableOpacity onPress={() => this._handleBackAction()}>
+                      <Icon type='ionicon' name="md-arrow-round-back" iconStyle={AppStyles.iconColor}/>
+                  </TouchableOpacity>
+              )} centerComponent={< Title >VIEW APPETIZER< /Title>} rightComponent={(
+                  <TouchableOpacity onPress={() =>this.props.appEditSwitch()}>
                       <Icon type='ionicon' name="md-clipboard" iconStyle={AppStyles.iconColor}/>
                   </TouchableOpacity>
               )}/>
@@ -250,7 +262,7 @@ class NavRoot extends Component {
                   <TouchableOpacity onPress={() =>this._toggleSideMenu()}>
                       <Icon type='ionicon' name="md-menu" iconStyle={AppStyles.iconColor}/>
                   </TouchableOpacity>
-              )} centerComponent={< Title > ADMIN < /Title>} />
+              )} centerComponent={< Title >ADMIN< /Title>} />
             default:
                 return null
         }
@@ -301,7 +313,7 @@ const mapStateToProps = state => {
   const {  loaded } = state.wines;
   return {myCompany: state.myCompany.company, loaded};
 };
-export default connect(mapStateToProps, { refreshingWines, wineEditSwitch })(NavRoot);
+export default connect(mapStateToProps, { refreshingWines, wineEditSwitch, appEditSwitch })(NavRoot);
 // Define a theme for the NAVBAR
 const theme = {
   'shoutem.ui.NavigationBar': {

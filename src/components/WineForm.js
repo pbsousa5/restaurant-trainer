@@ -82,9 +82,9 @@ class WineForm extends Component {
   slideModal = () => {
 
       this.state.x.setValue(-320);
-      this.state.scale.setValue(1);
+      this.state.scale.setValue(0);
       Animated.spring(this.state.x, {toValue: 0}).start();
-      this.setState({visible: true});
+      //this.setState({visible: true});
       this.slide = true;
   };
 
@@ -148,7 +148,8 @@ class WineForm extends Component {
     else{
       const dataSource = this.ds.cloneWithRows(this.props.results.wines);
       if(this.props.toggle){
-        this.scaleModal()
+        //this.scaleModal()
+        this.slideModal()
       }else{
         this.hideModal()
       }

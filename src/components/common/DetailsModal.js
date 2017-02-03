@@ -46,6 +46,7 @@ import { wineNoteAdd, wineNoteRemove, toggleModal } from '../../actions';
         visible: false,
         scale: new Animated.Value(1),
         x: new Animated.Value(0),
+        y: new Animated.Value(0),
     }
   }
   componentDidMount(){
@@ -54,10 +55,19 @@ import { wineNoteAdd, wineNoteRemove, toggleModal } from '../../actions';
 
   slideModal = () => {
 
-      this.state.x.setValue(-320);
+      this.state.y.setValue(AppConfig.windowHeight);
       this.state.scale.setValue(1);
-      Animated.spring(this.state.x, {toValue: 0}).start();
-      this.setState({visible: true});
+      //Animated.spring(this.state.y, {toValue: 0}).start();
+      Animated.spring(
+      this.state.y,
+      {
+        toValue: 0,
+        velocity: 3,
+        tension: 2,
+        friction: 8,
+      }
+    ).start();
+      //this.setState({visible: true});
       this.slide = true;
   };
 
@@ -101,7 +111,8 @@ import { wineNoteAdd, wineNoteRemove, toggleModal } from '../../actions';
     const selectText = 'Select multiple or single Wine tasting notes below.'
     const dataSource = this.ds.cloneWithRows(this.props.reviews);
     if(this.state.visible){
-      this.scaleModal()
+      //this.scaleModal()
+      this.slideModal()
     }else{
       this.hideModal()
     }
@@ -114,14 +125,14 @@ import { wineNoteAdd, wineNoteRemove, toggleModal } from '../../actions';
                     {
                         scale: this.state.scale
                     }, {
-                        translateX: this.state.x
+                        translateY: this.state.y
                     }]}]}>
               <View style={[{paddingTop:20}]}>
               <Card
                 titleStyle={AppStyles.h3}
                 title={this.props.name.toUpperCase()}
-                containerStyle={[AppStyles.cardStyle,AppStyles.containerBorder]}
-                wrapperStyle={[{justifyContent: 'flex-start'},AppStyles.cardStyle]}>
+                containerStyle={[AppStyles.topCardWine,AppStyles.containerBorder]}
+                wrapperStyle={[{justifyContent: 'flex-start'}]}>
                 <View style={AppStyles.row}>
                   <View style={{paddingTop: 20}}>
                     <Image source={{uri: this.props.image}} style={[AppStyles.largePhoto]}/>

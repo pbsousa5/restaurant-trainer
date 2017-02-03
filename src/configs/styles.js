@@ -34,6 +34,7 @@ module.exports = StyleSheet.create({
     },
 	/* Default */
 	container: {
+
     position: 'relative',
     flexDirection: 'column',
     justifyContent: 'space-between',
@@ -118,6 +119,13 @@ module.exports = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     //'flex-start' || 'flex-end' || 'center' || 'space-around' || 'space-between'
+  },
+  topCardWine:{
+    borderWidth: 0,
+    width: AppConfig.percentWidth,
+    backgroundColor: AppConfig.darkGrey,
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
   smallCard: {
     flex: 0.5,
