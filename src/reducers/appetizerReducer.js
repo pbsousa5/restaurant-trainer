@@ -1,5 +1,3 @@
-
-
 import {
   LOAD_APPETIZERS,
   APPETIZERS_LOADED,
@@ -33,7 +31,6 @@ export default (state = INITIAL_STATE, action) => {
     case LOAD_APPETIZERS:
       return {
         ...state,
-
       }
     case APPETIZERS_LOADED:
       return {
@@ -42,14 +39,13 @@ export default (state = INITIAL_STATE, action) => {
         appetizers: action.payload
       }
     case GLUTEN_FREE:
-      return {
+    return {
         ...state,
         glutenFree: !state.glutenFree
       }
     case SHOW_APPETIZERS:
       return {
         ...state,
-
       }
     case SHOW_APP_SELECT:
       return{
