@@ -93,7 +93,7 @@ class EditApps extends Component{
           <Card style={[AppStyles.cardStyle]}>
             <CardSection style={[AppStyles.backColor,
               AppStyles.paddingLeft, AppStyles.paddingBottom,{paddingTop:10}, AppStyles.row]}>
-              <Lightbox onRequestClose={null} renderContent={this.renderLightBoxImage.bind(this, this.props.details.image)}>
+              <Lightbox onRequestClose={() => null} renderContent={this.renderLightBoxImage.bind(this, this.props.details.image)}>
                 <Image source={{ uri: this.CheckURI(this.props.details.image)}}
                   style={AppStyles.photo}/>
               </Lightbox>
