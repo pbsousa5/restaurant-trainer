@@ -149,22 +149,43 @@ class EditApps extends Component{
       </View>
     )
   }
+  setFormFields = () => {
+    console.log('setting form values ');
+    //TODO populate form state
+
+    this.props.change("appname", this.props.details.name)
+    this.props.change("category", this.props.details.category)
+    this.props.change("allergies", this.props.details.producer)
+    this.props.change("appnotes", this.props.details.appnotes)
+    this.props.change("ingredients", this.props.details.ingredients)
+  }
   renderEditView(){
+    if(this.props.details.hasLoaded){
+      setTimeout(
+      () => { this.setFormFields() },
+      500
+      )
+      this.props.details.hasLoaded = false
+    }
     return(
-      <View style={[AppStyles.flex1, AppStyles.container, {paddingTop:70}]}>
-          <Card style={[AppStyles.cardStyle, {paddingTop:10}]}>
-            <CardSection style={[AppStyles.row, AppStyles.backColor, AppStyles.paddingLeft, AppStyles.paddingBottom]}>
-              { //check for local image added
-                this.props.details.image === null ?
-              <Lightbox onRequestClose={() => {alert("Modal has been closed.")}}>
-                  <Image source={{ uri: this.CheckURI("")}} style={AppStyles.photo}/>
-              </Lightbox> :
-              <Lightbox onRequestClose={() => {alert("Modal has been closed.")}}>
-                <Image source={{uri: this.props.details.image}} style={AppStyles.photo}/>
-              </Lightbox>
-              //END CHECK LOCAL IMAGE
-            }
-              <ImageSelect />
+      <ScrollView style={AppStyles.backColor}>
+      <View style={[AppStyles.flex1, AppStyles.container, AppStyles.backColor, {paddingTop:70}]}>
+          <Card style={[AppStyles.cardStyle]}>
+            <CardSection style={[AppStyles.backColor,
+              AppStyles.paddingLeft, AppStyles.paddingBottom,{paddingTop:10}, AppStyles.row]}>
+              { // IF CUSTOM IMAGE SELECTED DISPLAY THAT
+                this.props.imageAdded ?
+                <Lightbox onRequestClose={null} renderContent={this.renderLightBoxImage.bind(this, this.props.image)}>
+                  <Image source={this.props.image}
+                  style={AppStyles.photo}/></Lightbox>
+                   :
+                <Lightbox onRequestClose={null} renderContent={this.renderLightBoxImage.bind(this, this.props.details.image)}>
+                 <Image source={{ uri: this.CheckURI(this.props.details.image)}}
+                 style={AppStyles.photo}/></Lightbox>
+              }
+              <View style={[AppStyles.row, AppStyles.flex1, {paddingLeft:30, justifyContent: "space-around", alignItems: 'center'}]}>
+                <ImageSelect />
+              </View>
             </CardSection>
             <Form>
               <FieldsContainer style={AppStyles.fieldContainer}>
@@ -198,6 +219,7 @@ class EditApps extends Component{
                     onSwitchChange={this.onSwitchChange.bind(this)}
                     myLabelStyle={AppStyles.labelStyle}/>
                 </Fieldset>
+
                 <Fieldset label="food tasting notes" last>
                   <Field name="appnotes"
                     myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
@@ -253,6 +275,7 @@ class EditApps extends Component{
             </CardSection>
           </Card>
       </View>
+    </ScrollView>
     )
   }
 }

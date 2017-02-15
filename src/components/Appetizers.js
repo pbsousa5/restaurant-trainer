@@ -57,11 +57,10 @@ class Appetizers extends Component {
       </View>
     );
   }
-  renderSectionHeader = (sectionData, varietal) => {
-    console.log('varietal ', sectionData.varietal);
+  renderSectionHeader = (sectionData, categories) => {
     return (
       <View style={AppStyles.sectionHeader}>
-        <Text style={[AppStyles.h3,AppStyles.centered]}>{varietal.toUpperCase()}</Text>
+        <Text style={[AppStyles.h3,AppStyles.centered]}>{categories.toUpperCase()}</Text>
       </View>
     )
   }
@@ -100,7 +99,7 @@ class Appetizers extends Component {
             <ListView
               dataSource={dataSource}
               renderRow={this._renderRow.bind(this)}
-              renderHeader={this._renderSearchBar}
+              //renderHeader={this._renderSearchBar}
               renderSectionHeader={this.renderSectionHeader}
             />
          </View>

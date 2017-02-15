@@ -60,7 +60,7 @@ export const appCreate = ({ appname, category,
       appsRef.set({
         key: id,
         name: appname ? appname : "",
-        category: category ? category : "",
+        category: category ? category.toUpperCase() : "",
         allergies: allergies ? allergies : "",
         gluten: gluten ? gluten : "",
         appnotes: appnotes ? appnotes : "",
@@ -82,6 +82,7 @@ export const appCreate = ({ appname, category,
 //UPDATING appetizers
 export const appUpdate = ({ appname, category,
   allergies, gluten, appnotes, ingredients, image, key }) => {
+
   const { currentUser } = firebase.auth()
   var currentLocalID
   var idRef = firebase.database().ref(`/users/${currentUser.uid}/currentID`)
@@ -92,7 +93,7 @@ export const appUpdate = ({ appname, category,
       const appsRef = companyRef.child(`${currentLocalID}`).child('appetizers').child(key)
       appsRef.update({
         name: appname ? appname : "",
-        category: category ? category : "",
+        category: category ? category.toUpperCase() : "",
         allergies: allergies ? allergies : "",
         gluten: gluten ? gluten : "",
         appnotes: appnotes ? appnotes : "",
@@ -172,7 +173,7 @@ function updateAppsAction(){
 function appsUpdateSuccess(){
   Alert.alert(
     'SUCCESS',
-    'Wine has been updated from your database.',
+    'Appetizer has been updated in your database.',
     [
       {text: 'OK', onPress: () => console.log('OK Pressed')},
     ]
