@@ -2,7 +2,8 @@ import {
   ADD_IMAGE,
   UPLOADED_IMAGE,
   RESET_IMAGE,
-  WINES_LOADED
+  WINES_LOADED,
+  SHOW_APP_SELECT
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -26,8 +27,17 @@ export default (state = INITIAL_STATE, action) => {
       }
     case WINES_LOADED:
     // resetting image state when wines page loads
-    // TODO find a better way to reset this state 
+    // TODO find a better way to reset this state
       return {
+        ...state,
+        image: null,
+        imageAdded: false,
+        uploadedImage: null,
+      }
+    case SHOW_APP_SELECT:
+    // resetting image state when apps page loads
+    // TODO find a better way to reset this state
+      return{
         ...state,
         image: null,
         imageAdded: false,
