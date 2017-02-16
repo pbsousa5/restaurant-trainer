@@ -13,6 +13,7 @@ export function jump(route){
   }
 }
 export function pop () {
+  console.log("****POPPING ROUTE?****");
   return {
     type: POP_ROUTE,
 

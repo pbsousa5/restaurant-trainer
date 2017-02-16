@@ -17,7 +17,7 @@ import {
   CREATING_APPETIZER,
   CREATE_APPETIZER_SUCCESS,
   GLUTEN_FREE,
-  POP_ROUTE,
+  JUMP_TO,
   SHOW_APP_SELECT,
   APPS_EDIT_SWITCH,
   ATTEMPTING_APPS_UPDATE,
@@ -179,8 +179,11 @@ function appsUpdateSuccess(){
   )
   //APPS_UPDATE_SUCCESS
   return {
-    //type: WINE_CREATE
-    type: POP_ROUTE
+    type: JUMP_TO,
+    route: {
+        key: "appetizers",
+        title: "APPETIZERS",
+    }
   }
 }
 function appsUpdateError() {
@@ -206,7 +209,11 @@ function appsCreateSuccess(){
   )
   // GO BACK A SCREEN TO THE APPETIZER LISTVIEW
   return {
-    type: POP_ROUTE
+    type: JUMP_TO,
+    route: {
+        key: "appetizers",
+        title: "APPETIZERS",
+    }
   }
 }
 function appsCreateError(){
@@ -248,8 +255,11 @@ function appDeleteSuccess(){
     ]
   )
   return {
-    //type: WINE_CREATE
-    type: POP_ROUTE
+    type: JUMP_TO,
+    route: {
+        key: "appetizers",
+        title: "APPETIZERS",
+    }
   }
 }
 function createAppsAction(){

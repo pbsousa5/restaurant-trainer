@@ -24,7 +24,7 @@ import {
   WINE_BOTTLE_DATA,
   HIDE_MODAL,
   HIDE_MODAL_REFRESH,
-  POP_ROUTE,
+  JUMP_TO,
   LOADING_MODAL_DATA,
   BY_THE_GLASS,
   SHOW_WINE_SELECT,
@@ -250,9 +250,13 @@ function wineCreateSuccess() {
     ]
   )
   return {
-    //type: WINE_CREATE
-    type: POP_ROUTE
+    type: JUMP_TO,
+    route: {
+        key: "wines",
+        title: "WINES",
+    }
   }
+
 }
 function deleteWineAction(){
   return {
@@ -280,8 +284,11 @@ function wineDeleteSuccess(){
     ]
   )
   return {
-    //type: WINE_CREATE
-    type: POP_ROUTE
+    type: JUMP_TO,
+    route: {
+        key: "wines",
+        title: "WINES",
+    }
   }
 }
 function wineDeleteError(){
@@ -317,14 +324,17 @@ function updateWineAction(){
 function wineUpdateSuccess(){
   Alert.alert(
     'SUCCESS',
-    'Wine has been updated from your database.',
+    'Wine has been updated in your database.',
     [
       {text: 'OK', onPress: () => console.log('OK Pressed')},
     ]
   )
   return {
-    //type: WINE_CREATE
-    type: POP_ROUTE
+    type: JUMP_TO,
+    route: {
+        key: "wines",
+        title: "WINES",
+    }
   }
 }
 function wineUpdateError() {

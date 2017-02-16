@@ -47,7 +47,7 @@ class EditApps extends Component{
   onDeletePress = () => {
     Alert.alert(
       'WARNING',
-      'Are you sure you want to permanently delete this wine?',
+      'Are you sure you want to permanently delete this appetizer?',
       [
         {text: 'OK', onPress: () => this.props.appDelete(this.props.details.key)},
         {text: 'CANCEL', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
@@ -151,9 +151,11 @@ class EditApps extends Component{
   }
   renderEditView(){
     return(
-      <View style={[AppStyles.flex1, AppStyles.container, {paddingTop:70}]}>
-          <Card style={[AppStyles.cardStyle, {paddingTop:10}]}>
-            <CardSection style={[AppStyles.row, AppStyles.backColor, AppStyles.paddingLeft, AppStyles.paddingBottom]}>
+      <ScrollView style={AppStyles.backColor}>
+        <View style={[AppStyles.flex1, AppStyles.container, AppStyles.backColor, {paddingTop:70}]}>
+            <Card style={[AppStyles.cardStyle]}>
+              <CardSection style={[AppStyles.backColor,
+                AppStyles.paddingLeft, AppStyles.paddingBottom,{paddingTop:10}, AppStyles.row]}>
               { //check for local image added
                 this.props.details.image === null ?
               <Lightbox onRequestClose={() => {alert("Modal has been closed.")}}>
@@ -253,6 +255,7 @@ class EditApps extends Component{
             </CardSection>
           </Card>
       </View>
+    </ScrollView>
     )
   }
 }
