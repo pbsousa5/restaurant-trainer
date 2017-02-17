@@ -60,14 +60,14 @@ class AppForm extends Component {
         spinner: false
     }
 
-    this.props.hideModal = this.hideModal.bind(this)
+    //this.props.hideModal = this.hideModal.bind(this)
 
     const {
       appname
     } = props
   }
 
-
+/*
   slideModal = () => {
 
       this.state.x.setValue(-320);
@@ -93,10 +93,8 @@ class AppForm extends Component {
           Animated.timing(this.state.scale, {toValue: 0}).start(() => {
               //this.setState({visible: false});
           });
-
       }
-
-  }
+  }*/
   setModalVisible(visible) {
       this.setState({visible: visible})
   }
