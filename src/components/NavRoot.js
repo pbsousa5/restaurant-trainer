@@ -15,7 +15,7 @@ import EditApps from './common/EditApps'
 import Appetizers from './Appetizers'
 import Wines from './Wines'
 import {connect} from 'react-redux'
-import { refreshingWines, wineEditSwitch, appEditSwitch } from '../actions'
+import { refreshingWines, wineEditSwitch, appEditSwitch, refreshingApps } from '../actions'
 import {BackAndroid, NavigationExperimental, View, StyleSheet, TouchableOpacity} from 'react-native'
 //import { NavigationBar } from '@shoutem/ui/navigation';
 import {
@@ -31,7 +31,7 @@ import {
 } from '@shoutem/ui';
 import { StyleProvider } from '@shoutem/theme';
 import {SideMenu, List, Icon, ListItem} from 'react-native-elements'
-import Menu from './Menu';
+import Menu from './common/menu/Menu';
 import AppStyles from '../configs/styles'
 
 const {CardStack: NavigationCardStack} = NavigationExperimental
@@ -91,12 +91,14 @@ class NavRoot extends Component {
         case "beers":
           return
         case "createapps":
+          this.props.refreshingApps()
           this.onMenuItemSelected('createapps', 'ADD APPETIZER')
       }
 
     }
 
     _renderScene(props) {
+
         const {route} = props.scene
         const menu = <Menu onItemSelected={this.onMenuItemSelected.bind(this)}/>
         //console.log('_renderScene route: ', route.key);
@@ -148,7 +150,13 @@ class NavRoot extends Component {
                 return <ValidationForm _goBack={this._handleBackAction.bind(this)}
                   _handleNavigate={this._handleNavigate.bind(this)}/>
             case 'createwine':
-                return (<CreateWine/>)
+                  if(this.props.clearWineEdit){
+                    console.log("CLEAR WINE EDIT");
+                    return ( null )
+                    this.props.clearWineEdit = false
+                  }else{
+                    return (<CreateWine/>)
+                  }
             case 'createapps':
                 return (<CreateApps/>)
             case 'editwine':
@@ -268,7 +276,7 @@ class NavRoot extends Component {
         }
     }
     _handleBackAction() {
-      console.log(this.props.loaded);
+
       // clear list for wine search
       if(this.props.loaded){
         this.props.refreshingWines()
@@ -310,10 +318,10 @@ class NavRoot extends Component {
 }
 
 const mapStateToProps = state => {
-  const {  loaded } = state.wines;
-  return {myCompany: state.myCompany.company, loaded};
+  const {  loaded, clearWineEdit } = state.wines;
+  return {myCompany: state.myCompany.company, loaded, clearWineEdit};
 };
-export default connect(mapStateToProps, { refreshingWines, wineEditSwitch, appEditSwitch })(NavRoot);
+export default connect(mapStateToProps, { refreshingWines, wineEditSwitch, appEditSwitch, refreshingApps })(NavRoot);
 // Define a theme for the NAVBAR
 const theme = {
   'shoutem.ui.NavigationBar': {

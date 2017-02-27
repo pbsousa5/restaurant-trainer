@@ -101,6 +101,7 @@ class AppForm extends Component {
 
 
   renderLightBoxImage = (image) => {
+    console.log("IMAGE ", image);
     return(
       <View style={AppStyles.photoContainer}>
         <Image source={{ uri: this.CheckURI(image)}}
@@ -128,17 +129,35 @@ class AppForm extends Component {
     this.props.glutenFree()
   }
   onCreatePress = () => {
-    const {  appname, category, allergies, appnotes, ingredients, } = this.props;
+    const {  appname, category, allergies, appnotes, ingredients } = this.props;
     let image = null
     const gluten = this.props.gluten
     // CHECK IF CUSTOM IMAGE WAS UPLOADED
     this.props.imageAdded ? image = this.props.uploadedImage : image = this.CheckURI("")
-
+    console.log("SUBMIT FIELDS: ", appname, category, allergies, appnotes, ingredients);
     this.props.appCreate({ appname, category,
       allergies, gluten, appnotes, ingredients, image });
   }
-
+  setFormFields = () => {
+    console.log("SETTING FORM FIELDS APPS");
+    // set fields to default values
+    // in case of this appfrom they should be empty
+    this.props.change("appname", this.props.details.name)
+    this.props.change("category", this.props.details.category)
+    this.props.change("allergies", this.props.details.allergies)
+    this.props.change("appnotes", this.props.details.appnotes)
+    this.props.change("ingredients", this.props.details.ingredients)
+  }
   renderLoadingView() {
+    //console.log("SHOULD BE RESETTING FIELDS ", this.props.hasLoaded);
+    if(this.props.hasLoaded){
+
+      setTimeout(
+      () => { this.setFormFields() },
+      200
+      )
+      this.props.hasLoaded = false
+    }
     return(
       <View style={[AppStyles.flex1, AppStyles.container, {paddingTop:20}]}>
 
@@ -170,7 +189,7 @@ class AppForm extends Component {
                     multiline = {true}
                     label="Name" placeholder="Appetizer name"
                     component={ Input }
-                    onChangeAction={this.props.onChangeAction}/>
+                    />
                   <Field name="category" myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
                     defValue={""}
                     myLabelStyle={AppStyles.labelStyle}
@@ -239,7 +258,7 @@ const selector = formValueSelector('appDetailsForm');
 
 const mapStateToProps = (state) => {
 
-  const { gluten } = state.appetizer
+  const { gluten, hasLoaded, details } = state.appetizer
   const { image, imageAdded, uploadedImage } = state.image
   const { toggle } = state.modal
   return {
@@ -248,7 +267,7 @@ const mapStateToProps = (state) => {
     allergies: selector(state, 'allergies'),
     appnotes: selector(state, 'appnotes'),
     ingredients: selector(state, 'ingredients'),
-    image, imageAdded, uploadedImage, toggle, gluten }
+    image, imageAdded, uploadedImage, toggle, gluten, hasLoaded, details }
 };
 
 

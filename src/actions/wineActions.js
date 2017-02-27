@@ -1,6 +1,7 @@
 import firebase from 'firebase'
 import React from 'react'
 import { Alert } from 'react-native'
+import {reset, destroy} from 'redux-form';
 import {
   winesRef,
   companyRef,
@@ -373,7 +374,7 @@ export const wineUpdate = ({ winename, winery,
     dispatch(updateWineAction())
     return idRef.once('value',function(snapshot){
       currentLocalID = snapshot.val()
-      //console.log('idRef ', currentLocalID)
+      console.log('winename: ', winename)
       const winesRef = companyRef.child(`${currentLocalID}`).child('wines').child(key)
       winesRef.update({
         name: winename,
@@ -426,6 +427,8 @@ export const wineCreate = ({ winename, winery,
         createdBy: currentUser.uid,
       })
       dispatch(wineCreateSuccess())
+    
+
     })
       .catch((error) => {
         console.log(error)

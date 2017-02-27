@@ -43,6 +43,7 @@ function navigationState (state = initialState, action) {
       return NavigationStateUtils.pop(state)
     case JUMP_TO:
       console.log('JUMP_TO: ', action.route.key);
+      
       //if( NavigationStateUtils.has(state, action.route.key)) return NavigationStateUtils.pop(state)
       return NavigationStateUtils.jumpTo(state, action.route.key)
     case REPLACE:

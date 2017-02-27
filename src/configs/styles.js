@@ -406,7 +406,7 @@ module.exports = StyleSheet.create({
     height: window.height,
     backgroundColor: 'gray',
     padding: 0,
-    marginTop: 45,
+    //marginTop: 45,
     backgroundColor: AppConfig.menuColor,
   },
   menuText: {

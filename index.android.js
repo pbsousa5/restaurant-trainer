@@ -5,11 +5,15 @@ import configureStore from './src/store/configureStore'
 const store = configureStore()
 
 import NavigationRootContainer from './src/containers/navRootContainer'
-import { Provider } from 'react-redux'
+import { connect, Provider } from 'react-redux'
+import { Router } from 'react-native-router-flux';
+import NavRouter from './src/components/NavRouter'
 
 const App = () => (
   <Provider store={store}>
-    <NavigationRootContainer />
+      <NavRouter />
   </Provider>
 )
+//<NavigationRootContainer />
+
 AppRegistry.registerComponent('ordr', () => App)

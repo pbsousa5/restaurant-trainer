@@ -24,11 +24,6 @@ import AppForm from './AppForm'
 
 class CreateApps extends Component {
 
-  onSearchPress(){
-    const { search } = this.props
-    this.props.searchWine({search})
-  }
-
   render() {
     return (
       <ScrollView
@@ -42,13 +37,13 @@ class CreateApps extends Component {
     );
   }
 }
-
+export default CreateApps
+/*
 const mapStateToProps = (state) => {
   const { name, description, type, search, results } = state.wines;
-
   return { name, description, type, search, results };
 };
 
 export default connect(mapStateToProps, {
   wineUpdate, wineCreate, searchWine
-})(CreateApps);
+})(CreateApps);*/

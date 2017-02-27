@@ -32,6 +32,7 @@ class EditApps extends Component{
   }
   onUpdatePress = () => {
     const {  appname, category, allergies, appnotes, ingredients, } = this.props;
+    console.log("APPETIZER NAME: ", appname);
     let image = null
     const gluten = this.props.gluten
     const key = this.props.details.key
@@ -149,7 +150,23 @@ class EditApps extends Component{
       </View>
     )
   }
+  setFormFields = () => {
+    console.log('setting form values ');
+    //TODO populate form state
+    this.props.change("appname", this.props.details.name)
+    this.props.change("category", this.props.details.category)
+    this.props.change("allergies", this.props.details.allergies)
+    this.props.change("appnotes", this.props.details.appnotes)
+    this.props.change("ingredients", this.props.details.ingredients)
+  }
   renderEditView(){
+    if(this.props.details.hasLoaded){
+      setTimeout(
+      () => { this.setFormFields() },
+      500
+      )
+      this.props.details.hasLoaded = false
+    }
     return(
       <ScrollView style={AppStyles.backColor}>
         <View style={[AppStyles.flex1, AppStyles.container, AppStyles.backColor, {paddingTop:70}]}>
@@ -266,7 +283,6 @@ EditApps = reduxForm({
 const selector = formValueSelector('appEditForm');
 
 const mapStateToProps = (state) => {
-
   const { gluten, appsEdit, details } = state.appetizer
   const { image, imageAdded, uploadedImage } = state.image
   const { toggle } = state.modal

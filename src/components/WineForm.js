@@ -13,7 +13,8 @@ import {
   Switch,
   ActivityIndicator
 } from 'react-native';
-import { connect } from 'react-redux';
+import { connect, reset } from 'react-redux';
+
 import { CardSection, Card, Input, CustomSwitch } from './common';
 import {
   wineUpdate,
@@ -68,6 +69,7 @@ class WineForm extends Component {
     this.props.hideModal = this.hideModal.bind(this)
     this._addWineNote = this._addWineNote.bind(this)
     this._removeWineNote = this._removeWineNote.bind(this)
+    this._clearFormFields = this._clearFormFields.bind(this)
     const {
       winename, winery
     } = props
@@ -140,7 +142,7 @@ class WineForm extends Component {
       )
     }
   render() {
-    console.log("search: ", this.props.searching);
+    //console.log("search: ", this.props.searching);
     if (!this.props.loaded) {
       return this.renderLoadingView();
     }
@@ -214,9 +216,16 @@ class WineForm extends Component {
     const glass = this.props.glass
     // CHECK IF CUSTOM IMAGE WAS UPLOADED
     this.props.imageAdded ? image = this.props.uploadedImage : image = this.props.details.image
+    image === "" ? image = this.CheckURI("") : null
     const link = this.props.details.link
     const code = this.props.details.code
     this.props.wineCreate({ winename, winery, varietal, vintage, winenotes, region, image, glass, link, code });
+    //this._clearFormFields()
+    return dispatch => {
+      // RESET THE WINE FORM TO DEFAULT
+      dispatch(reset('wineDetailsForm'));
+    }
+
   }
   setFormFields = () => {
     console.log('setting form values ');
@@ -228,6 +237,15 @@ class WineForm extends Component {
     this.props.change("vintage", this.props.details.vintage)
     this.props.change("winenotes", this.displayNotes(this.props.notes))
   }
+  _clearFormFields = () => {
+    console.log("CLEAR FORM FIELDS");
+    this.props.change("winename", "")
+    this.props.change("winery", "")
+    this.props.change("region", "")
+    this.props.change("varietal", "")
+    this.props.change("vintage", "")
+    this.props.change("winenotes", "")
+  }
   renderLoadingView() {
     // set the default values in the form
     // ONLY ONCE!!!
@@ -235,7 +253,7 @@ class WineForm extends Component {
     if(this.props.hasLoaded){
       setTimeout(
       () => { this.setFormFields() },
-      500
+      200
       )
       this.props.hasLoaded = false
     }
@@ -291,7 +309,7 @@ class WineForm extends Component {
                     multiline = {true}
                     label="Bottle name" placeholder="Bottle name"
                     component={ Input }
-                    onChangeAction={this.props.onChangeAction}/>
+                    />
                   <Field name="winery" myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
                     defValue={this.props.details.producer}
                     myLabelStyle={AppStyles.labelStyle}

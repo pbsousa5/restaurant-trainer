@@ -7,7 +7,7 @@ import {
   LOGIN_USER,
   COMPANY_CHANGED,
   CREATE_USER_SUCCESS
-} from '../actions/types';
+} from '../actions/types'
 
 const INITIAL_STATE = {
   email: '',
@@ -16,7 +16,7 @@ const INITIAL_STATE = {
   error: '',
   company: '',
   loading: false
-};
+}
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {

@@ -34,8 +34,8 @@ const MenuIems = [
   {id: 7, key: 'desserts' ,title: 'Desserts', content: 'Here you can view the desserts.', icon: 'ios-ice-cream'},
   {id: 7, key: 'admin' ,title: 'Admin', content: 'Enter the admin controls.', icon: 'ios-person'}
 ];
-import AppConfig from '../configs/config'
-import AppStyles from '../configs/styles'
+import AppConfig from '../../../configs/config'
+import AppStyles from '../../../configs/styles'
 import LinearGradient from 'react-native-linear-gradient'
 class Menu extends Component {
   static propTypes = {

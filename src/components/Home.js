@@ -53,15 +53,9 @@ class HomeClass extends Component {
       )
     }
     routeToLogin = () => {
-        route = {
-            type: 'push',
-            route: {
-                key: 'login',
-                title: 'LOGIN'
-            }
-        }
         this.props.logOutUser()
-        this.props._handleNavigate(route)
+        // navigation handled bu router now
+        // which is listening for state change of isLogged
     }
 
     render() {

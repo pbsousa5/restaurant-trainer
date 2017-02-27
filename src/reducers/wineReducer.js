@@ -18,7 +18,8 @@ import {
   BY_THE_GLASS,
   SHOW_WINE_SELECT,
   WINE_EDIT_SWITCH,
-  WINE_SEARCHING
+  WINE_SEARCHING,
+  JUMP_TO,
 } from '../actions/types';
 
 
@@ -40,6 +41,7 @@ const INITIAL_STATE = {
   notes: null,
   glass: false,
   hasLoaded: false,
+  clearWineEdit: false,
   details: {
     name: null,
     region: null,
@@ -84,7 +86,10 @@ export default (state = INITIAL_STATE, action) => {
     case WINES_REQUESTED:
       return state
     case WINES_REFRESH:
-      return {...state, loaded: false, notes: INITIAL_STATE.notes, details: INITIAL_STATE.details}
+      return {...state,
+        loaded: false,
+        notes: INITIAL_STATE.notes,
+        details: INITIAL_STATE.details}
     case SHOW_WINE_SELECT:
       return {...state, wineEdit: false, hasLoaded: true, details: {
           glass: action.payload.glass,
@@ -102,6 +107,10 @@ export default (state = INITIAL_STATE, action) => {
 
         }
       }
+    case JUMP_TO:
+        if(action.route.key === "wines"){
+          return{...state, clearWineEdit: true}
+        }
     case HIDE_MODAL_REFRESH:
       return {...state, loaded: false, hasLoaded: true, details: {
           name: action.payload.name,

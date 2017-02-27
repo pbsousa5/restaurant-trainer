@@ -4,7 +4,8 @@ import {
   SHOW_APPETIZERS,
   GLUTEN_FREE,
   APPS_EDIT_SWITCH,
-  SHOW_APP_SELECT
+  SHOW_APP_SELECT,
+  APPS_REFRESH
 } from '../actions/types'
 
 
@@ -13,7 +14,7 @@ const INITIAL_STATE = {
   glutenFree: false,
   appetizers: null,
   appsEdit: false,
-
+  hasLoaded: false,
   details: {
     name: null,
     ingredients: null,
@@ -53,6 +54,7 @@ export default (state = INITIAL_STATE, action) => {
       return{
         ...state,
         appsEdit: false,
+        hasLoaded: true,
         details: {
           name: action.payload.name,
           ingredients: action.payload.ingredients,
@@ -67,6 +69,9 @@ export default (state = INITIAL_STATE, action) => {
       }
     case APPS_EDIT_SWITCH:
       return {...state, appsEdit: !state.appsEdit}
+    case APPS_REFRESH:
+      return {...state,
+        details: INITIAL_STATE.details}
     default:
       return state;
     }

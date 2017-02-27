@@ -2,7 +2,7 @@ import FireAuth from 'react-native-firebase-auth';
 import firebase from 'firebase'
 import {connect} from 'react-redux';
 import {startAuthListener} from '../actions'
-import React, {Component} from 'react'
+import React, {Component, PropTypes} from 'react'
 import FormValidation from 'tcomb-form-native'
 import ValidationForm from './social/validationForm'
 import {
@@ -31,7 +31,7 @@ import {
 import {Button, SocialIcon, Card, FormLabel, FormInput} from 'react-native-elements'
 import Modal from 'react-native-root-modal';
 import AppStyles from '../configs/styles'
-
+import {Actions} from 'react-native-router-flux'
 const route = {
     type: 'push',
     route: {
@@ -39,6 +39,7 @@ const route = {
         title: 'SIGNUP'
     }
 }
+
 /*
 const LoginNav = ({_handleNavigate}) => (
   <View style={styles.containerNav}>
@@ -61,6 +62,9 @@ class Login extends Component {
         }
         this.routeToHome = this.routeToHome.bind(this)
 
+    }
+    static contextTypes = {
+      routes: PropTypes.object.isRequired,
     }
 
     componentDidMount() {
@@ -157,6 +161,7 @@ class Login extends Component {
             )
         } else {
         */
+        const {routes} = this.context;
         return (
             <View style={AppStyles.appContainer}>
                 <Animated.Modal visible={this.state.visible} style={[
@@ -181,7 +186,7 @@ class Login extends Component {
                             marginBottom: 10
                         }} backgroundColor="#22a3ed" icon={{
                             name: 'email'
-                        }} title='Sign In With Email' onPress={() => this.props._handleNavigate(route)}/>
+                        }} title='Sign In With Email' onPress={Actions.validation}/>
                         <Button raised buttonStyle={{
                             borderRadius: 30,
                             marginLeft: 15,

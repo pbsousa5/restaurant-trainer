@@ -22,6 +22,7 @@ import {
 import { CardSection, Card, Input, CustomSwitch } from './';
 
 class EditWine extends Component {
+
   constructor(props){
     super(props)
     this._renderNormalView = this._renderNormalView.bind(this)
@@ -30,6 +31,7 @@ class EditWine extends Component {
     this.deleteWine = this.deleteWine.bind(this)
     this.onUpdatePress = this.onUpdatePress.bind(this)
     this.onDisablePressed = this.onDisablePressed.bind(this)
+    this._resetScrollView = this._resetScrollView.bind(this)
   }
 
   componentDidMount(){
@@ -65,7 +67,11 @@ class EditWine extends Component {
     // ADD CUSTOM IMAGE URL IF ONE WAS SELECTED
     this.props.imageAdded ? image = this.props.uploadedImage : image = this.props.details.image
     const glass = this.props.details.glass
+    //this._resetScrollView() // this somehow breaks the wineUpdate
     this.props.wineUpdate({ winename, winery, varietal, vintage, winenotes, region, image, glass, key, winelink });
+  }
+  _resetScrollView = () => {
+     //_scrollView.scrollTo({y: 0});
   }
   onDisablePressed = () => {
     this.props.disableWine()
@@ -84,7 +90,6 @@ class EditWine extends Component {
     console.log('DELETE WINE')
   }
   _goToURL() {
-
     Linking.canOpenURL(this.props.details.link).then(supported => {
       if (supported) {
         Linking.openURL(this.props.details.link);
@@ -95,8 +100,10 @@ class EditWine extends Component {
   }
 
   _renderNormalView = () => {
+
     return(
-      <ScrollView style={AppStyles.backColor}>
+      <ScrollView style={AppStyles.backColor}
+        ref={(scrollView) => { _scrollView = scrollView; }} >
       <View style={[AppStyles.flex1, AppStyles.container, AppStyles.backColor, {paddingTop:70}]}>
           <Card style={[AppStyles.cardStyle]}>
             <CardSection style={[AppStyles.backColor,

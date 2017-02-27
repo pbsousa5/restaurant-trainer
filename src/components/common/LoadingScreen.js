@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, Image } from 'react-native'
 import { connect } from 'react-redux'
 import AppStyles from '../../configs/styles'
@@ -8,7 +8,6 @@ import firebase from 'firebase'
 import BackgroundImage from './BackgroundImage'
 const routeLogin = {
      type: 'push',
-
      route: {
          key: 'login',
          title: 'LOGIN'
@@ -30,19 +29,18 @@ class LoadingScreen extends Component {
       animating: true,
       hasRedirected: false,
     }
-
-
   }
-
   componentWillReceiveProps(nextProps){
     if(nextProps.hasResponded && !this.state.hasRedirected){
       if(nextProps.LoggedIn){
         console.log('routing home');
-        this.props._handleNavigate(routeHome)
+        //this.props._handleNavigate(routeHome)
+
         this.setState({hasRedirected: true})
       }else{
         console.log('routing login');
-        this.props._handleNavigate(routeLogin)
+
+      //  this.props._handleNavigate(routeLogin)
         this.setState({hasRedirected: true})
       }
     }

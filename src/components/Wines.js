@@ -38,7 +38,6 @@ class Wines extends Component {
             title: 'EDIT WINE'
         }
     }
-
     this.props._handleNavigate(route)
   }
   convertWineArrayToMap = () => {

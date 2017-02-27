@@ -23,6 +23,7 @@ import {
   ATTEMPTING_APPS_UPDATE,
   APPS_UPDATE_SUCCESS,
   APPS_UPDATE_ERROR,
+  APPS_REFRESH,
 } from './types'
 
 function getAppsFulfilledAction  (apps){
@@ -271,6 +272,11 @@ function createAppsAction(){
 function getAppsRequestedAction() {
   return {
     type: APPS_REQUESTED
+  }
+}
+export function refreshingApps(){
+  return{
+    type: APPS_REFRESH,
   }
 }
 export const showAppetizer = () => {
