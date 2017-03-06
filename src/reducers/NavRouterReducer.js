@@ -1,4 +1,5 @@
-import { ActionConst } from 'react-native-router-flux';
+import { Actions , ActionConst } from 'react-native-router-flux';
+import { JUMP_TO_WINES } from '../actions/types'
 
 const DEFAULT_STATE = {
   scene: {},
@@ -12,6 +13,10 @@ export default function reducer(state = DEFAULT_STATE, action = {}) {
         ...state,
         scene: action.scene,
       }
+    case JUMP_TO_WINES:
+    // this is not working
+    // moved the actions call into actions
+      return  () => Actions.wines({type:"replace"})
     default:
       return state;
   }

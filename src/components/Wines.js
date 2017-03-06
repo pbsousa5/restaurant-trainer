@@ -29,7 +29,7 @@ class Wines extends Component {
     });
   }
   _loadWineScreen = (data) => {
-    console.log('load wine screen ' , data);
+    //console.log('load wine screen ' , data);
     this.props.showWineSelect(data)
     route = {
         type: 'push',

@@ -45,7 +45,6 @@ import _ from 'lodash'
 import  Lightbox  from 'react-native-lightbox'
 import {
   appCreate,
-  toggleModal,
   glutenFree
 } from '../../actions';
 
@@ -274,7 +273,7 @@ const mapStateToProps = (state) => {
 AppForm =  connect(
   mapStateToProps, {
   appCreate,
-  toggleModal,
+
   glutenFree,
 
 })(AppForm);

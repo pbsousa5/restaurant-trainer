@@ -70,8 +70,10 @@ export default (state = INITIAL_STATE, action) => {
     case APPS_EDIT_SWITCH:
       return {...state, appsEdit: !state.appsEdit}
     case APPS_REFRESH:
-      return {...state,
-        details: INITIAL_STATE.details}
+      return {
+        ...state,
+        details: INITIAL_STATE.details
+      }
     default:
       return state;
     }

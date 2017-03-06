@@ -9,6 +9,7 @@ import thunk from 'redux-thunk'
 import * as Actions from '../actions'
 
 
+
 const logger = createLogger();
 //export default compose(applyMiddleware(thunk))(createStore)(duedates);
 export default function configureStore () {

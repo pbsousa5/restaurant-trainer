@@ -9,9 +9,13 @@ import { connect, Provider } from 'react-redux'
 import { Router } from 'react-native-router-flux';
 import NavRouter from './src/components/NavRouter'
 
+const ConnectedRouter = connect()(Router)
+
 const App = () => (
   <Provider store={store}>
+
       <NavRouter />
+  
   </Provider>
 )
 //<NavigationRootContainer />

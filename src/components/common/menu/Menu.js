@@ -25,7 +25,7 @@ import {
 const window = Dimensions.get('window');
 const uri = 'https://pickaface.net/gallery/avatar/Opi51c74d0125fd4.png';
 const MenuIems = [
-  {id: 1, key: 'home' ,title: 'Home', content: 'Welcome to learning React!', icon: 'ios-home'},
+  {id: 1, key: 'home' ,title: 'Home', content: 'Welcome to restaurant trainer', icon: 'ios-home'},
   {id: 2, key: 'wines' ,title: 'Wines', content: 'Here you can view the wine list.', icon: 'ios-wine'},
   {id: 3, key: 'beers' ,title: 'Beers', content: 'Here you can view the beer list.', icon: 'ios-beer'},
   {id: 4, key: 'appetizers' ,title: 'Appetizers', content: 'Here you can view the appetizers.', icon: 'ios-pizza'},

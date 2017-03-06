@@ -57,7 +57,7 @@ module.exports = StyleSheet.create({
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      top: 70,
+      top: 50,
       paddingBottom: 70
   },
   photoContainer: {

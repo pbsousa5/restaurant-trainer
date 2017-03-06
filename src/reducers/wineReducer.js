@@ -107,10 +107,6 @@ export default (state = INITIAL_STATE, action) => {
 
         }
       }
-    case JUMP_TO:
-        if(action.route.key === "wines"){
-          return{...state, clearWineEdit: true}
-        }
     case HIDE_MODAL_REFRESH:
       return {...state, loaded: false, hasLoaded: true, details: {
           name: action.payload.name,

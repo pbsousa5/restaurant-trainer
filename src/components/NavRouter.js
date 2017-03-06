@@ -16,7 +16,7 @@ import Appetizers from './Appetizers'
 import Wines from './Wines'
 import {connect} from 'react-redux'
 import { refreshingWines, wineEditSwitch, appEditSwitch, refreshingApps } from '../actions'
-import { Actions, Router, Scene, Switch, Modal, Schema, Reducer } from 'react-native-router-flux';
+import { Actions, Router, Scene, Switch, Modal, Schema, Reducer, ActionConst } from 'react-native-router-flux';
 import {BackAndroid, NavigationExperimental, View, StyleSheet, TouchableOpacity} from 'react-native'
 //import { NavigationBar } from '@shoutem/ui/navigation';
 import {
@@ -53,47 +53,92 @@ class NavRouter extends Component {
             selectedItem: 'Home',
         }
         //this._renderScene = this._renderScene.bind(this)
-        //this._handleBackAction = this._handleBackAction.bind(this)
+        this._handleBackAction = this._handleBackAction.bind(this)
         this._toggleSideMenu = this._toggleSideMenu.bind(this)
-        //this._handleNavigate = this._handleNavigate.bind(this)
+        this._handleNavigate = this._handleNavigate.bind(this)
     }
-    /*
     componentDidMount() {
-        BackAndroid.addEventListener('hardwareBackPress', this._handleBackAction)
+
+      BackAndroid.addEventListener('hardwareBackPress', this._handleBackAction)
     }
     componentWillUnmount() {
-        BackAndroid.removeEventListener('hardwareBackPress', this._handleBackAction)
-    }*/
-
-    _toggleSideMenu() {
+      BackAndroid.removeEventListener('hardwareBackPress', this._handleBackAction)
+    }
+    _handleBackAction = () =>{
+      return null
+    }
+    _toggleSideMenu = () => {
         Actions.refresh({key: 'drawer', open: value => !value });
-        console.log('toggle side menu');
+        //console.log('toggle side menu');
     }
-    updateMenuState(isOpen) {
-        this.setState({isOpen});
-    }
-    onMenuItemSelected = (key, title) => {
-      //console.log('menu key: ', key);
-      this.setState({isOpen: false, selectem: key});
-      // TODO NAVIGATE
+    _handleNavigate(action) {
+      console.log(action.route.key);
+      switch (action.route.key) {
+        case "editwine":
+          console.log("EDIT WINES");
+          Actions.editWine()
+        case "editapps":
+          Actions.editApp()
+          return
+      }
     }
 
-    _renderNavBar = () => {
-      return (
-        <NavigationBar styleName="fade" leftComponent={(
-            <TouchableOpacity onPress={() => {this._toggleSideMenu()}}>
-                <Icon type='ionicon' name="md-menu" iconStyle={AppStyles.iconColor}/>
-            </TouchableOpacity>
-        )} centerComponent={< Title >HOME< /Title>}/>
-      )
-    }
-    navBarButton(){
+
+    _renderMenuButton(){
       return(
-        <TouchableOpacity onPress={() => {this._toggleSideMenu()}}>
-          <Icon name='ios-menu' size={40} iconStyle={AppStyles.iconColor} />
+        <TouchableOpacity onPress={() => this._toggleSideMenu()}>
+          <Icon name='menu' size={30} iconStyle={[AppStyles.iconColor, {paddingBottom:20}]}  />
         </TouchableOpacity>
       )
     }
+    _createButton(loc){
+      switch(loc){
+        case "wine":
+          return(
+            <TouchableOpacity onPress={() => Actions.createWine()}>
+              <Icon name='add' size={30} iconStyle={[AppStyles.iconColor, {paddingBottom:20}]} />
+            </TouchableOpacity>
+          )
+        case "appetizer":
+          return(
+            <TouchableOpacity onPress={() => Actions.createApp()}>
+              <Icon name='add' size={30} iconStyle={[AppStyles.iconColor, {paddingBottom:20}]} />
+            </TouchableOpacity>
+          )
+        case "editWine":
+          return(
+            <TouchableOpacity onPress={() => this.props.wineEditSwitch()}>
+              <Icon type='ionicon' name="md-clipboard" size={30} iconStyle={[AppStyles.iconColor, {paddingBottom:20}]} />
+            </TouchableOpacity>
+          )
+        case "editApp":
+          return(
+            <TouchableOpacity onPress={() => this.props.appEditSwitch()}>
+              <Icon type='ionicon' name="md-clipboard" size={30} iconStyle={[AppStyles.iconColor, {paddingBottom:20}]} />
+            </TouchableOpacity>
+          )
+      }
+
+    }
+    _renderBackButton(loc){
+      switch(loc){
+        case "wine":
+          return(
+            <TouchableOpacity onPress={() => Actions.wines({type:"replace"})}>
+              <Icon name='arrow-back' size={30} iconStyle={[AppStyles.iconColor, {paddingBottom:20}]} />
+            </TouchableOpacity>
+          )
+        case "appetizer":
+          return(
+            <TouchableOpacity onPress={() => Actions.appetizers({type:"replace"})}>
+              <Icon name='arrow-back' size={30} iconStyle={[AppStyles.iconColor, {paddingBottom:20}]} />
+            </TouchableOpacity>
+          )
+        default: return
+      }
+
+    }
+
     render() {
 
       // wait for response from firebase to check if user is logged in or not
@@ -104,21 +149,60 @@ class NavRouter extends Component {
       }else{
         return (
           <RouterWithRedux createReducer={reducerCreate}>
-             <Scene key="modal" component={Modal} hideNavBar={true}>
               <Scene
                 key="root"
                 hideNavBar={true}
                 component={connect(state=>({LoggedIn:state.userLogged}))(Switch)}
-                tabs={true}
                 selector={props=>this.props.LoggedIn ? "drawer" : "login"} >
-                <Scene key="drawer" component={MenuDrawer}
-                   open={false} hideNavBar={true}>
-                  <Scene key="navbar"
-                    renderBackButton={()=>{ return null; }}
-                    renderLeftButton={this.navBarButton} >
-                    <Scene key="home" component={Home} title="HOME" initial tabs={true} />
-                    <Scene key="wines" component={Wines} title="WINES" renderBackButton={()=>{ return null; }} renderLeftButton={this.navBarButton}/>
-                    <Scene key="appetizers" component={Appetizers} title="APPETIZERS" renderBackButton={()=>{ return null; }} renderLeftButton={this.navBarButton}/>
+                <Scene
+                  key="drawer"
+                  component={MenuDrawer}
+                  open={false}>
+                  <Scene
+                   key="main" type="replace">
+                    <Scene
+                      key="home"
+                      component={Home}
+                      title="HOME"
+                      renderBackButton={this._renderMenuButton.bind(this)}
+                      />
+                    <Scene
+                      key="wines"
+                      renderRightButton={this._createButton.bind(this, "wine")}
+                      component={Wines}
+                      _handleNavigate={this._handleNavigate.bind(this)}
+                      renderBackButton={this._renderMenuButton.bind(this)}
+                      title="WINES"/>
+                      <Scene
+                        key="createWine"
+                        renderBackButton={this._renderBackButton.bind(this, "wine")}
+                        component={CreateWine}
+                        title="ADD WINE"/>
+                      <Scene
+                        key="editWine"
+                        renderBackButton={this._renderBackButton.bind(this, "wine")}
+                        renderRightButton={this._createButton.bind(this, "editWine")}
+                        component={EditWine}
+                        title="EDIT WINE"/>
+
+                      <Scene
+                        key="appetizers"
+                        _handleNavigate={this._handleNavigate.bind(this)}
+                        renderBackButton={this._renderMenuButton.bind(this)}
+                        renderRightButton={this._createButton.bind(this, "appetizer")}
+                        component={Appetizers}
+                        title="APPETIZERS"/>
+                      <Scene
+                        key="createApp"
+                        renderBackButton={this._renderBackButton.bind(this, "appetizer")}
+                        component={CreateApps}
+                        title="ADD APPETIZER"/>
+                      <Scene
+                        key="editApp"
+                        renderBackButton={this._renderBackButton.bind(this, "appetizer")}
+                        renderRightButton={this._createButton.bind(this, "editApp")}
+                        component={EditApps}
+                        title="EDIT APPETIZER"/>
                   </Scene>
                 </Scene>
                 <Scene key="login" direction="vertical" >
@@ -126,7 +210,7 @@ class NavRouter extends Component {
                   <Scene key="validation"  component={ValidationForm} title="EMAIL"/>
                 </Scene>
               </Scene>
-            </Scene>
+
           </RouterWithRedux>
         )
       }

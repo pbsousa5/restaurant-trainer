@@ -93,6 +93,7 @@ class NavRoot extends Component {
         case "createapps":
           this.props.refreshingApps()
           this.onMenuItemSelected('createapps', 'ADD APPETIZER')
+        default: return
       }
 
     }

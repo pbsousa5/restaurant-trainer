@@ -8,6 +8,8 @@ import {
   GetLocalRef
 } from '../configs/firebase'
 import LocalStore from 'react-native-simple-store'
+import { Actions } from 'react-native-router-flux';
+
 import firebase from 'firebase'
 import {
   LOAD_APPETIZERS,
@@ -17,7 +19,7 @@ import {
   CREATING_APPETIZER,
   CREATE_APPETIZER_SUCCESS,
   GLUTEN_FREE,
-  JUMP_TO,
+  JUMP_TO_APPS,
   SHOW_APP_SELECT,
   APPS_EDIT_SWITCH,
   ATTEMPTING_APPS_UPDATE,
@@ -180,13 +182,12 @@ function appsUpdateSuccess(){
     ]
   )
   //APPS_UPDATE_SUCCESS
+  Actions.appetizers({type:"replace"})
   return {
-    type: JUMP_TO,
-    route: {
-        key: "appetizers",
-        title: "APPETIZERS",
-    }
+    type: JUMP_TO_APPS,
   }
+
+
 }
 function appsUpdateError() {
   Alert.alert(
@@ -209,13 +210,12 @@ function appsCreateSuccess(){
       {text: 'OK', onPress: () => console.log('OK Pressed')},
     ]
   )
+
   // GO BACK A SCREEN TO THE APPETIZER LISTVIEW
+
+  Actions.appetizers({type:"replace"})
   return {
-    type: JUMP_TO,
-    route: {
-        key: "appetizers",
-        title: "APPETIZERS",
-    }
+    type: JUMP_TO_APPS,
   }
 }
 function appsCreateError(){
@@ -256,13 +256,12 @@ function appDeleteSuccess(){
       {text: 'OK', onPress: () => console.log('OK Pressed')},
     ]
   )
+
+  Actions.appetizers({type:"replace"})
   return {
-    type: JUMP_TO,
-    route: {
-        key: "appetizers",
-        title: "APPETIZERS",
-    }
+    type: JUMP_TO_APPS,
   }
+
 }
 function createAppsAction(){
   return {

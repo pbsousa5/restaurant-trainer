@@ -2,6 +2,8 @@ import firebase from 'firebase'
 import React from 'react'
 import { Alert } from 'react-native'
 import {reset, destroy} from 'redux-form';
+import { Actions } from 'react-native-router-flux';
+
 import {
   winesRef,
   companyRef,
@@ -25,7 +27,7 @@ import {
   WINE_BOTTLE_DATA,
   HIDE_MODAL,
   HIDE_MODAL_REFRESH,
-  JUMP_TO,
+  JUMP_TO_WINES,
   LOADING_MODAL_DATA,
   BY_THE_GLASS,
   SHOW_WINE_SELECT,
@@ -250,8 +252,9 @@ function wineCreateSuccess() {
       {text: 'OK', onPress: () => console.log('OK Pressed')},
     ]
   )
+  Actions.wines({type:"replace"})
   return {
-    type: JUMP_TO,
+    type: JUMP_TO_WINES,
     route: {
         key: "wines",
         title: "WINES",
@@ -284,8 +287,9 @@ function wineDeleteSuccess(){
       {text: 'OK', onPress: () => console.log('OK Pressed')},
     ]
   )
+  Actions.wines({type:"replace"})
   return {
-    type: JUMP_TO,
+    type: JUMP_TO_WINES,
     route: {
         key: "wines",
         title: "WINES",
@@ -330,8 +334,9 @@ function wineUpdateSuccess(){
       {text: 'OK', onPress: () => console.log('OK Pressed')},
     ]
   )
+  Actions.wines({type:"replace"})
   return {
-    type: JUMP_TO,
+    type: JUMP_TO_WINES,
     route: {
         key: "wines",
         title: "WINES",
@@ -365,8 +370,8 @@ export const disableWine = () => {
 // FUNCTION FOR UPDATING WINES IN firebase
 export const wineUpdate = ({ winename, winery,
   varietal, vintage, winenotes, region, image, glass, key, winelink }) => {
-    console.log('VARS ', {winename, winery,
-    varietal, vintage, winenotes, region, image, glass, key, winelink} )
+  /*  console.log('VARS ', {winename, winery,
+    varietal, vintage, winenotes, region, image, glass, key, winelink} )*/
   const { currentUser } = firebase.auth()
   var currentLocalID
   var idRef = firebase.database().ref(`/users/${currentUser.uid}/currentID`)
@@ -377,15 +382,15 @@ export const wineUpdate = ({ winename, winery,
       console.log('winename: ', winename)
       const winesRef = companyRef.child(`${currentLocalID}`).child('wines').child(key)
       winesRef.update({
-        name: winename,
+        name: winename ? winename : "",
         link: winelink,
-        vintage: vintage,
-        winenotes: winenotes,
-        winery: winery,
-        varietal: varietal,
+        vintage: vintage ? vintage : "",
+        winenotes: winenotes ? winenotes : "",
+        winery: winery ? winery : "",
+        varietal: varietal ? varietal : "",
         glass: glass,
         image: image,
-        region: region,
+        region: region ? region : "",
         time: new Date().getTime(),
         updatedBy: currentUser.uid,
       })
@@ -410,7 +415,7 @@ export const wineCreate = ({ winename, winery,
       console.log('idRef ', currentLocalID)
       const id = Math.random().toString(36).substring(7)
       const winesRef = companyRef.child(`${currentLocalID}`).child('wines').child(id)
-      console.log('imageURL ', image)
+      //console.log('imageURL ', image)
       winesRef.set({
         key: id,
         name: winename ? winename : "",
@@ -427,8 +432,6 @@ export const wineCreate = ({ winename, winery,
         createdBy: currentUser.uid,
       })
       dispatch(wineCreateSuccess())
-    
-
     })
       .catch((error) => {
         console.log(error)
@@ -457,7 +460,6 @@ return (dispatch) => {
     .set({ name, description, type })
     .then(() => {
       dispatch({ type: WINE_SAVE_SUCCESS })
-      //Actions.employeeList({ type: 'reset' })
     })
   }
 }
