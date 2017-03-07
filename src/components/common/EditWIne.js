@@ -25,6 +25,7 @@ class EditWine extends Component {
 
   constructor(props){
     super(props)
+    console.log("EDIT WINES");
     this._renderNormalView = this._renderNormalView.bind(this)
     this._renderEditView = this._renderEditView.bind(this)
     this._goToURL = this._goToURL.bind(this);

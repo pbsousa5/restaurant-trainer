@@ -29,7 +29,7 @@ class Appetizers extends Component {
             title: 'EDIT APPETIZERS'
         }
     }
-    this.props._handleNavigate(route)
+    this.props._handleNavigate("editapps")
   }
   convertAppsArrayToMap = () => {
     const appsCategoryMap = {} // Create the blank map

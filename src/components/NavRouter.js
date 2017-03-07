@@ -72,17 +72,15 @@ class NavRouter extends Component {
         //console.log('toggle side menu');
     }
     _handleNavigate(action) {
-      console.log(action.route.key);
-      switch (action.route.key) {
+      //console.log("NAVIGATE ",action);
+      switch (action) {
         case "editwine":
-          console.log("EDIT WINES");
-          Actions.editWine()
+          return Actions.editWine()
         case "editapps":
-          Actions.editApp()
-          return
+          return Actions.editApp()
+        default: return
       }
     }
-
 
     _renderMenuButton(){
       return(
@@ -91,17 +89,25 @@ class NavRouter extends Component {
         </TouchableOpacity>
       )
     }
+    _routeToCreateWine = () => {
+      this.props.refreshingWines()
+      Actions.createWine()
+    }
+    _routeToCreateApps = () => {
+      this.props.refreshingApps()
+      Actions.createApp()
+    }
     _createButton(loc){
       switch(loc){
         case "wine":
           return(
-            <TouchableOpacity onPress={() => Actions.createWine()}>
+            <TouchableOpacity onPress={() => this._routeToCreateWine()}>
               <Icon name='add' size={30} iconStyle={[AppStyles.iconColor, {paddingBottom:20}]} />
             </TouchableOpacity>
           )
         case "appetizer":
           return(
-            <TouchableOpacity onPress={() => Actions.createApp()}>
+            <TouchableOpacity onPress={() => this._routeToCreateApps()}>
               <Icon name='add' size={30} iconStyle={[AppStyles.iconColor, {paddingBottom:20}]} />
             </TouchableOpacity>
           )

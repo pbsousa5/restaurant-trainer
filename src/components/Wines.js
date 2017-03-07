@@ -31,6 +31,7 @@ class Wines extends Component {
   _loadWineScreen = (data) => {
     //console.log('load wine screen ' , data);
     this.props.showWineSelect(data)
+    //TODO remove these routes since navigtion method has changed
     route = {
         type: 'push',
         route: {
@@ -38,7 +39,7 @@ class Wines extends Component {
             title: 'EDIT WINE'
         }
     }
-    this.props._handleNavigate(route)
+    this.props._handleNavigate("editwine")
   }
   convertWineArrayToMap = () => {
     const wineCategoryMap = {} // Create the blank map

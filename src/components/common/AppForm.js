@@ -113,7 +113,7 @@ class AppForm extends Component {
   }
   CheckURI(uri){
     if(uri === ""){
-      //TODO replace this with a local default wine bottle image
+      //TODO replace this with a local default image
       return "https://cdn4.iconfinder.com/data/icons/chef-s-kitchen/256/icon-appetizer-512.png"
     }else{
       return uri
@@ -150,7 +150,6 @@ class AppForm extends Component {
   renderLoadingView() {
     //console.log("SHOULD BE RESETTING FIELDS ", this.props.hasLoaded);
     if(this.props.hasLoaded){
-
       setTimeout(
       () => { this.setFormFields() },
       200
@@ -177,7 +176,6 @@ class AppForm extends Component {
             <Form>
               <FieldsContainer style={AppStyles.fieldContainer}>
                 <Fieldset label="Appetizer details" style={{color:AppConfigs.greenColor}}>
-
                   <Field
                     name="appname"
                     myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
