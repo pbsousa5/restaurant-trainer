@@ -19,6 +19,7 @@ export const DELETE_WINE = 'DELETE_WINE'
 export const WINE_NOTE_ADD = 'wine_note_add'
 export const WINE_SEARCH_RESULTS = 'WINE_SEARCH_RESULTS'
 export const JUMP_TO_WINES = 'JUMP_TO_WINES'
+export const STOP_LOADING = 'STOP_LOADING'
 // APPETIZERS
 export const LOAD_APPETIZERS = 'LOAD_APPETIZERS'
 export const APPETIZERS_LOADED = 'APPETIZERS_LOADED'

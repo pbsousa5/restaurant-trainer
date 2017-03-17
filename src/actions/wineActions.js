@@ -34,7 +34,8 @@ import {
   WINE_EDIT_SWITCH,
   DELETE_WINE,
   WINE_SEARCHING,
-  WINE_SEARCH_RESULTS
+  WINE_SEARCH_RESULTS,
+  STOP_LOADING
 } from './types'
 import { ApiUtils } from '../configs/ApiUtils'
 
@@ -68,6 +69,11 @@ function receiveWineData(results) {
     modalType: 'WINE_MODAL',
     type: WINE_BOTTLE_DATA,
     payload: results
+  }
+}
+export function stopLoading () {
+  return{
+    type: STOP_LOADING,
   }
 }
 export function wineEditSwitch() {
@@ -379,11 +385,11 @@ export const wineUpdate = ({ winename, winery,
     dispatch(updateWineAction())
     return idRef.once('value',function(snapshot){
       currentLocalID = snapshot.val()
-      console.log('winename: ', winename)
+      console.log('winelink: ', winelink)
       const winesRef = companyRef.child(`${currentLocalID}`).child('wines').child(key)
       winesRef.update({
-        name: winename ? winename : "",
-        link: winelink,
+        name: winename,
+        link: winelink ? winelink : "",
         vintage: vintage ? vintage : "",
         winenotes: winenotes ? winenotes : "",
         winery: winery ? winery : "",

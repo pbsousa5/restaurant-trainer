@@ -17,7 +17,8 @@ import {
   wineUpdate,
   byTheGlass,
   wineDelete,
-  disableWine
+  disableWine,
+  stopLoading
 } from '../../actions';
 import { CardSection, Card, Input, CustomSwitch } from './';
 
@@ -25,7 +26,7 @@ class EditWine extends Component {
 
   constructor(props){
     super(props)
-    console.log("EDIT WINES");
+
     this._renderNormalView = this._renderNormalView.bind(this)
     this._renderEditView = this._renderEditView.bind(this)
     this._goToURL = this._goToURL.bind(this);
@@ -35,14 +36,7 @@ class EditWine extends Component {
     this._resetScrollView = this._resetScrollView.bind(this)
   }
 
-  componentDidMount(){
-    if(this.props.details.glass == true){
-      console.log("TRUE!!")
-    }else{
-      console.log("FALSE!!")
-    }
-    console.log("this.props.details.glass ", this.props.details.glass);
-  }
+
   renderLightBoxImage = (image) => {
     return(
       <View style={AppStyles.photoContainer}>
@@ -62,14 +56,24 @@ class EditWine extends Component {
   }
   onUpdatePress = () => {
     const { winename, winery, varietal, vintage, winenotes, region,  winelink } = this.props;
-    //{ winename, winery, varietal, vintage, winenotes, region, image, glass, key, link }
     let image = null
     const key = this.props.details.key
     // ADD CUSTOM IMAGE URL IF ONE WAS SELECTED
     this.props.imageAdded ? image = this.props.uploadedImage : image = this.props.details.image
     const glass = this.props.details.glass
     //this._resetScrollView() // this somehow breaks the wineUpdate
-    this.props.wineUpdate({ winename, winery, varietal, vintage, winenotes, region, image, glass, key, winelink });
+    console.log("winelink before update ", winelink);
+    this.props.wineUpdate({
+      winename,
+      winery,
+      varietal,
+      vintage,
+      winenotes,
+      region,
+      image,
+      glass,
+      key,
+      winelink });
   }
   _resetScrollView = () => {
      //_scrollView.scrollTo({y: 0});
@@ -170,7 +174,8 @@ class EditWine extends Component {
     )
   }
   setFormFields = () => {
-    console.log('setting form values ');
+    this.props.stopLoading()
+    console.log('setting form link ', this.props.details.link);
     //TODO populate form state
     this.props.change("winelink", this.props.details.link)
     this.props.change("winename", this.props.details.name)
@@ -184,12 +189,12 @@ class EditWine extends Component {
     // set the default values in the form
     // ONLY ONCE!!!
     // the timeout stops setState errors from firing
-    if(this.props.details.hasLoaded){
+    if(this.props.hasLoaded){
+      console.log("HAS LOADED");
       setTimeout(
       () => { this.setFormFields() },
-      500
+      200
       )
-      this.props.details.hasLoaded = false
     }
 
     return(
@@ -333,7 +338,8 @@ EditWine = reduxForm({
 const selector = formValueSelector('wineUpdateForm');
 
 const mapStateToProps = (state) => {
-  const { name, description, results, loaded, search, details, loadingModal, glass, wineEdit } = state.wines
+  const { name, description, results, loaded, search, details,
+    loadingModal, glass, wineEdit, hasLoaded } = state.wines
   const { image, imageAdded, uploadedImage } = state.image
   return {
     winelink: selector(state, 'winelink'),
@@ -343,7 +349,8 @@ const mapStateToProps = (state) => {
     winery: selector(state, 'winery'),
     region: selector(state, 'region'),
     winenotes: selector(state, 'winenotes'),
-    name, description, results, loaded, search, details, loadingModal, glass, wineEdit, image, imageAdded, uploadedImage }
+    name, description, results, loaded, search,
+    details, loadingModal, glass, wineEdit, image, imageAdded, uploadedImage, hasLoaded }
 };
 
 
@@ -354,7 +361,8 @@ EditWine =  connect(
   wineUpdate,
   disableWine,
   wineDelete,
-  byTheGlass
+  byTheGlass,
+  stopLoading
 })(EditWine);
 
 export default EditWine

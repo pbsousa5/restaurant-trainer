@@ -20,6 +20,7 @@ import {
   WINE_EDIT_SWITCH,
   WINE_SEARCHING,
   JUMP_TO,
+  STOP_LOADING,
 } from '../actions/types';
 
 
@@ -41,6 +42,7 @@ const INITIAL_STATE = {
   notes: null,
   glass: false,
   hasLoaded: false,
+  showHelp: true,
   clearWineEdit: false,
   details: {
     name: null,
@@ -88,13 +90,13 @@ export default (state = INITIAL_STATE, action) => {
     case WINES_REFRESH:
       return {...state,
         loaded: false,
+        showHelp: true,
         notes: INITIAL_STATE.notes,
         details: INITIAL_STATE.details}
     case SHOW_WINE_SELECT:
-      return {...state, wineEdit: false, hasLoaded: true, details: {
+      return {...state, wineEdit: false, hasLoaded: true, showHelp: false,details: {
           glass: action.payload.glass,
           name: action.payload.name,
-          hasLoaded: true,
           vintage: action.payload.vintage,
           region: action.payload.region,
           varietal: action.payload.varietal,
@@ -104,13 +106,13 @@ export default (state = INITIAL_STATE, action) => {
           code: action.payload.code,
           link: action.payload.link,
           key: action.payload.key,
-
         }
       }
+    case STOP_LOADING:
+      return{...state, hasLoaded: false}
     case HIDE_MODAL_REFRESH:
-      return {...state, loaded: false, hasLoaded: true, details: {
+      return {...state, loaded: false, hasLoaded: true, showHelp: false, details: {
           name: action.payload.name,
-          hasLoaded: true,
           vintage: action.payload.vintage,
           region: action.payload.region,
           varietal: action.payload.varietal,

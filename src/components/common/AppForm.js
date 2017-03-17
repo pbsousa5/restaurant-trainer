@@ -138,7 +138,7 @@ class AppForm extends Component {
       allergies, gluten, appnotes, ingredients, image });
   }
   setFormFields = () => {
-    console.log("SETTING FORM FIELDS APPS");
+    //console.log("SETTING FORM FIELDS APPS");
     // set fields to default values
     // in case of this appfrom they should be empty
     this.props.change("appname", this.props.details.name)
@@ -149,13 +149,13 @@ class AppForm extends Component {
   }
   renderLoadingView() {
     //console.log("SHOULD BE RESETTING FIELDS ", this.props.hasLoaded);
-    if(this.props.hasLoaded){
+    /*if(this.props.hasLoaded){
       setTimeout(
       () => { this.setFormFields() },
       200
       )
       this.props.hasLoaded = false
-    }
+    }*/
     return(
       <View style={[AppStyles.flex1, AppStyles.container, {paddingTop:20}]}>
 

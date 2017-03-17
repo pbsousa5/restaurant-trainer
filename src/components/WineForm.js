@@ -24,7 +24,8 @@ import {
   wineData,
   wineNoteAdd,
   wineNoteRemove,
-  byTheGlass
+  byTheGlass,
+  stopLoading
   } from '../actions';
 import { SearchBar, Icon, Button} from 'react-native-elements'
 import Row from './common/Row';
@@ -144,10 +145,12 @@ class WineForm extends Component {
   render() {
     //console.log("search: ", this.props.searching);
     if (!this.props.loaded) {
+      console.log("LOADING VIEW");
       return this.renderLoadingView();
     }
     //renderRow={(data) => <Row {...data} />}
     else{
+      console.log("RESULTS: ", this.props.results.wines);
       const dataSource = this.ds.cloneWithRows(this.props.results.wines);
       if(this.props.toggle){
         //this.scaleModal()
@@ -219,6 +222,7 @@ class WineForm extends Component {
     image === "" ? image = this.CheckURI("") : null
     const link = this.props.details.link
     const code = this.props.details.code
+    console.log("SUBMIT WINE NAME: ", winename);
     this.props.wineCreate({ winename, winery, varietal, vintage, winenotes, region, image, glass, link, code });
     //this._clearFormFields()
     return dispatch => {
@@ -228,7 +232,9 @@ class WineForm extends Component {
 
   }
   setFormFields = () => {
-    console.log('setting form values ');
+    // stopLoading forces the hasLoaded to false
+    this.props.stopLoading()
+
     //TODO this isnt used anymore but is how you can update form from code
     this.props.change("winename", this.props.details.name)
     this.props.change("winery", this.props.details.producer)
@@ -246,16 +252,23 @@ class WineForm extends Component {
     this.props.change("vintage", "")
     this.props.change("winenotes", "")
   }
+  changedText(val){
+      console.log("C ",val);
+  }
   renderLoadingView() {
     // set the default values in the form
     // ONLY ONCE!!!
     // the timeout stops setState errors from firing
+
+    //THIS BREAKS THE SUBMISSION FOR SOME REASON
+    //IT WILL RESET THE VALUES TO DETAILS results
+    //EVERYTIME YOU TYPE?
+
     if(this.props.hasLoaded){
       setTimeout(
       () => { this.setFormFields() },
       200
       )
-      this.props.hasLoaded = false
     }
 
     return(
@@ -274,7 +287,7 @@ class WineForm extends Component {
               size="small"/>
             </View>
         </View>
-          {this.props.hasLoaded == true ? <View style={AppStyles.paddingTop}/> :
+          {this.props.showHelp == false ? <View style={AppStyles.paddingTop}/> :
             <Text style={[AppStyles.paddedText, AppStyles.h4]}>
                You can search for wines first to populate the fields.
               If you cannot find the wine you can always enter the info below to create a new wine.
@@ -309,6 +322,7 @@ class WineForm extends Component {
                     multiline = {true}
                     label="Bottle name" placeholder="Bottle name"
                     component={ Input }
+                    onChangeText={value => this.changedText(value)}
                     />
                   <Field name="winery" myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
                     defValue={this.props.details.producer}
@@ -403,7 +417,8 @@ WineForm = reduxForm({
 const selector = formValueSelector('wineDetailsForm');
 
 const mapStateToProps = (state) => {
-  const { name, description, results, loaded, search, details, loadingModal, glass, searching, hasLoaded } = state.wines
+  const { name, description, results, loaded,
+    search, details, loadingModal, glass, searching, hasLoaded, showHelp } = state.wines
   const { notes } = state.notes
   const { image, imageAdded, uploadedImage } = state.image
   const { toggle, bottle } = state.modal
@@ -414,7 +429,9 @@ const mapStateToProps = (state) => {
     winery: selector(state, 'winery'),
     region: selector(state, 'region'),
     winenotes: selector(state, 'winenotes'),
-    name, image, imageAdded, uploadedImage, description, results, loaded, search, toggle, bottle, notes, details, loadingModal, glass, searching, hasLoaded }
+    name, image, imageAdded, uploadedImage, description, results,
+    loaded, search, toggle, bottle, notes, details, loadingModal,
+    glass, searching, hasLoaded, showHelp }
 };
 
 
@@ -428,7 +445,8 @@ WineForm =  connect(
   wineData,
   wineNoteAdd,
   wineNoteRemove,
-  byTheGlass
+  byTheGlass,
+  stopLoading
 })(WineForm);
 
 export default WineForm

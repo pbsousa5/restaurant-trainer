@@ -44,7 +44,7 @@ class Wines extends Component {
   convertWineArrayToMap = () => {
     const wineCategoryMap = {} // Create the blank map
     //console.log('wine ', this.props.wines);
-    console.log(this.props.wineListLoaded);
+    //console.log(this.props.wineListLoaded);
     const wines = this.props.wines
     if(this.props.wineListLoaded == true){
       Object.keys(wines).map(function(wineItem) {
@@ -70,7 +70,7 @@ class Wines extends Component {
     );
   }
   renderSectionHeader = (sectionData, varietal) => {
-    console.log('varietal ', sectionData.varietal);
+    //console.log('varietal ', sectionData.varietal);
     return (
       <View style={AppStyles.sectionHeader}>
         <Text style={[AppStyles.h3,AppStyles.centered]}>{varietal.toUpperCase()}</Text>
