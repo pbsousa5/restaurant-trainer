@@ -1,9 +1,7 @@
 # OSX
 #
 .DS_Store
-#private
-screenshots/
-src/configs/fb_config
+
 # Xcode
 #
 build/
@@ -23,7 +21,7 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
-
+src/configs/fb_config.js
 # Android/IntelliJ
 #
 build/
@@ -36,11 +34,11 @@ local.properties
 #
 node_modules/
 npm-debug.log
+yarn-error.log
 
 # BUCK
 buck-out/
 \.buckd/
-android/app/libs
 *.keystore
 
 # fastlane
