@@ -298,12 +298,15 @@ class WineForm extends Component {
             <CardSection style={[AppStyles.row, AppStyles.backColor, AppStyles.paddingLeft, AppStyles.paddingBottom]}>
               { //check for local image added
                 this.props.image === null ?
-              <Lightbox onRequestClose={() => {alert("Modal has been closed.")}}>
-                  <Image source={{ uri: this.CheckURI(this.props.details.image)}} style={AppStyles.photo}/>
+              <Lightbox onRequestClose={null}
+                renderContent={this.renderLightBoxImage.bind(this, this.CheckURI(""))}>
+                  <Image source={{ uri: this.CheckURI("")}} style={AppStyles.photo}/>
               </Lightbox> :
-              <Lightbox onRequestClose={() => {alert("Modal has been closed.")}}>
+              <Lightbox onRequestClose={null}
+                renderContent={this.renderLightBoxImage.bind(this, this.props.image.uri)}>
                 <Image source={this.props.image} style={AppStyles.photo}/>
               </Lightbox>
+
               //END CHECK LOCAL IMAGE
             }
               <ImageSelect />

@@ -3,7 +3,8 @@ import {
   UPLOADED_IMAGE,
   RESET_IMAGE,
   WINES_LOADED,
-  SHOW_APP_SELECT
+  SHOW_APP_SELECT,
+  APPS_REFRESH,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -15,10 +16,17 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case ADD_IMAGE:
+    console.log('action.source ', action.source);
       return {
         ...state,
         image: action.source,
         imageAdded: true,
+      }
+    case APPS_REFRESH:
+      return{
+        ...state,
+        image: INITIAL_STATE.image,
+        imageAdded: false,
       }
     case UPLOADED_IMAGE:
       return {
