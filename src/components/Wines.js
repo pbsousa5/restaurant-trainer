@@ -59,6 +59,17 @@ class Wines extends Component {
     }
     return wineCategoryMap;
   }
+  renderItem({ item, index }) {
+    console.log('item, ' , item);
+    return (
+      <View style={AppStyles.appetizerRowStyle}>
+      <TouchableOpacity
+        onPress={this._loadWineScreen.bind(this, item)}>
+            <WineRow {...item} />
+      </TouchableOpacity>
+      </View>
+    );
+   }
   _renderRow(rowData, sectionID, rowID) {
     return (
       <View style={AppStyles.appetizerRowStyle}>
@@ -111,17 +122,24 @@ class Wines extends Component {
 
       const dataSource = this.ds.cloneWithRowsAndSections(this.convertWineArrayToMap())
       return(
-        <View style={[AppStyles.pageContainer, AppStyles.backColor]}>
-            <ListView
-              dataSource={dataSource}
-              renderRow={this._renderRow.bind(this)}
-              renderHeader={this._renderSearchBar}
-              renderSectionHeader={this.renderSectionHeader}
-            />
-         </View>
+        <ListView
+          dataSource={dataSource}
+          renderRow={this._renderRow.bind(this)}
+          renderHeader={this._renderSearchBar}
+          renderSectionHeader={this.renderSectionHeader}
+        />
       )
     }
+/*
+<ListView
+  dataSource={dataSource}
+  renderRow={this._renderRow.bind(this)}
+  renderHeader={this._renderSearchBar}
+  renderSectionHeader={this.renderSectionHeader}
+/>
 
+
+*/
 
 }
 const mapStateToProps = (state) => {

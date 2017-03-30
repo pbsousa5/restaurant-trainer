@@ -158,8 +158,9 @@ class NavRouter extends Component {
               <Scene
                 key="root"
                 hideNavBar={true}
+                tabs={true}
                 component={connect(state=>({LoggedIn:state.userLogged}))(Switch)}
-                selector={props=>this.props.LoggedIn ? "drawer" : "login"} >
+                selector={props=>this.props.LoggedIn ? "drawer" : "broken"} >
                 <Scene
                   key="drawer"
                   component={MenuDrawer}
@@ -211,7 +212,7 @@ class NavRouter extends Component {
                         title="EDIT APPETIZER"/>
                   </Scene>
                 </Scene>
-                <Scene key="login" direction="vertical" >
+                <Scene key="broken">
                   <Scene key="loginDefault"  component={Login} title="LOGIN" schema="modal" initial={true}/>
                   <Scene key="validation"  component={ValidationForm} title="EMAIL"/>
                 </Scene>

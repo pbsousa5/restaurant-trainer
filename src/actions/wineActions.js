@@ -212,6 +212,7 @@ export function getWineDetails({search}) {
 
 //Load wines from firebase
 export function loadWines (currentLocalID) {
+  console.log("currentLocalID ", currentLocalID);
   return function (dispatch){
     dispatch(getWineRequestedAction())
     const winesRef = companyRef.child(`${currentLocalID}`).child('wines')
