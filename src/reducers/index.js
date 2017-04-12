@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux'
-import navReducer from './navReducer'
+//import navReducer from './navReducer'
 import items from './items'
 import emailReducer from './emailReducer'
 import loggedReducer from './loggedReducer'
@@ -15,7 +15,7 @@ import { reducer as forms } from 'redux-form';
 
 const reducer = combineReducers({
   form: forms,
-  navReducer,
+  //navReducer,
   navRouter,
   items,
   appetizer: appetizer,

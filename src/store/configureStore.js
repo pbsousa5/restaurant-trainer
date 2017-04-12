@@ -3,7 +3,7 @@ import wineReducer from '../reducers/wineFormReducer'
 import reducer from '../reducers'
 import syncOffline from './syncOffline'
 import { syncFirebase } from '../configs/firebase'
-import createLogger from 'redux-logger'
+import { createLogger } from 'redux-logger'
 import thunk from 'redux-thunk'
 
 import * as Actions from '../actions'

@@ -17,7 +17,7 @@ import Wines from './Wines'
 import {connect} from 'react-redux'
 import { refreshingWines, wineEditSwitch, appEditSwitch, refreshingApps } from '../actions'
 import { Actions, Router, Scene, Switch, Modal, Schema, Reducer, ActionConst } from 'react-native-router-flux';
-import {BackAndroid, NavigationExperimental, View, StyleSheet, TouchableOpacity} from 'react-native'
+import {BackAndroid, View, StyleSheet, TouchableOpacity} from 'react-native'
 //import { NavigationBar } from '@shoutem/ui/navigation';
 import {
     Image,
@@ -160,7 +160,7 @@ class NavRouter extends Component {
                 hideNavBar={true}
                 tabs={true}
                 component={connect(state=>({LoggedIn:state.userLogged}))(Switch)}
-                selector={props=>this.props.LoggedIn ? "drawer" : "broken"} >
+                selector={props=>this.props.LoggedIn ? "drawer" : "login"} >
                 <Scene
                   key="drawer"
                   component={MenuDrawer}
@@ -212,7 +212,9 @@ class NavRouter extends Component {
                         title="EDIT APPETIZER"/>
                   </Scene>
                 </Scene>
-                <Scene key="broken">
+
+                <Scene key="login" direction="vertical">
+
                   <Scene key="loginDefault"  component={Login} title="LOGIN" schema="modal" initial={true}/>
                   <Scene key="validation"  component={ValidationForm} title="EMAIL"/>
                 </Scene>

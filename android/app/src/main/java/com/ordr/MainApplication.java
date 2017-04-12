@@ -7,6 +7,7 @@ import com.imagepicker.ImagePickerPackage;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.magus.fblogin.FacebookLoginPackage;
+import com.reactnative.photoview.PhotoViewPackage;
 import cl.json.RNSharePackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -34,6 +35,7 @@ public class MainApplication extends Application implements ReactApplication {
             new RNGoogleSigninPackage(),
             new RNFetchBlobPackage(),
             new FacebookLoginPackage(),
+            new PhotoViewPackage(),
             new RNSharePackage(),
             new LinearGradientPackage(),
             new VectorIconsPackage()

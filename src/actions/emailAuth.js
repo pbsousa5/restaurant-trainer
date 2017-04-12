@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-import FireAuth from 'react-native-firebase-auth'
+//import FireAuth from 'react-native-firebase-auth'
 import LocalStore from 'react-native-simple-store'
 import { databaseRef } from '../configs/firebase'
 import {

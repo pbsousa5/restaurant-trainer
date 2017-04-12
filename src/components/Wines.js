@@ -6,6 +6,7 @@ import {
   View,
   Text,
   ListView,
+  FlatList,
   ListViewDataSource,
   TouchableOpacity
 } from 'react-native'
@@ -130,16 +131,7 @@ class Wines extends Component {
         />
       )
     }
-/*
-<ListView
-  dataSource={dataSource}
-  renderRow={this._renderRow.bind(this)}
-  renderHeader={this._renderSearchBar}
-  renderSectionHeader={this.renderSectionHeader}
-/>
 
-
-*/
 
 }
 const mapStateToProps = (state) => {
