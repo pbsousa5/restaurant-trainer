@@ -6,7 +6,7 @@ import LinearGradient from 'react-native-linear-gradient'
 
 const Row = (props) => (
   <View style={[AppStyles.rowHeight, AppStyles.leftAligned, AppStyles.backColor, AppStyles.fullWindowWidth]}>
-    <LinearGradient colors={AppConfig.greyGradient} style={[styles.paddingBottom]}>
+    <LinearGradient colors={AppConfig.blueGradient} style={[styles.paddingBottom]}>
     <View style={[AppStyles.wineRow,AppStyles.fullWindowWidth]}>
       <View style={AppStyles.leftAligned}>
         <Image source={{ uri: CheckURI(props.image)}} style={AppStyles.photo} />

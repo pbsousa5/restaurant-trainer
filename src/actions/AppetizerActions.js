@@ -20,6 +20,7 @@ import {
   CREATE_APPETIZER_SUCCESS,
   GLUTEN_FREE,
   JUMP_TO_APPS,
+  NAV_BACK,
   SHOW_APP_SELECT,
   APPS_EDIT_SWITCH,
   ATTEMPTING_APPS_UPDATE,
@@ -182,10 +183,14 @@ function appsUpdateSuccess(){
     ]
   )
   //APPS_UPDATE_SUCCESS
+  return {
+    type: NAV_BACK,
+  }
+  /*
   Actions.appetizers({type:"replace"})
   return {
     type: JUMP_TO_APPS,
-  }
+  }*/
 
 
 }
@@ -212,11 +217,14 @@ function appsCreateSuccess(){
   )
 
   // GO BACK A SCREEN TO THE APPETIZER LISTVIEW
-
+  return {
+    type: NAV_BACK,
+  }
+  /*
   Actions.appetizers({type:"replace"})
   return {
     type: JUMP_TO_APPS,
-  }
+  }*/
 }
 function appsCreateError(){
   Alert.alert(
@@ -256,11 +264,15 @@ function appDeleteSuccess(){
       {text: 'OK', onPress: () => console.log('OK Pressed')},
     ]
   )
-
+  // USING NEW REACT NAVIGATION
+  return {
+    type: NAV_BACK,
+  }
+  /*
   Actions.appetizers({type:"replace"})
   return {
     type: JUMP_TO_APPS,
-  }
+  }*/
 
 }
 function createAppsAction(){

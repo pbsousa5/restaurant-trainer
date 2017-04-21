@@ -41,9 +41,11 @@ export default {
 	baseFontSize: 14,
 
 	// Colors
-	greenColor: "#679F16",
-	blueColor: "#64ACC5",
-	orangeColor: "#FE881E",
+	yellowColor:"#F4C11A",
+	medBlueColor: "#6DBBC7",
+	ltBlueColor: "#A3DCE0",
+	blueColor: "#1B6988",
+	orangeColor: "#F3BA00",
 	redColor: "#BB0D17",
 	primaryColor: "#FFB333",
 	secondaryColor: "#FFE229",
@@ -51,11 +53,12 @@ export default {
 	blackColor: "#000000",
 	whiteColor: "#ffffff",
 	greyBack: "#393e42",//303337 //404040 //393e42 // #CCCCCC
-	lightGrey: "#E5E5E5",
+	lightGrey: "#6C787F",
 	menuColor: "#2d2d2d",
 	secondaryTextColor: "#e7e7e7",
 	textColor: "#555",
 	whiteText: "#f6f5f3",
 	borderColor: "#E7E7E7",
+	blueGradient: ["#A3DCE0", "#6DBBC7", "#1B6988"],
 	greyGradient: ['#606466', '#393e42', '#182930'],
 }

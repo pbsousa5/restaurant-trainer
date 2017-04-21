@@ -220,7 +220,7 @@ class Form extends Component {
     return (
       <ScrollView automaticallyAdjustContentInsets={false}
         ref={'scrollView'}
-        style={[AppStyles.column, {paddingTop:70}, AppStyles.appContainer]}
+        style={[AppStyles.column, AppStyles.appContainer]}
         contentContainerStyle={[AppStyles.containerCentered, AppStyles.emailSignup]}>
         <Card title={this.state.form_values.First_name == '' ? "Sign Up" : "Update Profile"} >
         <View style={[AppStyles.paddingHorizontal]}>

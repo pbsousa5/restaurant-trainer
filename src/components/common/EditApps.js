@@ -90,7 +90,7 @@ class EditApps extends Component{
   _renderNormalView = () => {
     return(
       <ScrollView style={AppStyles.backColor}>
-      <View style={[AppStyles.flex1, AppStyles.container, AppStyles.backColor, {paddingTop:70}]}>
+      <View style={[AppStyles.flex1, AppStyles.container, AppStyles.backColor]}>
           <Card style={[AppStyles.cardStyle]}>
             <CardSection style={[AppStyles.backColor,
               AppStyles.paddingLeft, AppStyles.paddingBottom,{paddingTop:10}, AppStyles.row]}>

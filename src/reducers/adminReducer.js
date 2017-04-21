@@ -1,7 +1,8 @@
 import {
   IS_ADMIN,
   LOAD_COMPANIES,
-  LOAD_COMPANY_DATA
+  LOAD_COMPANY_DATA,
+  CURRENT_ADMIN
 } from '../actions/types'
 
 const INITIAL_STATE = {
@@ -29,6 +30,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         companyData: action.payload
+      }
+    case CURRENT_ADMIN:
+      return{
+        ...state,
+        isAdmin: action.payload.admin
       }
     default:
       return state;

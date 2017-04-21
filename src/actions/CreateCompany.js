@@ -9,7 +9,8 @@ import {
   COMPANY_EXISTS,
   DELETE_COMPANY,
   CHECK_COMPANY_NAME,
-  CHECKING_FOR_NAME
+  CHECKING_FOR_NAME,
+  CURRENT_ADMIN
   } from './types';
 import LocalStore from 'react-native-simple-store';
 import { Alert } from 'react-native'
@@ -89,7 +90,11 @@ export const LocalCompanyCheck = () => {
     LocalStore.get('localID').then(localID => {
         if (!localID) {
             console.log('localID is null: ' + localID);
-            const id = Math.random().toString(36).substring(7);
+            const id = "";
+            const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            for( var i=0; i < 12; i++ )
+                id += possible.charAt(Math.floor(Math.random() * possible.length));
+            //const id = Math.random().toString(36).substring(7);
             LocalStore.save('localID', {value: id});
             return dispatch(CreatingCompanyID(id))
         } else {
@@ -213,6 +218,7 @@ export function createCompanyName({coID, coName, image}){
   }
 }
 export function CompanyExists(coID){
+  CheckAdmin(coID)
   return{
     type: COMPANY_EXISTS,
     payload: {
@@ -221,10 +227,43 @@ export function CompanyExists(coID){
     }
   }
 }
+export function CheckAdmin  (coID) {
+  console.log('check admin level');
+  // check if user is admin
+  return (dispatch) => {
+    dispatch({type: 'CHECKING_ADMIN_LEVEL'})
+    var isAdmin = false
+    const companyRef = databaseRef.ref('companies').child(coID).child('info')
+    const currUID = firebase.auth().currentUser.uid
+    const ref = companyRef.child('employees').child(currUID).child('admin')
+     ref.once("value")
+      .then(function(snapshot) {
+        const admin = snapshot.val()
+        console.log('admin ', admin);
+        dispatch(SendAdminLevel(admin))
+      });
+  }
+}
+
+function checkingAdminLevel(){
+  return{
+    type: "CHECKING_ADMIN_LEVEL"
+  }
+}
+
+function SendAdminLevel(admin){
+  return{
+    type: CURRENT_ADMIN,
+    payload: {
+      admin: admin,
+    }
+  }
+}
 export const DeleteCompany = () => {
   // USED FOR TESTING IN ADDING NEW COMPANIES
   LocalStore.delete('localID')
   LocalStore.delete('localCompany')
+  console.log('DELTED ' + LocalStore.get('localID'));
   /*
   LocalStore.get('localID').then(localID => {
     console.log("DELETED LOCAL ID: ", localID);

@@ -6,20 +6,6 @@ import AppConfig from '../../configs/config'
 import { startAuthListener } from '../../actions'
 import firebase from 'firebase'
 import BackgroundImage from './BackgroundImage'
-const routeLogin = {
-     type: 'push',
-     route: {
-         key: 'login',
-         title: 'LOGIN'
-     }
-}
-const routeHome = {
-   type: 'push',
-   route: {
-       key: 'home',
-       title: 'HOME'
-   }
-}
 
 
 class LoadingScreen extends Component {
@@ -29,6 +15,9 @@ class LoadingScreen extends Component {
       animating: true,
       hasRedirected: false,
     }
+  }
+  componentDidMount(){
+    //this.props.startAuthListener()
   }
   componentWillReceiveProps(nextProps){
     if(nextProps.hasResponded && !this.state.hasRedirected){

@@ -17,7 +17,7 @@ import AppConfig from './config';
 /* Styles ==================================================================== */
 module.exports = StyleSheet.create({
 	appContainer: {
-    backgroundColor: AppConfig.greyBack,
+    backgroundColor: AppConfig.ltBlueColor,
     flex:1,
 	},
   iconColor: {
@@ -34,7 +34,6 @@ module.exports = StyleSheet.create({
     },
 	/* Default */
 	container: {
-
     position: 'relative',
     flexDirection: 'column',
     justifyContent: 'space-between',
@@ -57,8 +56,8 @@ module.exports = StyleSheet.create({
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      top: 50,
-      paddingBottom: 70
+
+
   },
   photoContainer: {
     flex: 1,
@@ -105,7 +104,7 @@ module.exports = StyleSheet.create({
     flex: 1,
   },
   sectionHeader:{
-    backgroundColor: AppConfig.darkGrey,
+    backgroundColor: AppConfig.blueColor,
     flex: 1,
   },
   containerBorder: {
@@ -115,7 +114,7 @@ module.exports = StyleSheet.create({
   },
   cardStyle: {
     borderWidth: 0,
-    backgroundColor: AppConfig.darkGrey,
+    backgroundColor: AppConfig.blueColor,
     flexDirection: 'column',
     justifyContent: 'center',
     //'flex-start' || 'flex-end' || 'center' || 'space-around' || 'space-between'
@@ -123,7 +122,7 @@ module.exports = StyleSheet.create({
   topCardWine:{
     borderWidth: 0,
     width: AppConfig.percentWidth,
-    backgroundColor: AppConfig.darkGrey,
+    backgroundColor: AppConfig.blueColor,
     flexDirection: 'column',
     justifyContent: 'center',
   },
@@ -143,33 +142,29 @@ module.exports = StyleSheet.create({
       left: 0,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: AppConfig.greyBack
+      backgroundColor: AppConfig.ltBlueColor
   },
   modalContainer: {
       flex: 1,
       backgroundColor: 'rgba(0, 0, 0, 1)',
   },
   createWine: {
-    paddingTop:70,
     paddingLeft:2,
     paddingRight:2,
-    backgroundColor: AppConfig.greyBack,
+    backgroundColor: AppConfig.ltBlueColor,
     justifyContent: 'space-between',
 
   },
   labelStyle: {
-    color: AppConfig.orangeColor,
+    color: AppConfig.darkGrey,
     fontSize: 13,
     paddingLeft: 0,
     flex: 1,
-    textShadowOffset: {width: 1, height: 1},
-    textShadowRadius: 1,
-    textShadowColor: '#000000',
     fontFamily: AppConfig.baseFont,
     fontWeight: '800',
   },
   displayText: {
-    color: AppConfig.lightGrey,
+    color: AppConfig.ltBlueColor,
     fontSize: 13,
     paddingLeft: 0,
     flex: 1,
@@ -187,7 +182,7 @@ module.exports = StyleSheet.create({
     color: '#000',
     paddingRight: 5,
     paddingLeft: 5,
-    backgroundColor: AppConfig.darkGrey,
+    backgroundColor: AppConfig.blueColor,
     fontSize: 18,
     lineHeight: 46,
     flex: 2,
@@ -202,14 +197,14 @@ module.exports = StyleSheet.create({
     paddingBottom: 10,
     paddingLeft:10,
     paddingRight:10,
-    backgroundColor: AppConfig.greyBack,
+    backgroundColor: AppConfig.ltBlueColor,
   },
   topBotPadding: {
     paddingTop:10,
     paddingBottom: 10,
   },
   backColor:{
-    backgroundColor: AppConfig.greyBack,
+    backgroundColor: AppConfig.ltBlueColor,
   },
   divider:{
     flex: 1,
@@ -325,7 +320,7 @@ module.exports = StyleSheet.create({
   h4: {
     fontFamily: AppConfig.baseFont,
     fontWeight: '800',
-    color: AppConfig.orangeColor,
+    color: AppConfig.darkGrey,
     fontSize: AppConfig.baseFontSize * 1.1,
     lineHeight: parseInt((AppConfig.baseFontSize * 1.1) + (AppConfig.baseFontSize * 0.5)),
     margin: 0,
@@ -333,10 +328,13 @@ module.exports = StyleSheet.create({
     marginBottom: 4,
     left: 0,
     right: 0,
-    textShadowOffset: {width: 1, height: 1},
-    textShadowRadius: 1,
-    textShadowColor: '#000000'
+
   },
+  /*
+  textShadowOffset: {width: 1, height: 1},
+  textShadowRadius: 1,
+  textShadowColor: '#000000'
+  */
   h5: {
     fontFamily: AppConfig.baseFont,
     fontWeight: '800',
@@ -379,7 +377,7 @@ module.exports = StyleSheet.create({
     fontWeight: '900',
   },
   fieldContainer: {
-    backgroundColor: AppConfig.greyBack,
+    backgroundColor: AppConfig.ltBlueColor,
     borderWidth: 0,
   },
   imageContainer: {
@@ -391,6 +389,14 @@ module.exports = StyleSheet.create({
     alignItems: 'center',
   },
   /* MENU STYLES */
+  menuIcon:{
+    paddingLeft: 10,
+
+  },
+  addIcon:{
+    paddingRight: 10,
+
+  },
   sideMenu: {
     flex: 1,
     backgroundColor: AppConfig.menuColor,

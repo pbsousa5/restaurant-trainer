@@ -2,7 +2,7 @@ import firebase from 'firebase'
 import React from 'react'
 import { Alert } from 'react-native'
 import {reset, destroy} from 'redux-form';
-import { Actions } from 'react-native-router-flux';
+//import { Actions } from 'react-native-router-flux';
 
 import {
   winesRef,
@@ -35,7 +35,8 @@ import {
   DELETE_WINE,
   WINE_SEARCHING,
   WINE_SEARCH_RESULTS,
-  STOP_LOADING
+  STOP_LOADING,
+  NAV_BACK
 } from './types'
 import { ApiUtils } from '../configs/ApiUtils'
 
@@ -259,14 +260,18 @@ function wineCreateSuccess() {
       {text: 'OK', onPress: () => console.log('OK Pressed')},
     ]
   )
-  Actions.wines({type:"replace"})
+  //Actions.wines({type:"replace"})
+  return {
+    type: NAV_BACK,
+  }
+  /*
   return {
     type: JUMP_TO_WINES,
     route: {
         key: "wines",
         title: "WINES",
     }
-  }
+  }*/
 
 }
 function deleteWineAction(){
@@ -294,14 +299,18 @@ function wineDeleteSuccess(){
       {text: 'OK', onPress: () => console.log('OK Pressed')},
     ]
   )
-  Actions.wines({type:"replace"})
+  //Actions.wines({type:"replace"})
+  return {
+    type: NAV_BACK,
+  }
+  /*
   return {
     type: JUMP_TO_WINES,
     route: {
         key: "wines",
         title: "WINES",
     }
-  }
+  }*/
 }
 function wineDeleteError(){
   Alert.alert(
@@ -341,14 +350,18 @@ function wineUpdateSuccess(){
       {text: 'OK', onPress: () => console.log('OK Pressed')},
     ]
   )
-  Actions.wines({type:"replace"})
+  //Actions.wines({type:"replace"})
+  return {
+    type: NAV_BACK,
+  }
+  /*
   return {
     type: JUMP_TO_WINES,
     route: {
         key: "wines",
         title: "WINES",
     }
-  }
+  }*/
 }
 function wineUpdateError() {
   Alert.alert(

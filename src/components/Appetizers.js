@@ -8,8 +8,25 @@ import { loadAppetizers, showAppetizer, showAppSelect } from '../actions';
 
 import AppConfig from '../configs/config'
 import AppStyles from '../configs/styles'
+import { MenuIcon} from './common/menu/MenuIcon'
+import { AddIcon } from './common/menu/AddIcon'
 
 class Appetizers extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    title: 'APPETIZERS',
+    headerTitleStyle: {
+       alignSelf: 'center',
+       marginRight: 56,
+    },
+    headerLeft:
+    <TouchableOpacity onPress={() => navigation.navigate('DrawerOpen')}>
+      <MenuIcon style={AppStyles.menuIcon}/>
+    </TouchableOpacity>,
+    headerRight:
+    <TouchableOpacity onPress={() => navigation.navigate('CreateApp')}>
+      <AddIcon style={AppStyles.addIcon}/>
+    </TouchableOpacity>,
+  });
   constructor(props){
     super(props)
     this.props.loadAppetizers(this.props.companyID)
@@ -21,15 +38,10 @@ class Appetizers extends Component {
 
   _loadAppsScreen = (data) => {
     console.log('load apps screen ' , data);
+    // navigation now handles inside REDUX and the action
     this.props.showAppSelect(data)
-    route = {
-        type: 'push',
-        route: {
-            key: 'editapps',
-            title: 'EDIT APPETIZERS'
-        }
-    }
-    this.props._handleNavigate("editapps")
+
+    //this.props._handleNavigate("editapps")
   }
   convertAppsArrayToMap = () => {
     const appsCategoryMap = {} // Create the blank map

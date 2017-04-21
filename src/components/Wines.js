@@ -18,7 +18,24 @@ import DynamicListRow from './common/DynamicListRow'
 import WineRow from './common/WineRow';
 import AppConfig from '../configs/config'
 import AppStyles from '../configs/styles'
+import { MenuIcon} from './common/menu/MenuIcon'
+import { AddIcon } from './common/menu/AddIcon'
 class Wines extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    title: 'WINES',
+    headerTitleStyle: {
+       alignSelf: 'center',
+       marginRight: 56,
+    },
+    headerLeft:
+    <TouchableOpacity onPress={() => navigation.navigate('DrawerOpen')}>
+      <MenuIcon style={AppStyles.menuIcon}/>
+    </TouchableOpacity>,
+    headerRight:
+    <TouchableOpacity onPress={() => navigation.navigate('CreateWine')}>
+      <AddIcon style={AppStyles.addIcon}/>
+    </TouchableOpacity>,
+  });
   constructor (props) {
     super(props)
     // PASS IN A REFERENCE TO THE LOCAL companyID
@@ -32,15 +49,8 @@ class Wines extends Component {
   _loadWineScreen = (data) => {
     //console.log('load wine screen ' , data);
     this.props.showWineSelect(data)
-    //TODO remove these routes since navigtion method has changed
-    route = {
-        type: 'push',
-        route: {
-            key: 'editwine',
-            title: 'EDIT WINE'
-        }
-    }
-    this.props._handleNavigate("editwine")
+
+    //this.props._handleNavigate("editwine")
   }
   convertWineArrayToMap = () => {
     const wineCategoryMap = {} // Create the blank map
@@ -136,7 +146,7 @@ class Wines extends Component {
 }
 const mapStateToProps = (state) => {
   const { wines, wineListLoaded } = state.wines;
-  const { companyID} = state.myCompany;
+  const { companyID } = state.myCompany;
   return { wines, companyID, wineListLoaded };
 };
 

@@ -3,7 +3,7 @@ import AppStyles from '../configs/styles'
 import AppUtil from '../configs/util';
 import * as firebase from 'firebase';
 import {View, Text, StyleSheet, Image, TouchableOpacity, TextInput} from 'react-native'
-import {Icon, NavigationBar, Title} from '@shoutem/ui';
+
 import {List, ListItem, Button, Card, FormLabel, FormInput} from 'react-native-elements'
 
 import {logOutUser, CheckForCompanyExist, CheckName, DisplayFirebaseImage,
@@ -11,17 +11,30 @@ import {logOutUser, CheckForCompanyExist, CheckName, DisplayFirebaseImage,
 import {connect} from 'react-redux'
 import LocalStore from 'react-native-simple-store';
 import ImageSelect from './common/ImageSelect'
+import { DrawerTitle } from './common/menu/DrawerTitle'
+import { MenuIcon} from './common/menu/MenuIcon'
 class HomeClass extends Component {
-
+    static navigationOptions = ({ navigation }) => ({
+      title:
+        "HOME",
+      headerTitleStyle: {
+         alignSelf: 'center',
+         marginRight: 56,
+      },
+      headerLeft:
+      <TouchableOpacity onPress={() => navigation.navigate('DrawerOpen')}>
+        <MenuIcon style={AppStyles.menuIcon}/>
+      </TouchableOpacity>
+    });
     constructor(props) {
       super(props)
       this._submitCompany = this._submitCompany.bind(this)
       this._deleteCompany = this._deleteCompany.bind(this)
-      console.log('home');
+
     }
     componentDidMount() {
         //Listen for firebase auth change
-        console.log('home');
+
         // this.props.CheckForCompanyExist()
         // FIRST CHECK IF USER HAS ADDED A LOCAL COMPANY
         // THIS IS SO WE CAN SHOW THE ADD NAME FIELD IF THE
@@ -29,6 +42,8 @@ class HomeClass extends Component {
         this.props.CheckName()
         // check for company ID
         // WILL CREATE IF DOESNT EXIST
+        // TODO currently being called twice
+        //TODO also being called every time user goes to home page
         this.props.LocalCompanyCheck()
     }
 
@@ -77,14 +92,21 @@ class HomeClass extends Component {
               icon={{name: 'code'}}
               backgroundColor='#03A9F4'
               fontFamily='Lato'
-              buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+              buttonStyle={{paddingBottom:10}}
               onPress={this.props.UpdateLocalID}
               title='CREATE ID' />
+              <Button
+                icon={{name: 'code'}}
+                backgroundColor='#03A9F4'
+                fontFamily='Lato'
+                buttonStyle={{paddingBottom:10}}
+                onPress={this.props.logOutUser}
+                title='LOG OUT' />
             <Button
               icon={{name: 'code'}}
               backgroundColor='#03A9F4'
               fontFamily='Lato'
-              buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+              buttonStyle={{paddingBottom:10}}
               onPress={this._deleteCompany.bind(this)}
               title='DELETE COMPANY' />
           </Card>
@@ -211,4 +233,6 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
     },
+
+
 })

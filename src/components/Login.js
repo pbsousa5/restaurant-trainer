@@ -1,7 +1,7 @@
 import FireAuth from 'react-native-firebase-auth';
 import firebase from 'firebase'
 import {connect} from 'react-redux';
-import {startAuthListener} from '../actions'
+import {startAuthListener, loginEmail} from '../actions'
 import React, {Component, PropTypes} from 'react'
 import FormValidation from 'tcomb-form-native'
 import ValidationForm from './social/validationForm'
@@ -31,14 +31,8 @@ import {
 import {Button, SocialIcon, Card, FormLabel, FormInput} from 'react-native-elements'
 import Modal from 'react-native-root-modal';
 import AppStyles from '../configs/styles'
-import {Actions} from 'react-native-router-flux'
-const route = {
-    type: 'push',
-    route: {
-        key: 'validate',
-        title: 'SIGNUP'
-    }
-}
+
+
 
 /*
 const LoginNav = ({_handleNavigate}) => (
@@ -63,13 +57,11 @@ class Login extends Component {
         this.routeToHome = this.routeToHome.bind(this)
 
     }
-    static contextTypes = {
-      routes: PropTypes.object.isRequired,
-    }
+
 
     componentDidMount() {
-        this.props.startAuthListener()
-        console.log('this.props.userLogged ' + this.props.userLogged);
+        //this.props.startAuthListener()
+        console.log('this.props.userLogged** ' + this.props.userLogged);
 
       //  FireAuth.setup(this.onLogin, this.onUserChange, this.onLogout, this.emailVerified, this.onError);
     }
@@ -131,52 +123,21 @@ class Login extends Component {
             Animated.timing(this.state.scale, {toValue: 0}).start(() => {
                 this.setState({visible: false});
             });
-
         }
-
     };
     setModalVisible(visible) {
         this.setState({visible: visible})
     }
 
     routeToHome = () => {
-        route = {
-            type: 'push',
-            route: {
-                key: 'home',
-                title: 'HOME'
-            }
-        }
-        this.props._handleNavigate(route)
+      console.log('ROUTE TO HOME BEING CALLED');
+      //this.props._handleNavigate(route)
     }
     render() {
-        /*
-        if (this.props.userLogged.LoggedIn) {
-            // NAVIGATE TO HOME IF THEY ARE ALREADY LOGGED IN
-            this.routeToHome()
-            return (
-                <View style={styles.content}>
-                    <Spinner/>
-                </View>
-            )
-        } else {
-        */
         const {routes} = this.context;
         return (
             <View style={AppStyles.appContainer}>
-                <Animated.Modal visible={this.state.visible} style={[
-                    styles.modal, {
-                        transform: [
-                            {
-                                scale: this.state.scale
-                            }, {
-                                translateX: this.state.x
-                            }
-                        ]
-                    }
-                ]}>
-                    <ValidationForm/>
-                </Animated.Modal>
+
                 <View style={styles.buttonsContainer}>
                     <Card title="CHOOSE A LOGIN METHOD">
                         <Button raised buttonStyle={{
@@ -186,7 +147,7 @@ class Login extends Component {
                             marginBottom: 10
                         }} backgroundColor="#22a3ed" icon={{
                             name: 'email'
-                        }} title='Sign In With Email' onPress={Actions.validation}/>
+                        }} title='Sign In With Email' onPress={() => this.props.loginEmail()}/>
                         <Button raised buttonStyle={{
                             borderRadius: 30,
                             marginLeft: 15,
@@ -217,7 +178,7 @@ const mapStateToProps = state => {
     return {userLogged: state.userLogged};
 };
 
-export default connect(mapStateToProps, {startAuthListener})(Login);
+export default connect(mapStateToProps, {startAuthListener, loginEmail})(Login);
 
 const styles = StyleSheet.create({
     button: {

@@ -6,6 +6,7 @@ import {
   EMAIL_CHANGED,
   PASSWORD_CHANGED,
   LOGIN_USER_SUCCESS,
+  LOGIN_EMAIL,
   LOGIN_USER_FAIL,
   LOGIN_USER,
   LOG_OUT_USER,
@@ -33,6 +34,12 @@ export const passwordChanged = (text) => {
     payload: text
   };
 };
+export const loginEmail = () => {
+  return {
+     type: LOGIN_EMAIL
+  }
+
+}
 export const logOutUser = () => {
   console.log("LOG OUT USER!!!");
   return (dispatch) => {
