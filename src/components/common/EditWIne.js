@@ -18,15 +18,17 @@ import {
   byTheGlass,
   wineDelete,
   disableWine,
-  stopLoading
+  stopLoading,
+  wineEditSwitch
 } from '../../actions';
 import { CardSection, Card, Input, CustomSwitch } from './';
-
+import {AddIcon} from './menu/AddIcon'
+import FormWrapper from './utils/FormWrapper'
 class EditWine extends Component {
 
   constructor(props){
     super(props)
-
+    console.log("************EDIT WINES**************");
     this._renderNormalView = this._renderNormalView.bind(this)
     this._renderEditView = this._renderEditView.bind(this)
     this._goToURL = this._goToURL.bind(this);
@@ -35,8 +37,6 @@ class EditWine extends Component {
     this.onDisablePressed = this.onDisablePressed.bind(this)
     this._resetScrollView = this._resetScrollView.bind(this)
   }
-
-
   renderLightBoxImage = (image) => {
     return(
       <View style={AppStyles.photoContainer}>
@@ -169,6 +169,7 @@ class EditWine extends Component {
     )
   }
   render(){
+
     return(
       this.props.wineEdit ? this._renderEditView() : this._renderNormalView()
     )
@@ -331,12 +332,29 @@ class EditWine extends Component {
   }
 
 }
-
+/*
 EditWine = reduxForm({
   form: 'wineUpdateForm'  // a unique identifier for this form
-})(EditWine)
-const selector = formValueSelector('wineUpdateForm');
+})(EditWine)*/
 
+EditWine = FormWrapper(reduxForm({
+  form: 'wineUpdateForm'  // a unique identifier for this form
+})(EditWine));
+const selector = formValueSelector('wineUpdateForm');
+/*
+EditWine.navigationOptions = ({ navigation, props }) => ({
+  title: 'VIEW WINE',
+  headerTitleStyle: {
+     alignSelf: 'center',
+  },
+
+  headerRight:
+
+  <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+    <AddIcon style={AppStyles.addIcon} type={"EDIT"}/>
+  </TouchableOpacity>,
+
+});*/
 const mapStateToProps = (state) => {
   const { name, description, results, loaded, search, details,
     loadingModal, glass, wineEdit, hasLoaded } = state.wines
@@ -349,8 +367,10 @@ const mapStateToProps = (state) => {
     winery: selector(state, 'winery'),
     region: selector(state, 'region'),
     winenotes: selector(state, 'winenotes'),
+    navigationState: state.editWine,
     name, description, results, loaded, search,
-    details, loadingModal, glass, wineEdit, image, imageAdded, uploadedImage, hasLoaded }
+    details, loadingModal, glass, wineEdit, image, imageAdded,
+    uploadedImage, hasLoaded}
 };
 
 
@@ -362,6 +382,7 @@ EditWine =  connect(
   disableWine,
   wineDelete,
   byTheGlass,
+  wineEditSwitch,
   stopLoading
 })(EditWine);
 

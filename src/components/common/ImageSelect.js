@@ -16,7 +16,9 @@ import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
 import { addImage, UploadImage, UploadImage_notworking } from '../../actions'
 class ImageSelect extends React.Component {
-
+  constructor(props){
+    super(props)
+  }
   state = {
     avatarSource: null,
     videoSource: null
@@ -43,6 +45,9 @@ class ImageSelect extends React.Component {
       }
       else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
+      }
+      else if(this.props.type == "user") {
+        console.log("Wait for user to login before upload");
       }
       else {
         var source;
@@ -87,6 +92,7 @@ class ImageSelect extends React.Component {
       else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       }
+
       else {
         this.setState({
           videoSource: response.uri
@@ -96,6 +102,7 @@ class ImageSelect extends React.Component {
   }
 
   render() {
+    console.log("type: ",this.props.type);
     return (
       <View style={AppStyles.addImageButton}>
         <Button

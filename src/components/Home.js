@@ -7,7 +7,8 @@ import {View, Text, StyleSheet, Image, TouchableOpacity, TextInput} from 'react-
 import {List, ListItem, Button, Card, FormLabel, FormInput} from 'react-native-elements'
 
 import {logOutUser, CheckForCompanyExist, CheckName, DisplayFirebaseImage,
-  createCompanyName, NoCompanyCreated, CompanyExists, UpdateLocalID, DeleteCompany, LocalCompanyCheck } from '../actions'
+  createCompanyName, NoCompanyCreated, CompanyExists, UpdateLocalID,
+  DeleteCompany, LocalCompanyCheck, toggleAdmin } from '../actions'
 import {connect} from 'react-redux'
 import LocalStore from 'react-native-simple-store';
 import ImageSelect from './common/ImageSelect'
@@ -74,6 +75,7 @@ class HomeClass extends Component {
     }
 
     render() {
+
       //TODO better way to handle companyID creation currently I just check
       // if it has not been created yet.  This only comes into effect
       // after logging out and deleting the user.
@@ -109,6 +111,14 @@ class HomeClass extends Component {
               buttonStyle={{paddingBottom:10}}
               onPress={this._deleteCompany.bind(this)}
               title='DELETE COMPANY' />
+              <Text style={{marginBottom: 10}}>Admin: {this.props.isAdmin.toString()}</Text>
+              <Button
+                icon={{name: 'code'}}
+                backgroundColor='#03A9F4'
+                fontFamily='Lato'
+                buttonStyle={{paddingBottom:10}}
+                onPress={this.props.toggleAdmin}
+                title='TOGGLE ADMIN' />
           </Card>
           </Image>
         </View>)
@@ -169,7 +179,8 @@ class HomeClass extends Component {
 const mapStateToProps = state => {
   const { userLogged, LoggedIn, company, companyID, localName } = state.myCompany
   const { image, imageAdded, uploadedImage } = state.image
-  return { userLogged, LoggedIn, company, companyID, localName, imageAdded, image, uploadedImage }
+  const {isAdmin} = state.admin
+  return { userLogged, LoggedIn, isAdmin, company, companyID, localName, imageAdded, image, uploadedImage }
 }
 
 export default connect(mapStateToProps, {
@@ -182,7 +193,8 @@ export default connect(mapStateToProps, {
   LocalCompanyCheck,
   UpdateLocalID,
   CheckName,
-  DisplayFirebaseImage
+  DisplayFirebaseImage,
+  toggleAdmin
 })(HomeClass);
 
 const styles = StyleSheet.create({

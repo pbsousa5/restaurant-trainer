@@ -39,7 +39,7 @@ export const UploadImage = (source) => {
   const { currentUser } = firebase.auth()
   var currentLocalID
   var idRef = firebase.database().ref(`/users/${currentUser.uid}/currentID`)
-
+  
   // create Blob from file path
   return dispatch => {
     return idRef.once('value',function(snapshot){

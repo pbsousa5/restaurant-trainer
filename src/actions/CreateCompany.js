@@ -17,25 +17,7 @@ import { Alert } from 'react-native'
 
 const company = false
 // CHECKING FOR COMPANY NAME CREATED LOCALLY
-/*
-export const LocalCompanyCreated = () => {
-  return (dispatch) => {
-    dispatch(checkForCompanyExist())
-    LocalStore.get('localCompany').then(localCompany => {
-        if (!localCompany) {
-            console.log('localCompany is null: ' + localCompany);
-            //LocalStore.save('localCompany', {value: id});
-            return dispatch(CreatingCompanyID(id))
-        } else {
-            console.log('localCompany value: ' + localCompany.value);
-            return dispatch(CompanyExists(localCompany.value))
-        }
-    }).catch(error => {
-      console.log(error.message);
-      return dispatch(errorCreatingCompany())
-    });
-  }
-}*/
+
 export const CheckName = () => {
 
   return (dispatch) => {
@@ -99,7 +81,8 @@ export const LocalCompanyCheck = () => {
             return dispatch(CreatingCompanyID(id))
         } else {
             console.log('localID value: ' + localID.value);
-            return dispatch(CompanyExists(localID.value))
+            // this checks admin level and also calls CompanyExists
+            return dispatch(CheckAdmin(localID.value))
         }
     }).catch(error => {
       console.log(error.message);
@@ -189,6 +172,7 @@ export function createCompanyName({coID, coName, image}){
     })
     .then(() => {
       // SET THIS USER AS ADMIN TO COMPANY
+      dispatch( SendAdminLevel(true) )
       companyRef.child('employees').child(currUID).set({
         admin: true,
         email: currEmail
@@ -218,7 +202,6 @@ export function createCompanyName({coID, coName, image}){
   }
 }
 export function CompanyExists(coID){
-  CheckAdmin(coID)
   return{
     type: COMPANY_EXISTS,
     payload: {
@@ -227,21 +210,24 @@ export function CompanyExists(coID){
     }
   }
 }
-export function CheckAdmin  (coID) {
-  console.log('check admin level');
+function CheckAdmin  (coID) {
   // check if user is admin
-  return (dispatch) => {
+  console.log('check admin level');
+  return dispatch => {
     dispatch({type: 'CHECKING_ADMIN_LEVEL'})
     var isAdmin = false
     const companyRef = databaseRef.ref('companies').child(coID).child('info')
     const currUID = firebase.auth().currentUser.uid
     const ref = companyRef.child('employees').child(currUID).child('admin')
-     ref.once("value")
+     return ref.once("value")
       .then(function(snapshot) {
         const admin = snapshot.val()
         console.log('admin ', admin);
         dispatch(SendAdminLevel(admin))
-      });
+        dispatch(CompanyExists(coID))
+      }).catch((error) => {
+        dispatch({type:'ERROR_CHECKING_ADMIN_LEVEL'})
+      })
   }
 }
 
@@ -279,7 +265,8 @@ export const DeleteCompany = () => {
 function CreatingCompanyID (coID){
   // SET LOCAL NAME TO BE true
   console.log('LOCAL ID SET: ', coID);
-  return{
+
+  return {
     type: COMPANY_DID_NOT_EXIST,
     payload:{
       company:false,

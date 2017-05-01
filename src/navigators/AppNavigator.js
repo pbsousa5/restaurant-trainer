@@ -1,26 +1,28 @@
 import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 import {Image, StyleSheet} from 'react-native'
-import { StackNavigator, addNavigationHelpers, DrawerNavigator } from 'react-navigation'
+import { StackNavigator, addNavigationHelpers, DrawerNavigator, TabNavigator } from 'react-navigation'
 import Home from '../components/Home'
 import About from '../components/About'
 import Login from '../components/Login'
-import MenuDrawer from '../components/common/MenuDrawer'
+//import MenuDrawer from '../components/common/MenuDrawer'
 import ImageSelect from '../components/common/ImageSelect'
 import LoadingScreen from '../components/common/LoadingScreen'
-import AnimatedModal from '../components/AnimationModal'
+//import AnimatedModal from '../components/AnimationModal'
 import ValidationForm from '../components/social/validationForm'
 import CreateWine from '../components/CreateWine'
 import CreateApps from '../components/common/CreateApps'
 import AdminPage from '../components/AdminPage'
 import EditWine from '../components/common/EditWine'
 import EditApps from '../components/common/EditApps'
+import Settings from '../components/common/Settings'
+import Users from '../components/common/Users'
 import Appetizers from '../components/Appetizers'
 import Wines from '../components/Wines'
-
+import Test from '../components/common/wines/Test'
 
 const HomeStack = StackNavigator({
-  	Home: {screen: Home},
+  	MainHome: {screen: Home},
 	},
 	{
     headerMode: 'screen',
@@ -31,6 +33,7 @@ const WinesStack = StackNavigator({
   Wines: { screen: Wines },
   CreateWine: { screen: CreateWine },
   ViewWine: {screen: EditWine },
+  Test: {screen: Test},
 });
 
 const AppStack = StackNavigator({
@@ -38,11 +41,19 @@ const AppStack = StackNavigator({
   CreateApp: { screen: CreateApps },
   ViewApp: { screen: EditApps },
 });
-
+const SettingsTab = TabNavigator({
+  Users: { screen: Users },
+  Settings: { screen: Settings},
+  AdminPage: {screen: AdminPage},
+})
+const SettingsStack = StackNavigator({
+  SettingsTab: { screen: SettingsTab},
+})
 const InnerNavigator = DrawerNavigator ({
       Home: { screen: HomeStack },
+      Appetizers: { screen: AppStack },
 			Wines: {screen: WinesStack},
-			Appetizers: { screen: AppStack },
+      SettingsStack: { screen: SettingsStack},
 })
 const LoginStack = StackNavigator ({
   initialRouteName: {screen: Login},
@@ -53,7 +64,7 @@ export const AppNavigator = StackNavigator(
   {
     Loading: { screen: LoadingScreen },
 		LoginStart: { screen: LoginStack },
-    Home: { screen: InnerNavigator },
+    Root: { screen: InnerNavigator },
   },
   {
     headerMode: 'none'
@@ -80,6 +91,7 @@ const mapStateToProps = state => ({
   loaded: state.wines,
   clearWineEdit: state.wines,
   myCompany: state.myCompany.company,
+  isAdmin: state.admin,
 })
 
 export default connect(mapStateToProps)(AppWithNavigationState)

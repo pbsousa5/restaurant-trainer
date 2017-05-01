@@ -6,7 +6,8 @@ import {
   LOG_OUT_USER,
   LOGIN_USER,
   COMPANY_CHANGED,
-  CREATE_USER_SUCCESS
+  CREATE_USER_SUCCESS,
+  USER_IMAGE_UPLOAD
 } from '../actions/types'
 
 const INITIAL_STATE = {
@@ -15,7 +16,8 @@ const INITIAL_STATE = {
   user: null,
   error: '',
   company: '',
-  loading: false
+  loading: false,
+  userImage: null
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -42,6 +44,11 @@ export default (state = INITIAL_STATE, action) => {
         error: '',
         company: '',
         loading: false
+      }
+    case USER_IMAGE_UPLOAD:
+      return{
+        ...state,
+        userImage: action.payload
       }
     default:
       return state;

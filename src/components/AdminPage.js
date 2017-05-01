@@ -3,7 +3,8 @@ import {
   View,
   Text,
   Image,
-  ListView
+  ListView,
+  TouchableOpacity
 } from 'react-native'
 import {
   loadCompanies,
@@ -15,7 +16,7 @@ import {connect} from 'react-redux'
 import { Tabs, Tab, Icon } from 'react-native-elements'
 import Companies from './common/Companies'
 import Users from './common/Users'
-
+import { MenuIcon} from './common/menu/MenuIcon'
 
 class AdminPage extends Component {
   constructor(props) {
@@ -26,9 +27,18 @@ class AdminPage extends Component {
     this.changeTab = this.changeTab.bind(this)
 
   }
-  componentDidMount(){
+  static navigationOptions = ({ navigation }) => ({
+    title: 'ADMIN',
+    headerTitleStyle: {
+       alignSelf: 'center',
+       marginRight: 56,
+    },
+    headerLeft:
+    <TouchableOpacity onPress={() => navigation.navigate('DrawerOpen')}>
+      <MenuIcon style={AppStyles.menuIcon}/>
+    </TouchableOpacity>,
 
-  }
+  });
   changeTab (selectedTab) {
     this.setState({selectedTab})
   }
@@ -74,6 +84,5 @@ const mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps, {
-
-})(AdminPage
-);
+  loadCompanies
+})(AdminPage);

@@ -26,10 +26,8 @@ import {
   companyChanged
 } from '../../actions';
 import { connect } from 'react-redux';
-import {
-  NavigationBar,
-  Icon
-} from '@shoutem/ui';
+import ImageSelect from '../common/ImageSelect'
+import  Lightbox  from 'react-native-lightbox'
 // App Globals
 import AppStyles from '../../configs/styles'
 import AppUtil from '../../configs/util'
@@ -37,14 +35,7 @@ import {Actions} from 'react-native-router-flux'
 // Components
 //import Button from '../components/button'
 import Alerts from '../alerts'
-
-const route = {
-  type: 'push',
-  route: {
-    key: 'home',
-    title: 'HOME'
-  }
-}
+import { CardSection } from '../common';
 
 /* Component ==================================================================== */
 class Form extends Component {
@@ -222,9 +213,25 @@ class Form extends Component {
         ref={'scrollView'}
         style={[AppStyles.column, AppStyles.appContainer]}
         contentContainerStyle={[AppStyles.containerCentered, AppStyles.emailSignup]}>
+
         <Card title={this.state.form_values.First_name == '' ? "Sign Up" : "Update Profile"} >
         <View style={[AppStyles.paddingHorizontal]}>
+          <CardSection style={[AppStyles.row, AppStyles.backColor, AppStyles.paddingLeft, AppStyles.paddingBottom]}>
+            { //check for local image added
+              this.props.userImage === null ?
+            <Lightbox onRequestClose={null}
+              renderContent={this.renderLightBoxImage.bind(this, require('../../../images/user_icon.jpg'))}>
+                <Image source={require('../../../images/user_icon.jpg')} style={AppStyles.photo}/>
+            </Lightbox> :
+            <Lightbox onRequestClose={null}
+              renderContent={this.renderLightBoxImage.bind(this, this.props.userImage.uri)}>
+              <Image source={this.props.userImage} style={AppStyles.photo}/>
+            </Lightbox>
 
+            //END CHECK LOCAL IMAGE
+          }
+            <ImageSelect type={"user"}/>
+          </CardSection>
           <Alerts
             status={this.state.resultMsg.status}
             success={this.state.resultMsg.success}
@@ -258,10 +265,26 @@ class Form extends Component {
       </ScrollView>
     );
   }
+  CheckURI(uri){
+    if(uri === ""){
+      //TODO replace this with a local default wine bottle image
+      return "https://static.vecteezy.com/system/resources/previews/000/000/624/original/red-wine-bottle-vector.jpg"
+    }else{
+      return uri
+    }
+  }
+  renderLightBoxImage = (image) => {
+    return(
+      <View style={AppStyles.photoContainer}>
+        <Image source={{ uri: this.CheckURI(image)}}
+          style={[AppStyles.hugePhoto ]}/>
+      </View>
+    )
+  }
 }
 const mapStateToProps = ({ auth }) => {
-  const { email, password, error, loading, company } = auth;
-  return { email, password, error, loading, company };
+  const { email, password, error, loading, company, userImage } = auth;
+  return { email, password, error, loading, company, userImage };
 };
 
 export default connect(mapStateToProps, {

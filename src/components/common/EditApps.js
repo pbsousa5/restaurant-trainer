@@ -30,6 +30,7 @@ class EditApps extends Component{
     this.onDisablePressed = this.onDisablePressed.bind(this)
     this._renderNormalView = this._renderNormalView.bind(this)
   }
+
   onUpdatePress = () => {
     const {  appname, category, allergies, appnotes, ingredients, } = this.props;
     console.log("APPETIZER NAME: ", appname);

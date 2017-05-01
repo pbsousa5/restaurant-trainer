@@ -23,7 +23,7 @@ const initialNavState = {
 }
 
 function nav(state = initialNavState, action){
-  console.log('action.type* ',action.type);
+  console.log('**router state** ', state);
   //console.log('action* ',action);
   switch(action.type){
     case 'CONNECTION_OFFLINE':

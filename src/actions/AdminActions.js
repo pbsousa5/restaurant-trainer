@@ -1,7 +1,7 @@
 import React from 'react'
 import { Alert } from 'react-native'
 import {
-  winesRef,
+
   companyRef,
   databaseRef,
   usersRef,
@@ -12,7 +12,10 @@ import firebase from 'firebase'
 import {
   IS_ADMIN,
   LOAD_COMPANIES,
-  LOAD_COMPANY_DATA
+  LOAD_COMPANY_DATA,
+  TOGGLE_ADMIN,
+  LOAD_COMPANY_USERS,
+  COMPANY_USERS_LOADED
 } from './types'
 
 
@@ -39,7 +42,12 @@ export function loadCompanies (currentLocalID) {
     })
   }
 }
-
+export function toggleAdmin () {
+  // TESTING ADMIN SETTINGS
+  return {
+    type: TOGGLE_ADMIN
+  }
+}
 export function loadCompanyData(coID){
 
   return dispatch => {
@@ -52,6 +60,24 @@ export function loadCompanyData(coID){
       console.log("snap.key " , companies)
       dispatch(getCompanyDataFulfilledAction(companies))
     })
+  }
+}
+export function loadCompanyUsers(companyID){
+  console.log("companyID ", companyID);
+  return function (dispatch){
+    dispatch({type: LOAD_COMPANY_USERS})
+    const usersRef = companyRef.child(`${companyID}`).child('info').child('employees')
+    return usersRef.on('value', snap => {
+      const users = snap.val()
+      console.log("users: " , users)
+      dispatch(getUsersFulfilledAction(users))
+    })
+  }
+}
+function getUsersFulfilledAction(users){
+  return{
+    type: 'COMPANY_USERS_LOADED',
+    payload: users
   }
 }
 function getCompanyDataRequestedAction(){

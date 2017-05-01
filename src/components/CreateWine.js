@@ -4,6 +4,7 @@ import {
   View,
   Text,
   ScrollView,
+  TouchableOpacity
 } from 'react-native'
 
 import {
@@ -23,7 +24,13 @@ import WineForm from './WineForm'
 
 
 class CreateWine extends Component {
-
+  static navigationOptions = ({ navigation }) => ({
+    title: 'ADD WINE',
+    headerTitleStyle: {
+       alignSelf: 'center',
+       marginRight: 56,
+    },
+  });
   onSearchPress(){
     const { search } = this.props
     this.props.searchWine({search})

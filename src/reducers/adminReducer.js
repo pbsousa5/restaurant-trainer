@@ -2,7 +2,9 @@ import {
   IS_ADMIN,
   LOAD_COMPANIES,
   LOAD_COMPANY_DATA,
-  CURRENT_ADMIN
+  CURRENT_ADMIN,
+  TOGGLE_ADMIN,
+  COMPANY_USERS_LOADED
 } from '../actions/types'
 
 const INITIAL_STATE = {
@@ -13,6 +15,7 @@ const INITIAL_STATE = {
     address: null,
   },
   isAdmin: false,
+  users: null,
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -31,13 +34,24 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         companyData: action.payload
       }
+    case TOGGLE_ADMIN:
+      return {
+        ...state,
+        isAdmin: !state.isAdmin
+      }
     case CURRENT_ADMIN:
       return{
         ...state,
         isAdmin: action.payload.admin
       }
+    case COMPANY_USERS_LOADED:
+      return{
+        ...state,
+        users: action.payload
+      }
     default:
       return state;
     }
+
 
 }

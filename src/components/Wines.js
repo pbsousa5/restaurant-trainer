@@ -19,8 +19,19 @@ import WineRow from './common/WineRow';
 import AppConfig from '../configs/config'
 import AppStyles from '../configs/styles'
 import { MenuIcon} from './common/menu/MenuIcon'
-import { AddIcon } from './common/menu/AddIcon'
+import {AddIcon} from './common/menu/AddIcon'
 class Wines extends Component {
+
+  constructor (props) {
+    super(props)
+    // PASS IN A REFERENCE TO THE LOCAL companyID
+    // THIS MAY CHANGE LATER IF THE USER IS A MEMBER OF MULTIPLE COMPANIES
+    this.props.loadWines(this.props.companyID)
+    this.ds = new ListView.DataSource({
+        rowHasChanged: (r1, r2) => r1 !== r2,
+        sectionHeaderHasChanged: (s1, s2) => s1 !== s2
+    });
+  }
   static navigationOptions = ({ navigation }) => ({
     title: 'WINES',
     headerTitleStyle: {
@@ -33,19 +44,10 @@ class Wines extends Component {
     </TouchableOpacity>,
     headerRight:
     <TouchableOpacity onPress={() => navigation.navigate('CreateWine')}>
-      <AddIcon style={AppStyles.addIcon}/>
+      <AddIcon style={AppStyles.addIcon} type={"ADD"}/>
     </TouchableOpacity>,
+
   });
-  constructor (props) {
-    super(props)
-    // PASS IN A REFERENCE TO THE LOCAL companyID
-    // THIS MAY CHANGE LATER IF THE USER IS A MEMBER OF MULTIPLE COMPANIES
-    this.props.loadWines(this.props.companyID)
-    this.ds = new ListView.DataSource({
-        rowHasChanged: (r1, r2) => r1 !== r2,
-        sectionHeaderHasChanged: (s1, s2) => s1 !== s2
-    });
-  }
   _loadWineScreen = (data) => {
     //console.log('load wine screen ' , data);
     this.props.showWineSelect(data)
@@ -70,17 +72,13 @@ class Wines extends Component {
     }
     return wineCategoryMap;
   }
-  renderItem({ item, index }) {
-    console.log('item, ' , item);
-    return (
-      <View style={AppStyles.appetizerRowStyle}>
-      <TouchableOpacity
-        onPress={this._loadWineScreen.bind(this, item)}>
-            <WineRow {...item} />
-      </TouchableOpacity>
-      </View>
-    );
-   }
+
+   /*
+   <TouchableOpacity
+     onPress={this._loadWineScreen.bind(this, rowData)}>
+         <WineRow {...rowData} />
+   </TouchableOpacity>
+   */
   _renderRow(rowData, sectionID, rowID) {
     return (
       <View style={AppStyles.appetizerRowStyle}>
@@ -147,7 +145,8 @@ class Wines extends Component {
 const mapStateToProps = (state) => {
   const { wines, wineListLoaded } = state.wines;
   const { companyID } = state.myCompany;
-  return { wines, companyID, wineListLoaded };
+  const { isAdmin } = state.admin;
+  return { wines, companyID, wineListLoaded, isAdmin };
 };
 
 export default connect(mapStateToProps, { loadWines, showWineSelect })(Wines);
