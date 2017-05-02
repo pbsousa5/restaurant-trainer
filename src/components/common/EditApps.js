@@ -22,6 +22,8 @@ import {
   glutenFree,
   disableApp
 } from '../../actions'
+import FormWrapper from './utils/FormWrapper'
+
 class EditApps extends Component{
   constructor(props){
     super(props)
@@ -147,7 +149,7 @@ class EditApps extends Component{
   }
   renderDisplayView(){
     return(
-      <View style={{paddingTop:70}}>
+      <View >
         <Text>{this.props.details.name}</Text>
       </View>
     )
@@ -171,7 +173,7 @@ class EditApps extends Component{
     }
     return(
       <ScrollView style={AppStyles.backColor}>
-        <View style={[AppStyles.flex1, AppStyles.container, AppStyles.backColor, {paddingTop:70}]}>
+        <View style={[AppStyles.flex1, AppStyles.container, AppStyles.backColor]}>
             <Card style={[AppStyles.cardStyle]}>
               <CardSection style={[AppStyles.backColor,
                 AppStyles.paddingLeft, AppStyles.paddingBottom,{paddingTop:10}, AppStyles.row]}>
@@ -283,9 +285,7 @@ class EditApps extends Component{
   }
 }
 
-EditApps = reduxForm({
-  form: 'appEditForm'  // a unique identifier for this form
-})(EditApps)
+
 const selector = formValueSelector('appEditForm');
 
 const mapStateToProps = (state) => {
@@ -301,13 +301,15 @@ const mapStateToProps = (state) => {
     image, imageAdded, uploadedImage, toggle, gluten, appsEdit, details }
 };
 
-
-EditApps =  connect(
+EditApps = FormWrapper(reduxForm({
+  form: 'appEditForm',
+  enableReinitialize: true
+})(connect(
   mapStateToProps, {
   glutenFree,
   appDelete,
   appUpdate,
   disableApp
-})(EditApps);
+})(EditApps)));
 
 export default EditApps

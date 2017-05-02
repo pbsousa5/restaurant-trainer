@@ -22,7 +22,7 @@ import {
   JUMP_TO,
   STOP_LOADING,
 } from '../actions/types';
-
+import merge from 'lodash/merge'
 
 
 const INITIAL_STATE = {
@@ -40,7 +40,7 @@ const INITIAL_STATE = {
   wines: null,
   bottle: {},
   notes: null,
-  glass: false,
+  //glass: false,
   hasLoaded: false,
   showHelp: true,
   clearWineEdit: false,
@@ -55,7 +55,7 @@ const INITIAL_STATE = {
     code: null,
     link: null,
     key: null,
-    glass: null
+    glass: false
   }
 };
 
@@ -72,7 +72,23 @@ export default (state = INITIAL_STATE, action) => {
     case WINE_EDIT_SWITCH:
       return {...state, wineEdit: !state.wineEdit}
     case BY_THE_GLASS:
-      return {...state, glass: !state.glass}
+    // TODO figure out a better way to handle nested states
+    // possibly using lodash merge
+      return {...state, details: {
+        name: state.details.name,
+        region: state.details.region,
+        varietal: state.details.varietal,
+        winenotes:state.details.winenotes,
+        image: state.details.image,
+        vintage: state.details.vintage,
+        producer: state.details.producer,
+        code: state.details.code,
+        link: state.details.link,
+        key: state.details.key,
+        glass: !state.details.glass
+      }
+    }
+
     case LOADING_MODAL_DATA:
       return {...state, loadingModal: !state.loadingModal}
     case WINE_BOTTLE_DATA:

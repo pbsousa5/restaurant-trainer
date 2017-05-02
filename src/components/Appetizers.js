@@ -16,7 +16,6 @@ class Appetizers extends Component {
     title: 'APPETIZERS',
     headerTitleStyle: {
        alignSelf: 'center',
-       marginRight: 56,
     },
     headerLeft:
     <TouchableOpacity onPress={() => navigation.navigate('DrawerOpen')}>
@@ -24,9 +23,11 @@ class Appetizers extends Component {
     </TouchableOpacity>,
     headerRight:
     <TouchableOpacity onPress={() => navigation.navigate('CreateApp')}>
-      <AddIcon style={AppStyles.addIcon}/>
+      <AddIcon style={AppStyles.addIcon} type={"ADD"}/>
     </TouchableOpacity>,
+
   });
+  
   constructor(props){
     super(props)
     this.props.loadAppetizers(this.props.companyID)

@@ -9,7 +9,7 @@ import wineNotes from './noteReducer'
 import modal from './modalReducer'
 import image from './imageReducer'
 import admin from './adminReducer'
-import navRouter from './NavRouterReducer'
+
 import appetizer from './appetizerReducer'
 import { reducer as forms } from 'redux-form'
 import { AppNavigator } from '../navigators/AppNavigator'
@@ -31,9 +31,17 @@ function nav(state = initialNavState, action){
     case 'user_is_logged_in':
       return AppNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'Home'}), state)
     case 'SHOW_WINE_SELECT':
-      return AppNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'ViewWine'}), state)
+      return AppNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'ViewWine',
+      params: {
+        title: "VIEW WINE",
+        place: "WINE"
+      }}), state)
     case 'SHOW_APP_SELECT':
-      return AppNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'ViewApp'}), state)
+      return AppNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'ViewApp',
+      params: {
+        title: "VIEW APPETIZER",
+        place: "APP"
+      }}), state)
     case 'user_is_not_logged_in':
       return AppNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'LoginStart'}), state)
     case "LOGIN_EMAIL":
@@ -45,6 +53,12 @@ function nav(state = initialNavState, action){
   }
 }
 
+function SwitchWineEdit(action){
+ console.log("ReducerFunction ", action);
+ return{
+   type: "WINE_EDIT_SWITCH"
+ }
+}
 function auth(state = initialAuthState, action){
   switch(action.type){
     case 'Login':
@@ -61,7 +75,6 @@ const reducer = combineReducers({
   form: forms,
   nav,
   auth,
-  navRouter,
   items,
   appetizer: appetizer,
   admin: admin,

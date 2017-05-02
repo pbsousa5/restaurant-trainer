@@ -14,6 +14,7 @@ class AddIcon extends Component {
   }
 
   render(){
+    // only show add icon for admins
     if(!this.props.isAdmin){
       return null
     }
@@ -26,16 +27,16 @@ class AddIcon extends Component {
             <Icon
               name='md-add'
               type='ionicon'
-              color={AppConfig.yellowColor}/>
+              color={AppConfig.blueColor}/>
           </View>)
       case "EDIT":
-        return
-          (<View style={this.state.style} contentContainerStyle={{justifyContent: 'center',alignItems: 'center'}}>
-            <Icon
-              name='md-clipboard'
-              type='ionicon'
-              color={AppConfig.yellowColor}/>
-          </View>)
+      return(
+        <View style={this.state.style} contentContainerStyle={{justifyContent: 'center',alignItems: 'center'}}>
+          <Icon
+            name='md-clipboard'
+            type='ionicon'
+            color={AppConfig.blueColor}/>
+        </View>)
       default:
         return null
 

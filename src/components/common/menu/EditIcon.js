@@ -22,7 +22,7 @@ class AddIcon extends Component {
         <Icon
           name='md-add'
           type='ionicon'
-          color={AppConfig.yellowColor}/>
+          color={AppConfig.blueColor}/>
       </View>
     )
   }

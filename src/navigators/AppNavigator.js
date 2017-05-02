@@ -20,19 +20,15 @@ import Users from '../components/common/Users'
 import Appetizers from '../components/Appetizers'
 import Wines from '../components/Wines'
 import Test from '../components/common/wines/Test'
-
+import { DrawerIcon } from '../components/common/menu/DrawerIcon'
 const HomeStack = StackNavigator({
-  	MainHome: {screen: Home},
-	},
-	{
-    headerMode: 'screen',
-  },
-);
+  	MainHome: { screen: Home },
+});
 
 const WinesStack = StackNavigator({
   Wines: { screen: Wines },
   CreateWine: { screen: CreateWine },
-  ViewWine: {screen: EditWine },
+  ViewWine: {screen: EditWine},
   Test: {screen: Test},
 });
 
@@ -42,18 +38,38 @@ const AppStack = StackNavigator({
   ViewApp: { screen: EditApps },
 });
 const SettingsTab = TabNavigator({
-  Users: { screen: Users },
   Settings: { screen: Settings},
+  Users: { screen: Users },
   AdminPage: {screen: AdminPage},
 })
 const SettingsStack = StackNavigator({
   SettingsTab: { screen: SettingsTab},
 })
 const InnerNavigator = DrawerNavigator ({
-      Home: { screen: HomeStack },
-      Appetizers: { screen: AppStack },
-			Wines: {screen: WinesStack},
-      SettingsStack: { screen: SettingsStack},
+      Home: {
+        screen: HomeStack,
+        navigationOptions:{
+          drawerIcon:(<DrawerIcon icon="ios-home"/> )
+        },
+      },
+      Appetizers: {
+        screen: AppStack,
+        navigationOptions:{
+          drawerIcon:(<DrawerIcon icon="ios-pizza"/> )
+        },
+       },
+			Wines: {
+        screen: WinesStack,
+        navigationOptions:{
+          drawerIcon:(<DrawerIcon icon="ios-wine"/> )
+        },
+      },
+      SettingsStack: {
+        screen: SettingsStack,
+        navigationOptions:{
+          drawerIcon:(<DrawerIcon icon="ios-settings"/> )
+        },
+      },
 })
 const LoginStack = StackNavigator ({
   initialRouteName: {screen: Login},
@@ -75,10 +91,6 @@ const AppWithNavigationState = ({ dispatch, nav }) => (
   <AppNavigator navigation={addNavigationHelpers({ dispatch, state: nav })} />
 );
 
-
-
-
-
 AppWithNavigationState.propTypes = {
   dispatch: PropTypes.func.isRequired,
   nav: PropTypes.object.isRequired,
@@ -95,9 +107,10 @@ const mapStateToProps = state => ({
 })
 
 export default connect(mapStateToProps)(AppWithNavigationState)
+
 const styles = StyleSheet.create({
-	icon: {
-		width: 24,
-		height: 24,
-	},
-})
+  icon: {
+    width: 24,
+    height: 24,
+  },
+});

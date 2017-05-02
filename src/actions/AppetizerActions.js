@@ -8,7 +8,7 @@ import {
   GetLocalRef
 } from '../configs/firebase'
 import LocalStore from 'react-native-simple-store'
-import { Actions } from 'react-native-router-flux';
+
 
 import firebase from 'firebase'
 import {

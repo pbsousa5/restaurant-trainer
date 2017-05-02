@@ -36,7 +36,6 @@ class Wines extends Component {
     title: 'WINES',
     headerTitleStyle: {
        alignSelf: 'center',
-       marginRight: 56,
     },
     headerLeft:
     <TouchableOpacity onPress={() => navigation.navigate('DrawerOpen')}>

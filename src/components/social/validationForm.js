@@ -31,7 +31,7 @@ import  Lightbox  from 'react-native-lightbox'
 // App Globals
 import AppStyles from '../../configs/styles'
 import AppUtil from '../../configs/util'
-import {Actions} from 'react-native-router-flux'
+
 // Components
 //import Button from '../components/button'
 import Alerts from '../alerts'
@@ -207,7 +207,7 @@ class Form extends Component {
   */
   render = () => {
     var Form = FormValidation.form.Form;
-    this.props.loading == true ? setTimeout(function(){Actions.home }, 500) : null
+    
     return (
       <ScrollView automaticallyAdjustContentInsets={false}
         ref={'scrollView'}

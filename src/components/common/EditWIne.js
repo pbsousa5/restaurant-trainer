@@ -36,6 +36,7 @@ class EditWine extends Component {
     this.onUpdatePress = this.onUpdatePress.bind(this)
     this.onDisablePressed = this.onDisablePressed.bind(this)
     this._resetScrollView = this._resetScrollView.bind(this)
+
   }
   renderLightBoxImage = (image) => {
     return(
@@ -105,8 +106,10 @@ class EditWine extends Component {
   }
 
   _renderNormalView = () => {
-
+  //console.log("***** ",this.props.details.image);
+  console.log("***** ",this.props.details);
     return(
+
       <ScrollView style={AppStyles.backColor}
         ref={(scrollView) => { _scrollView = scrollView; }} >
       <View style={[AppStyles.flex1, AppStyles.container, AppStyles.backColor]}>
@@ -166,6 +169,8 @@ class EditWine extends Component {
           </Card>
       </View>
       </ScrollView>
+
+
     )
   }
   render(){
@@ -200,7 +205,7 @@ class EditWine extends Component {
 
     return(
       <ScrollView style={AppStyles.backColor}>
-      <View style={[AppStyles.flex1, AppStyles.container, AppStyles.backColor, {paddingTop:70}]}>
+      <View style={[AppStyles.flex1, AppStyles.container, AppStyles.backColor]}>
           <Card style={[AppStyles.cardStyle]}>
             <CardSection style={[AppStyles.backColor,
               AppStyles.paddingLeft, AppStyles.paddingBottom,{paddingTop:10}, AppStyles.row]}>
@@ -332,32 +337,36 @@ class EditWine extends Component {
   }
 
 }
+
+// Wrapping the form in a function so we can add the navigation header
 /*
 EditWine = reduxForm({
   form: 'wineUpdateForm'  // a unique identifier for this form
-})(EditWine)*/
+})(EditWine);
+/*
+EditWine.navigationOptions = ({navigation}) => ({
+    title: 'VIEW WINE',
+    headerTitleStyle: {
+       alignSelf: 'center',
+       marginRight: 56,
+    },
+    headerRight:
+    <TouchableOpacity onPress={() => navigation.dispatch({ type:'WINE_EDIT_SWITCH', payload:{index:0} }) }>
+      <AddIcon style={AppStyles.addIcon} type={"ADD"}/>
+    </TouchableOpacity>,
 
+  })
+  */
+/*
 EditWine = FormWrapper(reduxForm({
   form: 'wineUpdateForm'  // a unique identifier for this form
 })(EditWine));
+*/
 const selector = formValueSelector('wineUpdateForm');
-/*
-EditWine.navigationOptions = ({ navigation, props }) => ({
-  title: 'VIEW WINE',
-  headerTitleStyle: {
-     alignSelf: 'center',
-  },
 
-  headerRight:
-
-  <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-    <AddIcon style={AppStyles.addIcon} type={"EDIT"}/>
-  </TouchableOpacity>,
-
-});*/
 const mapStateToProps = (state) => {
   const { name, description, results, loaded, search, details,
-    loadingModal, glass, wineEdit, hasLoaded } = state.wines
+    loadingModal, wineEdit, hasLoaded } = state.wines
   const { image, imageAdded, uploadedImage } = state.image
   return {
     winelink: selector(state, 'winelink'),
@@ -369,13 +378,26 @@ const mapStateToProps = (state) => {
     winenotes: selector(state, 'winenotes'),
     navigationState: state.editWine,
     name, description, results, loaded, search,
-    details, loadingModal, glass, wineEdit, image, imageAdded,
+    details, loadingModal, wineEdit, image, imageAdded,
     uploadedImage, hasLoaded}
 };
 
 
 
+EditWine = FormWrapper(reduxForm({
+  form: 'wineUpdateForm',
+  enableReinitialize: true
+})(connect(
+  mapStateToProps, {
+  wineUpdate,
+  disableWine,
+  wineDelete,
+  byTheGlass,
+  wineEditSwitch,
+  stopLoading
+})(EditWine)))
 
+/*
 EditWine =  connect(
   mapStateToProps, {
   wineUpdate,
@@ -385,5 +407,6 @@ EditWine =  connect(
   wineEditSwitch,
   stopLoading
 })(EditWine);
+*/
 
 export default EditWine
