@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {View, Text, Image, ListView, TouchableOpacity } from 'react-native'
+import {View, Text, Image, ListView, TouchableOpacity, SectionList } from 'react-native'
 import { Card } from 'react-native-elements'
 import SearchBarExport from './common/SearchBar'
 import AppsRow from './common/AppsRow'
@@ -10,6 +10,7 @@ import AppConfig from '../configs/config'
 import AppStyles from '../configs/styles'
 import { MenuIcon} from './common/menu/MenuIcon'
 import { AddIcon } from './common/menu/AddIcon'
+import _ from 'lodash'
 
 class Appetizers extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -27,7 +28,7 @@ class Appetizers extends Component {
     </TouchableOpacity>,
 
   });
-  
+
   constructor(props){
     super(props)
     this.props.loadAppetizers(this.props.companyID)
@@ -44,6 +45,11 @@ class Appetizers extends Component {
 
     //this.props._handleNavigate("editapps")
   }
+  convertFBObj = (firebaseObj) => {
+    return Object.keys(firebaseObj).map((key)=> {
+        return Object.assign(firebaseObj[key], {key});
+    })
+  }
   convertAppsArrayToMap = () => {
     const appsCategoryMap = {} // Create the blank map
     //console.log('wine ', this.props.wines);
@@ -59,6 +65,25 @@ class Appetizers extends Component {
       })
     }
     return appsCategoryMap;
+  }
+  _renderHeader = (headerItem) => {
+    console.log("headerItem ", headerItem);
+    return (
+      <View style={AppStyles.sectionHeader}>
+        <Text style={[AppStyles.h3,AppStyles.centered]}>{headerItem.section.key.toUpperCase()}</Text>
+      </View>
+    )
+  }
+  _renderSectionRow = ({item, index}) => {
+    console.log("item ", item);
+    return (
+      <View style={AppStyles.appetizerRowStyle}>
+      <TouchableOpacity
+        onPress={this._loadAppsScreen.bind(this, item)}>
+            <AppsRow {...item} />
+      </TouchableOpacity>
+      </View>
+    )
   }
   _renderRow(rowData, sectionID, rowID) {
     return (
@@ -105,21 +130,45 @@ class Appetizers extends Component {
       return this._defaultView()
     }
     //if(this.props.wineListLoaded == true){
-
+    let sectionData = this.convertFBObj(this.props.appetizers)
+    // group by our category
+    sectionData = _.groupBy(sectionData, d => d.category)
+    // populate the array
+    sectionData = _.reduce(sectionData, (acc, next, index) => {
+      acc.push({
+        key: index,
+        data: next
+      })
+      return acc
+    }, [])
+    // order app list alphabeitally
+    sectionData = _.sortBy(sectionData, d => {
+      return [d.key.toUpperCase()];
+    })
       const dataSource = this.ds.cloneWithRowsAndSections(this.convertAppsArrayToMap())
       return(
         <View style={[AppStyles.pageContainer, AppStyles.backColor]}>
-            <ListView
-              dataSource={dataSource}
-              renderRow={this._renderRow.bind(this)}
-              //renderHeader={this._renderSearchBar}
-              renderSectionHeader={this.renderSectionHeader}
-            />
+          <SectionList
+            renderItem={this._renderSectionRow}
+            sections={sectionData}
+            onRefresh={() => alert('onRefresh: nothing to refresh :P')}
+            refreshing={false}
+            renderSectionHeader={this._renderHeader}
+            keyExtractor={(item) => item.key}
+          />
          </View>
       )
     }
 }
-
+/*
+old listview way
+<ListView
+  dataSource={dataSource}
+  renderRow={this._renderRow.bind(this)}
+  //renderHeader={this._renderSearchBar}
+  renderSectionHeader={this.renderSectionHeader}
+/>
+*/
 const mapStateToProps = (state) => {
   const { details, appetizersLoaded, appetizers } = state.appetizer;
   const { companyID } = state.myCompany;

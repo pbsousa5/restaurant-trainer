@@ -217,6 +217,7 @@ export function loadWines (currentLocalID) {
   return function (dispatch){
     dispatch(getWineRequestedAction())
     const winesRef = companyRef.child(`${currentLocalID}`).child('wines')
+    // TODO temp changed to once should be on
     return winesRef.on('value', snap => {
       const wines = snap.val()
       console.log("snap.key " , wines)
@@ -433,7 +434,10 @@ export const wineCreate = ({ winename, winery,
     return idRef.once('value',function(snapshot){
       currentLocalID = snapshot.val()
       console.log('idRef ', currentLocalID)
-      const id = Math.random().toString(36).substring(7)
+      let id = "";
+      const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      for( var i=0; i < 12; i++ )
+          id += possible.charAt(Math.floor(Math.random() * possible.length));
       const winesRef = companyRef.child(`${currentLocalID}`).child('wines').child(id)
       //console.log('imageURL ', image)
       winesRef.set({

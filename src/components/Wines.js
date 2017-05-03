@@ -7,6 +7,7 @@ import {
   Text,
   ListView,
   FlatList,
+  SectionList,
   ListViewDataSource,
   TouchableOpacity
 } from 'react-native'
@@ -20,12 +21,14 @@ import AppConfig from '../configs/config'
 import AppStyles from '../configs/styles'
 import { MenuIcon} from './common/menu/MenuIcon'
 import {AddIcon} from './common/menu/AddIcon'
+import _ from 'lodash'
+//import ConvertFireBaseObj from './common/utils/ConvertFireBaseObj'
 class Wines extends Component {
 
   constructor (props) {
     super(props)
     // PASS IN A REFERENCE TO THE LOCAL companyID
-    // THIS MAY CHANGE LATER IF THE USER IS A MEMBER OF MULTIPLE COMPANIES
+    // TODO THIS MAY CHANGE LATER IF THE USER IS A MEMBER OF MULTIPLE COMPANIES
     this.props.loadWines(this.props.companyID)
     this.ds = new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 !== r2,
@@ -53,6 +56,12 @@ class Wines extends Component {
 
     //this.props._handleNavigate("editwine")
   }
+  convertFBObj = (firebaseObj) => {
+  //  console.log("firebaseObj ", firebaseObj  );
+    return Object.keys(firebaseObj).map((key)=> {
+        return Object.assign(firebaseObj[key], {key});
+    })
+  };
   convertWineArrayToMap = () => {
     const wineCategoryMap = {} // Create the blank map
     //console.log('wine ', this.props.wines);
@@ -78,6 +87,25 @@ class Wines extends Component {
          <WineRow {...rowData} />
    </TouchableOpacity>
    */
+   _renderSectionRow = ({item, index}) => {
+     console.log("item ", item);
+     return (
+       <View style={AppStyles.appetizerRowStyle}>
+       <TouchableOpacity
+         onPress={this._loadWineScreen.bind(this, item)}>
+             <WineRow {...item} />
+       </TouchableOpacity>
+       </View>
+     )
+     /*
+     <View style={AppStyles.appetizerRowStyle}>
+     <TouchableOpacity
+       onPress={this._loadWineScreen.bind(this, item)}>
+           <WineRow {...item} />
+     </TouchableOpacity>
+     </View>
+     */
+   }
   _renderRow(rowData, sectionID, rowID) {
     return (
       <View style={AppStyles.appetizerRowStyle}>
@@ -88,11 +116,20 @@ class Wines extends Component {
       </View>
     );
   }
-  renderSectionHeader = (sectionData, varietal) => {
+
+  renderSectionHeader = (sectionData) => {
     //console.log('varietal ', sectionData.varietal);
     return (
       <View style={AppStyles.sectionHeader}>
-        <Text style={[AppStyles.h3,AppStyles.centered]}>{varietal.toUpperCase()}</Text>
+        <Text style={[AppStyles.h3,AppStyles.centered]}>{sectionData.varietal.toUpperCase()}</Text>
+      </View>
+    )
+  }
+  _renderHeader = (headerItem) => {
+    console.log("headerItem ", headerItem);
+    return (
+      <View style={AppStyles.sectionHeader}>
+        <Text style={[AppStyles.h3,AppStyles.centered]}>{headerItem.section.key.toUpperCase()}</Text>
       </View>
     )
   }
@@ -126,19 +163,54 @@ class Wines extends Component {
     if(!this.props.wines){
       return this._defaultView()
     }
-    //if(this.props.wineListLoaded == true){
+    let sectionData = this.convertFBObj(this.props.wines)
+    // group by our varietals
+    sectionData = _.groupBy(sectionData, d => d.varietal)
+    // populate the array
+    sectionData = _.reduce(sectionData, (acc, next, index) => {
+      acc.push({
+        key: index,
+        data: next
+      })
+      return acc
+    }, [])
+    // order wine list alphabeitally
+    sectionData = _.sortBy(sectionData, d => {
+      return [d.key.toUpperCase()];
+    })
+    //console.log("sectionData wines ", sectionData);
+    //const dataSource = this.ds.cloneWithRowsAndSections(this.convertWineArrayToMap())
+    return(
+      <SectionList
+        renderItem={this._renderSectionRow}
+        sections={sectionData}
+        onRefresh={() => alert('onRefresh: nothing to refresh :P')}
+        refreshing={false}
+        renderSectionHeader={this._renderHeader}
+        keyExtractor={(item) => item.key}
+      />
+    )
 
-      const dataSource = this.ds.cloneWithRowsAndSections(this.convertWineArrayToMap())
-      return(
-        <ListView
-          dataSource={dataSource}
-          renderRow={this._renderRow.bind(this)}
-          renderHeader={this._renderSearchBar}
-          renderSectionHeader={this.renderSectionHeader}
-        />
-      )
-    }
 
+  }
+/*
+<FlatList
+  data={sectionData}
+  renderItem={this._renderSectionRow}
+/>
+<SectionList
+  sections={sectionData}
+  renderItem={this._renderSectionRow}
+  renderSectionHeader={this._renderHeader}
+  keyExtractor={(item) => item.key}
+/>
+<ListView
+  dataSource={dataSource}
+  renderRow={this._renderRow.bind(this)}
+  renderHeader={this._renderSearchBar}
+  renderSectionHeader={this.renderSectionHeader}
+/>
+*/
 
 }
 const mapStateToProps = (state) => {

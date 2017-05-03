@@ -216,7 +216,7 @@ class WineForm extends Component {
   onCreatePress = () => {
     const { winename, winery, varietal, vintage, winenotes, region } = this.props;
     let image = null
-    const glass = this.props.glass
+    const glass = this.props.details.glass
     // CHECK IF CUSTOM IMAGE WAS UPLOADED
     this.props.imageAdded ? image = this.props.uploadedImage : image = this.props.details.image
     image === "" ? image = this.CheckURI("") : null
@@ -421,7 +421,7 @@ const selector = formValueSelector('wineDetailsForm');
 
 const mapStateToProps = (state) => {
   const { name, description, results, loaded,
-    search, details, loadingModal, glass, searching, hasLoaded, showHelp } = state.wines
+    search, details, loadingModal, searching, hasLoaded, showHelp } = state.wines
   const { notes } = state.notes
   const { image, imageAdded, uploadedImage } = state.image
   const { toggle, bottle } = state.modal
@@ -434,7 +434,7 @@ const mapStateToProps = (state) => {
     winenotes: selector(state, 'winenotes'),
     name, image, imageAdded, uploadedImage, description, results,
     loaded, search, toggle, bottle, notes, details, loadingModal,
-    glass, searching, hasLoaded, showHelp }
+   searching, hasLoaded, showHelp }
 };
 
 
