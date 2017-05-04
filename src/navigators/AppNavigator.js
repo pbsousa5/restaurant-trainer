@@ -17,8 +17,12 @@ import EditWine from '../components/common/EditWine'
 import EditApps from '../components/common/EditApps'
 import Settings from '../components/common/Settings'
 import Users from '../components/common/Users'
+import Entrees from '../components/common/Entrees/Entrees'
+import EditEntree from '../components/common/Entrees/EditEntree'
+import CreateEntree from '../components/common/Entrees/CreateEntree'
 import Appetizers from '../components/Appetizers'
 import Wines from '../components/Wines'
+
 import Test from '../components/common/wines/Test'
 import { DrawerIcon } from '../components/common/menu/DrawerIcon'
 const HomeStack = StackNavigator({
@@ -32,6 +36,11 @@ const WinesStack = StackNavigator({
   Test: {screen: Test},
 });
 
+const EntStack = StackNavigator({
+  Entrees: { screen: Entrees},
+  CreateEntree: {screen: CreateEntree},
+  ViewEnt: {screen: EditEntree},
+})
 const AppStack = StackNavigator({
   Appetizers: { screen: Appetizers },
   CreateApp: { screen: CreateApps },
@@ -57,6 +66,12 @@ const InnerNavigator = DrawerNavigator ({
         navigationOptions:{
           drawerIcon:(<DrawerIcon icon="ios-pizza"/> )
         },
+       },
+       Entrees: {
+         screen: EntStack,
+         navigationOptions:{
+           drawerIcon:(<DrawerIcon icon="ios-pizza"/> )
+         },
        },
 			Wines: {
         screen: WinesStack,

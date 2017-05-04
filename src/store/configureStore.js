@@ -1,5 +1,4 @@
 import { createStore, applyMiddleware, compose } from 'redux'
-import wineReducer from '../reducers/wineFormReducer'
 import reducer from '../reducers'
 import syncOffline from './syncOffline'
 import { syncFirebase } from '../configs/firebase'

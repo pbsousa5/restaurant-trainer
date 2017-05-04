@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import React, { Component } from 'react';
 import AppStyles from '../../../configs/styles'
 import AppConfigs from '../../../configs/config'
-import {wineEditSwitch, appEditSwitch} from '../../../actions/'
+import {wineEditSwitch, appEditSwitch, entEditSwitch} from '../../../actions/'
 import {AddIcon} from './AddIcon'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -33,6 +33,8 @@ class CustomButton extends Component {
         return this.props.wineEditSwitch();
       case "APP":
         return this.props.appEditSwitch();
+      case "ENT":
+        return this.props.entEditSwitch();
       default:
         return null
     }
@@ -46,7 +48,7 @@ const mapStateToProps = (state) => {
 }
 
 
-CustomButton =  connect( mapStateToProps, {wineEditSwitch, appEditSwitch})(CustomButton);
+CustomButton =  connect( mapStateToProps, {wineEditSwitch, appEditSwitch, entEditSwitch})(CustomButton);
 
 
 export default CustomButton

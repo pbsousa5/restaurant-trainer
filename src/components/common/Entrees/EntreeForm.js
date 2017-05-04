@@ -5,11 +5,11 @@ import {
   Image
 } from 'react-native';
 import { connect } from 'react-redux';
-import { CardSection, Card, Input, CustomSwitch } from './';
+import { CardSection, Card, Input, CustomSwitch } from '../';
 import {  Icon, Button} from 'react-native-elements'
-import AppStyles from '../../configs/styles'
-import AppConfigs from '../../configs/config'
-import ImageSelect from './ImageSelect'
+import AppStyles from '../../../configs/styles'
+import AppConfigs from '../../../configs/config'
+import ImageSelect from '../ImageSelect'
 import Spinner from 'react-native-loading-spinner-overlay'
 import { reduxForm, Field, formValueSelector } from 'redux-form'
 import {
@@ -21,11 +21,11 @@ import {
 import _ from 'lodash'
 import  Lightbox  from 'react-native-lightbox'
 import {
-  appCreate,
+  entCreate,
   glutenFree
-} from '../../actions';
+} from '../../../actions';
 
-class AppForm extends Component {
+class EntreeForm extends Component {
   constructor(props){
     super(props)
     this.state = {
@@ -37,7 +37,7 @@ class AppForm extends Component {
     }
 
     const {
-      appname
+      entname
     } = props
   }
 
@@ -75,34 +75,26 @@ class AppForm extends Component {
     this.props.glutenFree()
   }
   onCreatePress = () => {
-    const {  appname, category, allergies, appnotes, ingredients } = this.props;
+    const {  entname, category, allergies, entnotes, ingredients } = this.props;
     let image = null
     const gluten = this.props.gluten
     // CHECK IF CUSTOM IMAGE WAS UPLOADED
     this.props.imageAdded ? image = this.props.uploadedImage : image = this.CheckURI("")
-    console.log("SUBMIT FIELDS: ", appname, category, allergies, appnotes, ingredients);
-    this.props.appCreate({ appname, category,
-      allergies, gluten, appnotes, ingredients, image });
+    console.log("SUBMIT FIELDS: ", entname, category, allergies, entnotes, ingredients);
+    this.props.entCreate({ entname, category,
+      allergies, gluten, entnotes, ingredients, image });
   }
   setFormFields = () => {
     //console.log("SETTING FORM FIELDS APPS");
     // set fields to default values
     // in case of this appfrom they should be empty
-    this.props.change("appname", this.props.details.name)
+    this.props.change("entname", this.props.details.name)
     this.props.change("category", this.props.details.category)
     this.props.change("allergies", this.props.details.allergies)
-    this.props.change("appnotes", this.props.details.appnotes)
+    this.props.change("entnotes", this.props.details.entnotes)
     this.props.change("ingredients", this.props.details.ingredients)
   }
   renderLoadingView() {
-    //console.log("SHOULD BE RESETTING FIELDS ", this.props.hasLoaded);
-    /*if(this.props.hasLoaded){
-      setTimeout(
-      () => { this.setFormFields() },
-      200
-      )
-      this.props.hasLoaded = false
-    }*/
     return(
       <View style={[AppStyles.flex1, AppStyles.container, {paddingTop:20}]}>
 
@@ -125,23 +117,23 @@ class AppForm extends Component {
             </CardSection>
             <Form>
               <FieldsContainer style={AppStyles.fieldContainer}>
-                <Fieldset label="Appetizer details" style={{color:AppConfigs.greenColor}}>
+                <Fieldset label="Entree details" style={{color:AppConfigs.greenColor}}>
                   <Field
-                    name="appname"
+                    name="entname"
                     myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
                     defValue={""}
                     myLabelStyle={AppStyles.labelStyle}
                     viewStyle={AppStyles.containerStyle}
                     lineNum= {2}
                     multiline = {true}
-                    label="Name" placeholder="Appetizer name"
+                    label="Name" placeholder="Entree name"
                     component={ Input }
                     />
                   <Field name="category" myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
                     defValue={""}
                     myLabelStyle={AppStyles.labelStyle}
                     viewStyle={AppStyles.containerStyle}
-                    label="Category" placeholder="Category for this appetizer"
+                    label="Category" placeholder="Category for this entree"
                     component={ Input }/>
 
                   <Field name="allergies"
@@ -156,14 +148,14 @@ class AppForm extends Component {
                     myLabelStyle={AppStyles.labelStyle}/>
                 </Fieldset>
                 <Fieldset label="food tasting notes" last>
-                  <Field name="appnotes"
+                  <Field name="entnotes"
                     myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
                     myLabelStyle={AppStyles.labelStyle}
                     defValue={""}
                     multiline = {true}
                     lineNum= {10}
                     viewStyle={AppStyles.paraStyle}
-                    placeholder="Enter appetizer tasting notes."
+                    placeholder="Enter entree tasting notes."
                     component={ Input }/>
                 </Fieldset>
                 <Fieldset label="key ingredients" last>
@@ -174,7 +166,7 @@ class AppForm extends Component {
                     multiline = {true}
                     lineNum= {10}
                     viewStyle={AppStyles.paraStyle}
-                    placeholder="Enter appetizer key ingredients."
+                    placeholder="Enter entree key ingredients."
                     component={ Input }/>
                 </Fieldset>
               </FieldsContainer>
@@ -198,32 +190,30 @@ class AppForm extends Component {
 
 
 
-AppForm = reduxForm({
-  form: 'appDetailsForm'  // a unique identifier for this form
-})(AppForm)
-const selector = formValueSelector('appDetailsForm');
+EntreeForm = reduxForm({
+  form: 'entDetailsForm'  // a unique identifier for this form
+})(EntreeForm)
+const selector = formValueSelector('entDetailsForm');
 
 const mapStateToProps = (state) => {
 
-  const { gluten, hasLoaded, details } = state.appetizer
+  const { gluten, hasLoaded, details } = state.entrees
   const { image, imageAdded, uploadedImage } = state.image
   const { toggle } = state.modal
   return {
-    appname: selector(state, 'appname'),
+    entname: selector(state, 'entname'),
     category: selector(state, 'category'),
     allergies: selector(state, 'allergies'),
-    appnotes: selector(state, 'appnotes'),
+    entnotes: selector(state, 'entnotes'),
     ingredients: selector(state, 'ingredients'),
     image, imageAdded, uploadedImage, toggle, gluten, hasLoaded, details }
 };
 
 
-AppForm =  connect(
+EntreeForm =  connect(
   mapStateToProps, {
-  appCreate,
-
+  entCreate,
   glutenFree,
+})(EntreeForm);
 
-})(AppForm);
-
-export default AppForm
+export default EntreeForm

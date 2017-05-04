@@ -145,7 +145,6 @@ class Appetizers extends Component {
     sectionData = _.sortBy(sectionData, d => {
       return [d.key.toUpperCase()];
     })
-      const dataSource = this.ds.cloneWithRowsAndSections(this.convertAppsArrayToMap())
       return(
         <View style={[AppStyles.pageContainer, AppStyles.backColor]}>
           <SectionList

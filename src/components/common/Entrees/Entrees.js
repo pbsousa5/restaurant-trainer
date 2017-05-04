@@ -10,28 +10,27 @@ import {
   TouchableOpacity
 } from 'react-native'
 import { Card } from 'react-native-elements'
-import SearchBarExport from './common/SearchBar'
+import SearchBarExport from '../SearchBar'
 import { connect } from 'react-redux';
-import { loadWines, showWineSelect } from '../actions';
-import DynamicListRow from './common/DynamicListRow'
-import WineRow from './common/WineRow';
-import AppConfig from '../configs/config'
-import AppStyles from '../configs/styles'
-import { MenuIcon} from './common/menu/MenuIcon'
-import {AddIcon} from './common/menu/AddIcon'
+import { loadEntrees, showEntSelect } from '../../../actions';
+import EntreeRow from './EntreeRow';
+import AppConfig from '../../../configs/config'
+import AppStyles from '../../../configs/styles'
+import { MenuIcon} from '../menu/MenuIcon'
+import {AddIcon} from '../menu/AddIcon'
 import _ from 'lodash'
-//import ConvertFireBaseObj from './common/utils/ConvertFireBaseObj'
-class Wines extends Component {
+
+class Entrees extends Component {
 
   constructor (props) {
     super(props)
     // PASS IN A REFERENCE TO THE LOCAL companyID
     // TODO THIS MAY CHANGE LATER IF THE USER IS A MEMBER OF MULTIPLE COMPANIES
-    this.props.loadWines(this.props.companyID)
+    this.props.loadEntrees(this.props.companyID)
 
   }
   static navigationOptions = ({ navigation }) => ({
-    title: 'WINES',
+    title: 'ENTREES',
     headerTitleStyle: {
        alignSelf: 'center',
     },
@@ -40,14 +39,14 @@ class Wines extends Component {
       <MenuIcon style={AppStyles.menuIcon}/>
     </TouchableOpacity>,
     headerRight:
-    <TouchableOpacity onPress={() => navigation.navigate('CreateWine')}>
+    <TouchableOpacity onPress={() => navigation.navigate('CreateEntree')}>
       <AddIcon style={AppStyles.addIcon} type={"ADD"}/>
     </TouchableOpacity>,
 
   });
-  _loadWineScreen = (data) => {
+  _loadEntreescreen = (data) => {
     //console.log('load wine screen ' , data);
-    this.props.showWineSelect(data)
+    this.props.showEntSelect(data)
   }
   convertFBObj = (firebaseObj) => {
   //  console.log("firebaseObj ", firebaseObj  );
@@ -61,8 +60,8 @@ class Wines extends Component {
      return (
        <View style={AppStyles.appetizerRowStyle}>
        <TouchableOpacity
-         onPress={this._loadWineScreen.bind(this, item)}>
-             <WineRow {...item} />
+         onPress={this._loadEntreescreen.bind(this, item)}>
+             <EntreeRow {...item} />
        </TouchableOpacity>
        </View>
      )
@@ -94,7 +93,7 @@ class Wines extends Component {
       <View style={[AppStyles.pageContainer, AppStyles.backColor]}>
         <Card>
            <Text style={AppStyles.h4}>
-             Welcome to the Wines page!
+             Welcome to the Entrees page!
            </Text>
            <Text style={AppStyles.h5}>
              We will populate this with database items List.
@@ -104,19 +103,19 @@ class Wines extends Component {
              top right to get started!
            </Text>
            <Text style={AppStyles.h5}>
-             Wines
+             Entrees
            </Text>
         </Card>
        </View>
     )
   }
   render(){
-    if(!this.props.wines){
+    if(!this.props.entrees){
       return this._defaultView()
     }
-    let sectionData = this.convertFBObj(this.props.wines)
+    let sectionData = this.convertFBObj(this.props.entrees)
     // group by our varietals
-    sectionData = _.groupBy(sectionData, d => d.varietal)
+    sectionData = _.groupBy(sectionData, d => d.category)
     // populate the array
     sectionData = _.reduce(sectionData, (acc, next, index) => {
       acc.push({
@@ -146,10 +145,10 @@ class Wines extends Component {
 
 }
 const mapStateToProps = (state) => {
-  const { wines, wineListLoaded } = state.wines;
+  const { entrees, entreeListLoaded } = state.entrees;
   const { companyID } = state.myCompany;
   const { isAdmin } = state.admin;
-  return { wines, companyID, wineListLoaded, isAdmin };
+  return { entrees, companyID, entreeListLoaded, isAdmin };
 };
 
-export default connect(mapStateToProps, { loadWines, showWineSelect })(Wines);
+export default connect(mapStateToProps, { loadEntrees, showEntSelect })(Entrees);

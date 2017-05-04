@@ -8,132 +8,129 @@ import LocalStore from 'react-native-simple-store'
 
 import firebase from 'firebase'
 import {
-  LOAD_APPETIZERS,
-  APPETIZERS_LOADED,
-  SHOW_APPETIZERS,
-  APPS_REQUESTED,
-  CREATING_APPETIZER,
-  CREATE_APPETIZER_SUCCESS,
+  ENTREES_LOADED,
+  SHOW_ENTREES,
+  ENT_REQUESTED,
+  CREATING_ENTREE,
   GLUTEN_FREE,
-  JUMP_TO_APPS,
   NAV_BACK,
-  SHOW_APP_SELECT,
-  APPS_EDIT_SWITCH,
-  ATTEMPTING_APPS_UPDATE,
-  APPS_UPDATE_SUCCESS,
-  APPS_UPDATE_ERROR,
-  APPS_REFRESH,
+  SHOW_ENT_SELECT,
+  ENT_EDIT_SWITCH,
+  ATTEMPTING_ENT_UPDATE,
+  ENT_UPDATE_ERROR,
+  ENT_REFRESH,
 } from './types'
 
-function getAppsFulfilledAction  (apps){
-  console.log('apps ' , apps);
+function getEntFulfilledAction  (entree){
+  console.log('entrees ' , entree);
   return{
-    type: APPETIZERS_LOADED,
-    payload: apps
+    type: ENTREES_LOADED,
+    payload: entree
   }
 }
 //Load appetizers from firebase
-export function loadAppetizers (currentLocalID) {
+export function loadEntrees (currentLocalID) {
   return function (dispatch) {
-    dispatch(getAppsRequestedAction())
-    const appsRef = companyRef.child(`${currentLocalID}`).child('appetizers')
-    console.log('appsRef ',appsRef.toString());
-    return appsRef.on('value', snap => {
-      const apps = snap.val()
-      console.log("snap.key " , apps)
-      dispatch(getAppsFulfilledAction(apps))
+    dispatch(getEntRequestedAction())
+    const entRef = companyRef.child(`${currentLocalID}`).child('entrees')
+
+    return entRef.on('value', snap => {
+      const entree = snap.val()
+      console.log("snap.key entree " , entree)
+      dispatch(getEntFulfilledAction(entree))
     })
   }
 }
 // FUNCTION FOR CREATING APPETIZER IN FIREBASE
-export const appCreate = ({ appname, category,
-  allergies, gluten, appnotes, ingredients, image }) => {
+export const entCreate = ({ entname, category,
+  allergies, gluten, entnotes, ingredients, image }) => {
+    console.log("Entree category ", category);
   const { currentUser } = firebase.auth()
   var currentLocalID
   var idRef = firebase.database().ref(`/users/${currentUser.uid}/currentID`)
   return dispatch => {
-    dispatch(createAppsAction())
+    dispatch(createEntAction())
     return idRef.once('value',function(snapshot){
       currentLocalID = snapshot.val()
       const id = Math.random().toString(36).substring(7)
-      const appsRef = companyRef.child(`${currentLocalID}`).child('appetizers').child(id)
-      appsRef.set({
+      const entRef = companyRef.child(`${currentLocalID}`).child('entrees').child(id)
+      entRef.set({
         key: id,
-        name: appname ? appname : "",
+        name: entname ? entname : "",
         category: category ? category.toUpperCase() : "",
         allergies: allergies ? allergies : "",
         gluten: gluten ? gluten : "",
-        appnotes: appnotes ? appnotes : "",
+        entnotes: entnotes ? entnotes : "",
         ingredients: ingredients ? ingredients : "",
         image: image ? image : "",
         time: new Date().getTime(),
         createdBy: currentUser.uid,
       })
-      dispatch(appsCreateSuccess())
+      dispatch(entCreateSuccess())
     })
       .catch((error) => {
         console.log(error)
-        dispatch(appsCreateError())
+        dispatch(entCreateError())
       })
   }
 
 }
 
-//UPDATING appetizers
-export const appUpdate = ({ appname, category,
-  allergies, gluten, appnotes, ingredients, image, key }) => {
+//UPDATING entrees
+export const entUpdate = ({ entname, category,
+  allergies, gluten, entnotes, ingredients, image, key }) => {
 
   const { currentUser } = firebase.auth()
   var currentLocalID
   var idRef = firebase.database().ref(`/users/${currentUser.uid}/currentID`)
   return dispatch => {
-    dispatch(updateAppsAction())
+    dispatch(updateEntAction())
     return idRef.once('value',function(snapshot){
       currentLocalID = snapshot.val()
-      const appsRef = companyRef.child(`${currentLocalID}`).child('appetizers').child(key)
-      appsRef.update({
-        name: appname ? appname : "",
+      const entRef = companyRef.child(`${currentLocalID}`).child('entrees').child(key)
+      entRef.update({
+        name: entname ? entname : "",
         category: category ? category.toUpperCase() : "",
         allergies: allergies ? allergies : "",
         gluten: gluten ? gluten : "",
-        appnotes: appnotes ? appnotes : "",
+        entnotes: entnotes ? entnotes : "",
         ingredients: ingredients ? ingredients : "",
         image: image ? image : "",
         time: new Date().getTime(),
         updatedBy: currentUser.uid,
       })
-      dispatch(appsUpdateSuccess())
+      dispatch(entUpdateSuccess())
     })
       .catch((error) => {
         console.log(error)
-        dispatch(appsUpdateError())
+        dispatch(entUpdateError())
       })
   }
 
 }
-// DELETE appetizer
-export const appDelete = ( key ) => {
+// DELETE entree
+export const entDelete = ( key ) => {
   const { currentUser } = firebase.auth()
   var currentLocalID
   var isAdmin
   var idRef = firebase.database().ref(`/users/${currentUser.uid}/currentID`)
 
   return dispatch => {
-    dispatch(deleteAppAction())
+    dispatch(deleteEntAction())
     return idRef.once('value',function(snapshot){
       currentLocalID = snapshot.val()
-      const appRef = companyRef.child(`${currentLocalID}/appetizers/${key}`)
-      appRef.remove()
-      dispatch(appDeleteSuccess())
+      const entRef = companyRef.child(`${currentLocalID}/entrees/${key}`)
+      entRef.remove()
+      dispatch(entDeleteSuccess())
     })
       .catch((error) => {
         console.log(error)
-        dispatch(appDeleteError())
+        dispatch(entDeleteError())
       })
     }
 }
-// DISABLE APPETIZER
-export const disableApp = () => {
+// DISABLE ENTREE
+export const disableEnt = () => {
   Alert.alert(
     'ERROR',
     'This feature has not yet been implemented.',
@@ -142,38 +139,37 @@ export const disableApp = () => {
     ]
   )
   return {
-    type: "APP_DISABLE"
+    type: "ENT_DISABLE"
   }
 }
 
-export function appEditSwitch(){
+export function entEditSwitch(){
   return{
-    type: APPS_EDIT_SWITCH
+    type: ENT_EDIT_SWITCH
   }
 }
-export function showAppSelect(data){
-  console.log('data ' , data.glass)
+export function showEntSelect(data){
   return {
-    type: SHOW_APP_SELECT,
+    type: SHOW_ENT_SELECT,
     payload: data
   }
 }
-export const glutenFree = () => {
+export const glutenFreeEntree = () => {
   return {
     type: GLUTEN_FREE
   }
 }
 
 // HANDLE PROMISES
-function updateAppsAction(){
+function updateEntAction(){
   return {
-    type: ATTEMPTING_APPS_UPDATE
+    type: ATTEMPTING_ENT_UPDATE
   }
 }
-function appsUpdateSuccess(){
+function entUpdateSuccess(){
   Alert.alert(
     'SUCCESS',
-    'Appetizer has been updated in your database.',
+    'Entree has been updated in your database.',
     [
       {text: 'OK', onPress: () => console.log('OK Pressed')},
     ]
@@ -182,15 +178,11 @@ function appsUpdateSuccess(){
   return {
     type: NAV_BACK,
   }
-  /*
-  Actions.appetizers({type:"replace"})
-  return {
-    type: JUMP_TO_APPS,
-  }*/
+
 
 
 }
-function appsUpdateError() {
+function entUpdateError() {
   Alert.alert(
     'ERROR',
     'There was an error saving your data.  Please try again.',
@@ -199,30 +191,26 @@ function appsUpdateError() {
     ]
   )
   return {
-    type: APPS_UPDATE_ERROR
+    type: ENT_UPDATE_ERROR
   }
 }
 
-function appsCreateSuccess(){
+function entCreateSuccess(){
   Alert.alert(
     'SUCCESS',
-    'Appetizer has been added to your database.',
+    'Entree has been added to your database.',
     [
       {text: 'OK', onPress: () => console.log('OK Pressed')},
     ]
   )
 
-  // GO BACK A SCREEN TO THE APPETIZER LISTVIEW
+  // GO BACK A SCREEN TO THE Entree LISTVIEW
   return {
     type: NAV_BACK,
   }
-  /*
-  Actions.appetizers({type:"replace"})
-  return {
-    type: JUMP_TO_APPS,
-  }*/
+
 }
-function appsCreateError(){
+function entCreateError(){
   Alert.alert(
     'ERROR',
     'There was an error saving your data.  Please try again.',
@@ -231,31 +219,31 @@ function appsCreateError(){
     ]
   )
   return {
-      type: "APPETIZER_CREATE_ERROR"
+      type: "ENTREE_CREATE_ERROR"
     }
 }
-function deleteAppAction(){
+function deleteEntAction(){
   return {
     type: 'ATTEMPTING_APP_DELETE'
   }
 }
-function wineDeleteError(){
+function entDeleteError(){
   Alert.alert(
     'ERROR',
-    'There was an error deleting this appetizer.',
+    'There was an error deleting this entree.',
     [
       {text: 'OK', onPress: () => console.log('OK Pressed')},
     ]
   )
   return {
     //type: WINE_CREATE
-    type: "ERROR_DELETING_APPETIZER"
+    type: "ERROR_DELETING_ENTREE"
   }
 }
-function appDeleteSuccess(){
+function entDeleteSuccess(){
   Alert.alert(
     'SUCCESS',
-    'Appetizer has been removed from your database.',
+    'Entree has been removed from your database.',
     [
       {text: 'OK', onPress: () => console.log('OK Pressed')},
     ]
@@ -264,30 +252,26 @@ function appDeleteSuccess(){
   return {
     type: NAV_BACK,
   }
-  /*
-  Actions.appetizers({type:"replace"})
-  return {
-    type: JUMP_TO_APPS,
-  }*/
+
 
 }
-function createAppsAction(){
+function createEntAction(){
   return {
-    type: CREATING_APPETIZER
+    type: CREATING_ENTREE
   }
 }
-function getAppsRequestedAction() {
+function getEntRequestedAction() {
   return {
-    type: APPS_REQUESTED
+    type: ENT_REQUESTED
   }
 }
-export function refreshingApps(){
+export function refreshingEnt(){
   return{
-    type: APPS_REFRESH,
+    type: ENT_REFRESH,
   }
 }
-export const showAppetizer = () => {
+export const showEntree = () => {
   return {
-    type: SHOW_APPETIZERS
+    type: SHOW_ENTREES
   }
 }

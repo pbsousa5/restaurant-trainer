@@ -9,7 +9,7 @@ import wineNotes from './noteReducer'
 import modal from './modalReducer'
 import image from './imageReducer'
 import admin from './adminReducer'
-
+import entrees from './entreeReducer'
 import appetizer from './appetizerReducer'
 import { reducer as forms } from 'redux-form'
 import { AppNavigator } from '../navigators/AppNavigator'
@@ -41,6 +41,12 @@ function nav(state = initialNavState, action){
       params: {
         title: "VIEW APPETIZER",
         place: "APP"
+      }}), state)
+    case 'SHOW_ENT_SELECT':
+      return AppNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'ViewEnt',
+      params: {
+        title: "VIEW ENTREE",
+        place: "ENT"
       }}), state)
     case 'user_is_not_logged_in':
       return AppNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'LoginStart'}), state)
@@ -77,6 +83,7 @@ const reducer = combineReducers({
   auth,
   items,
   appetizer: appetizer,
+  entrees: entrees,
   admin: admin,
   image: image,
   auth: emailReducer,
