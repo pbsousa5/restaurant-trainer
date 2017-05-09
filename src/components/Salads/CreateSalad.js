@@ -13,15 +13,13 @@ import {
   FormLabel,
   FormInput
 } from 'react-native-elements'
-import AppConfig from '../../../configs/config'
-import { Input } from '../'
-import { CardSection } from '../'
+import AppConfig from '../../configs/config'
+import { Input, CardSection } from '../common'
 import { connect } from 'react-redux'
-import AppStyles from '../../../configs/styles'
-import EntreeForm from './EntreeForm'
+import AppStyles from '../../configs/styles'
+import SaladForm from './SaladForm'
 
-
-class CreateEntree extends Component {
+class CreateSalad extends Component {
 
   render() {
     return (
@@ -30,10 +28,10 @@ class CreateEntree extends Component {
         style={[AppStyles.backColor, AppStyles.flex1]}
         contentContainerStyle={AppStyles.createWine}>
       <View  >
-          <EntreeForm {...this.props} />
+          <SaladForm {...this.props} />
       </View>
       </ScrollView>
     );
   }
 }
-export default CreateEntree
+export default CreateSalad

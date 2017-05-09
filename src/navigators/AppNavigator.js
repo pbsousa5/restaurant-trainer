@@ -17,9 +17,12 @@ import EditWine from '../components/common/EditWine'
 import EditApps from '../components/common/EditApps'
 import Settings from '../components/common/Settings'
 import Users from '../components/common/Users'
-import Entrees from '../components/common/Entrees/Entrees'
-import EditEntree from '../components/common/Entrees/EditEntree'
-import CreateEntree from '../components/common/Entrees/CreateEntree'
+import Entrees from '../components/Entrees/Entrees'
+import EditEntree from '../components/Entrees/EditEntree'
+import CreateEntree from '../components/Entrees/CreateEntree'
+import Salads from '../components/Salads/Salads'
+import CreateSalad from '../components/Salads/CreateSalad'
+import EditSalad from '../components/Salads/EditSalad'
 import Appetizers from '../components/Appetizers'
 import Wines from '../components/Wines'
 
@@ -40,6 +43,11 @@ const EntStack = StackNavigator({
   Entrees: { screen: Entrees},
   CreateEntree: {screen: CreateEntree},
   ViewEnt: {screen: EditEntree},
+})
+const SaladStack = StackNavigator({
+  Salads: {screen: Salads},
+  CreateSalad: {screen: CreateSalad},
+  ViewSalad: {screen: EditSalad},
 })
 const AppStack = StackNavigator({
   Appetizers: { screen: Appetizers },
@@ -66,6 +74,12 @@ const InnerNavigator = DrawerNavigator ({
         navigationOptions:{
           drawerIcon:(<DrawerIcon icon="ios-pizza"/> )
         },
+       },
+       Salads:{
+         screen: SaladStack,
+         navigationOptions:{
+           drawerIcon:(<DrawerIcon icon="ios-nutrition"/> )
+         },
        },
        Entrees: {
          screen: EntStack,

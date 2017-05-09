@@ -12,6 +12,7 @@
     "react": "16.0.0-alpha.6",
     "react-native": "0.43.3",
     "react-native-base-switch": "0.0.5",
+    "react-native-branch": "^2.0.0-beta.3",
     "react-native-check-box": "^1.0.4",
     "react-native-clean-form": "^0.4.1",
     "react-native-drawer": "^2.3.0",

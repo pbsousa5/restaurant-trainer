@@ -10,27 +10,27 @@ import {
   TouchableOpacity
 } from 'react-native'
 import { Card } from 'react-native-elements'
-import SearchBarExport from '../SearchBar'
+import SearchBarExport from '../common/SearchBar'
 import { connect } from 'react-redux';
-import { loadEntrees, showEntSelect } from '../../../actions';
-import EntreeRow from './EntreeRow';
-import AppConfig from '../../../configs/config'
-import AppStyles from '../../../configs/styles'
-import { MenuIcon} from '../menu/MenuIcon'
-import {AddIcon} from '../menu/AddIcon'
+import { loadSalads, showSaladSelect } from '../../actions';
+import SaladRow from './SaladRow';
+import AppConfig from '../../configs/config'
+import AppStyles from '../../configs/styles'
+import { MenuIcon} from '../common/menu/MenuIcon'
+import {AddIcon} from '../common/menu/AddIcon'
 import _ from 'lodash'
 
-class Entrees extends Component {
+class Salads extends Component {
 
   constructor (props) {
     super(props)
     // PASS IN A REFERENCE TO THE LOCAL companyID
     // TODO THIS MAY CHANGE LATER IF THE USER IS A MEMBER OF MULTIPLE COMPANIES
-    this.props.loadEntrees(this.props.companyID)
+    this.props.loadSalads(this.props.companyID)
 
   }
   static navigationOptions = ({ navigation }) => ({
-    title: 'ENTREES',
+    title: 'SALADS',
     headerTitleStyle: {
        alignSelf: 'center',
     },
@@ -39,14 +39,14 @@ class Entrees extends Component {
       <MenuIcon style={AppStyles.menuIcon}/>
     </TouchableOpacity>,
     headerRight:
-    <TouchableOpacity onPress={() => navigation.navigate('CreateEntree')}>
+    <TouchableOpacity onPress={() => navigation.navigate('CreateSalad')}>
       <AddIcon style={AppStyles.addIcon} type={"ADD"}/>
     </TouchableOpacity>,
 
   });
-  _loadEntreescreen = (data) => {
+  _loadSaladscreen = (data) => {
     //console.log('load wine screen ' , data);
-    this.props.showEntSelect(data)
+    this.props.showSaladSelect(data)
   }
   convertFBObj = (firebaseObj) => {
   //  console.log("firebaseObj ", firebaseObj  );
@@ -60,8 +60,8 @@ class Entrees extends Component {
      return (
        <View style={AppStyles.appetizerRowStyle}>
        <TouchableOpacity
-         onPress={this._loadEntreescreen.bind(this, item)}>
-             <EntreeRow {...item} />
+         onPress={this._loadSaladscreen.bind(this, item)}>
+             <SaladRow {...item} />
        </TouchableOpacity>
        </View>
      )
@@ -93,7 +93,7 @@ class Entrees extends Component {
       <View style={[AppStyles.pageContainer, AppStyles.backColor]}>
         <Card>
            <Text style={AppStyles.h4}>
-             Welcome to the Entrees page!
+             Welcome to the Salads page!
            </Text>
            <Text style={AppStyles.h5}>
              We will populate this with database items List.
@@ -103,17 +103,17 @@ class Entrees extends Component {
              top right to get started!
            </Text>
            <Text style={AppStyles.h5}>
-             Entrees
+             Salads
            </Text>
         </Card>
        </View>
     )
   }
   render(){
-    if(!this.props.entrees){
+    if(!this.props.salads){
       return this._defaultView()
     }
-    let sectionData = this.convertFBObj(this.props.entrees)
+    let sectionData = this.convertFBObj(this.props.salads)
     // group by our varietals
     sectionData = _.groupBy(sectionData, d => d.category)
     // populate the array
@@ -130,25 +130,24 @@ class Entrees extends Component {
     })
     //console.log("sectionData wines ", sectionData);
     return(
-      <SectionList
-        renderItem={this._renderSectionRow}
-        sections={sectionData}
-        onRefresh={() => alert('onRefresh: nothing to refresh :P')}
-        refreshing={false}
-        renderSectionHeader={this._renderHeader}
-        keyExtractor={(item) => item.key}
-      />
+      <View style={[AppStyles.pageContainer, AppStyles.backColor]}>
+        <SectionList
+          renderItem={this._renderSectionRow}
+          sections={sectionData}
+          onRefresh={() => alert('onRefresh: nothing to refresh :P')}
+          refreshing={false}
+          renderSectionHeader={this._renderHeader}
+          keyExtractor={(item) => item.key}
+        />
+    </View>
     )
-
-
   }
-
 }
 const mapStateToProps = (state) => {
-  const { entrees, entreeListLoaded } = state.entrees;
+  const { salads, saladListLoaded } = state.salads;
   const { companyID } = state.myCompany;
   const { isAdmin } = state.admin;
-  return { entrees, companyID, entreeListLoaded, isAdmin };
+  return { salads, companyID, saladListLoaded, isAdmin };
 };
 
-export default connect(mapStateToProps, { loadEntrees, showEntSelect })(Entrees);
+export default connect(mapStateToProps, { loadSalads, showSaladSelect })(Salads);

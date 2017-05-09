@@ -5,11 +5,11 @@ import {
   Image
 } from 'react-native';
 import { connect } from 'react-redux';
-import { CardSection, Card, Input, CustomSwitch } from '../';
+import { CardSection, Card, Input, CustomSwitch } from '../common';
 import {  Icon, Button} from 'react-native-elements'
-import AppStyles from '../../../configs/styles'
-import AppConfigs from '../../../configs/config'
-import ImageSelect from '../ImageSelect'
+import AppStyles from '../../configs/styles'
+import AppConfigs from '../../configs/config'
+import ImageSelect from '../common/ImageSelect'
 import Spinner from 'react-native-loading-spinner-overlay'
 import { reduxForm, Field, formValueSelector } from 'redux-form'
 import {
@@ -21,11 +21,11 @@ import {
 import _ from 'lodash'
 import  Lightbox  from 'react-native-lightbox'
 import {
-  entCreate,
+  saladCreate,
   glutenFree
-} from '../../../actions';
+} from '../../actions';
 
-class EntreeForm extends Component {
+class SaladForm extends Component {
   constructor(props){
     super(props)
     this.state = {
@@ -37,7 +37,7 @@ class EntreeForm extends Component {
     }
 
     const {
-      entname
+      saladname
     } = props
   }
 
@@ -75,23 +75,23 @@ class EntreeForm extends Component {
     this.props.glutenFree()
   }
   onCreatePress = () => {
-    const {  entname, category, allergies, entnotes, ingredients } = this.props;
+    const {  saladname, category, allergies, saladnotes, ingredients } = this.props;
     let image = null
     const gluten = this.props.gluten
     // CHECK IF CUSTOM IMAGE WAS UPLOADED
     this.props.imageAdded ? image = this.props.uploadedImage : image = this.CheckURI("")
-    console.log("SUBMIT FIELDS: ", entname, category, allergies, entnotes, ingredients);
-    this.props.entCreate({ entname, category,
-      allergies, gluten, entnotes, ingredients, image });
+    console.log("SUBMIT SALAD FIELDS: ", saladname, category, allergies, saladnotes, ingredients);
+    this.props.saladCreate({ saladname, category,
+      allergies, gluten, saladnotes, ingredients, image });
   }
   setFormFields = () => {
     //console.log("SETTING FORM FIELDS APPS");
     // set fields to default values
     // in case of this appfrom they should be empty
-    this.props.change("entname", this.props.details.name)
+    this.props.change("saladname", this.props.details.name)
     this.props.change("category", this.props.details.category)
     this.props.change("allergies", this.props.details.allergies)
-    this.props.change("entnotes", this.props.details.entnotes)
+    this.props.change("saladnotes", this.props.details.saladnotes)
     this.props.change("ingredients", this.props.details.ingredients)
   }
   renderLoadingView() {
@@ -119,21 +119,21 @@ class EntreeForm extends Component {
               <FieldsContainer style={AppStyles.fieldContainer}>
                 <Fieldset label="Entree details" style={{color:AppConfigs.greenColor}}>
                   <Field
-                    name="entname"
+                    name="saladname"
                     myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
                     defValue={""}
                     myLabelStyle={AppStyles.labelStyle}
                     viewStyle={AppStyles.containerStyle}
                     lineNum= {2}
                     multiline = {true}
-                    label="Name" placeholder="Entree name"
+                    label="Name" placeholder="Salad name"
                     component={ Input }
                     />
                   <Field name="category" myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
                     defValue={""}
                     myLabelStyle={AppStyles.labelStyle}
                     viewStyle={AppStyles.containerStyle}
-                    label="Category" placeholder="Category for this entree"
+                    label="Category" placeholder="Category for this Salad"
                     component={ Input }/>
 
                   <Field name="allergies"
@@ -148,14 +148,14 @@ class EntreeForm extends Component {
                     myLabelStyle={AppStyles.labelStyle}/>
                 </Fieldset>
                 <Fieldset label="food tasting notes" last>
-                  <Field name="entnotes"
+                  <Field name="saladnotes"
                     myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
                     myLabelStyle={AppStyles.labelStyle}
                     defValue={""}
                     multiline = {true}
                     lineNum= {10}
                     viewStyle={AppStyles.paraStyle}
-                    placeholder="Enter entree tasting notes."
+                    placeholder="Enter Salad tasting notes."
                     component={ Input }/>
                 </Fieldset>
                 <Fieldset label="key ingredients" last>
@@ -166,7 +166,7 @@ class EntreeForm extends Component {
                     multiline = {true}
                     lineNum= {10}
                     viewStyle={AppStyles.paraStyle}
-                    placeholder="Enter entree key ingredients."
+                    placeholder="Enter Salad key ingredients."
                     component={ Input }/>
                 </Fieldset>
               </FieldsContainer>
@@ -190,30 +190,30 @@ class EntreeForm extends Component {
 
 
 
-EntreeForm = reduxForm({
-  form: 'entDetailsForm'  // a unique identifier for this form
-})(EntreeForm)
-const selector = formValueSelector('entDetailsForm');
+SaladForm = reduxForm({
+  form: 'saladDetailsForm'  // a unique identifier for this form
+})(SaladForm)
+const selector = formValueSelector('saladDetailsForm');
 
 const mapStateToProps = (state) => {
 
-  const { gluten, hasLoaded, details } = state.entrees
+  const { gluten, hasLoaded, details } = state.salads
   const { image, imageAdded, uploadedImage } = state.image
   const { toggle } = state.modal
   return {
-    entname: selector(state, 'entname'),
+    saladname: selector(state, 'saladname'),
     category: selector(state, 'category'),
     allergies: selector(state, 'allergies'),
-    entnotes: selector(state, 'entnotes'),
+    saladnotes: selector(state, 'saladnotes'),
     ingredients: selector(state, 'ingredients'),
     image, imageAdded, uploadedImage, toggle, gluten, hasLoaded, details }
 };
 
 
-EntreeForm =  connect(
+SaladForm =  connect(
   mapStateToProps, {
-  entCreate,
+  saladCreate,
   glutenFree,
-})(EntreeForm);
+})(SaladForm);
 
-export default EntreeForm
+export default SaladForm

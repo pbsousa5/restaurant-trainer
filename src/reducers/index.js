@@ -10,6 +10,7 @@ import modal from './modalReducer'
 import image from './imageReducer'
 import admin from './adminReducer'
 import entrees from './entreeReducer'
+import salads from './saladReducer'
 import appetizer from './appetizerReducer'
 import { reducer as forms } from 'redux-form'
 import { AppNavigator } from '../navigators/AppNavigator'
@@ -48,6 +49,12 @@ function nav(state = initialNavState, action){
         title: "VIEW ENTREE",
         place: "ENT"
       }}), state)
+    case 'SHOW_SALAD_SELECT':
+      return AppNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'ViewSalad',
+      params: {
+        title: "VIEW SALAD",
+        place: "SALAD"
+      }}), state)
     case 'user_is_not_logged_in':
       return AppNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'LoginStart'}), state)
     case "LOGIN_EMAIL":
@@ -84,6 +91,7 @@ const reducer = combineReducers({
   items,
   appetizer: appetizer,
   entrees: entrees,
+  salads: salads,
   admin: admin,
   image: image,
   auth: emailReducer,

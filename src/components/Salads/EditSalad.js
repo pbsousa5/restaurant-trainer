@@ -1,12 +1,12 @@
 import React, { Component, PropTypes  } from 'react'
 import { reduxForm, Field, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux';
-import AppStyles from '../../../configs/styles'
-import AppConfigs from '../../../configs/config'
-import { CardSection, Card, Input, CustomSwitch } from '../';
+import AppStyles from '../../configs/styles'
+import AppConfigs from '../../configs/config'
+import { CardSection, Card, Input, CustomSwitch } from '../common';
 import { Lightbox } from '@shoutem/ui'
 import {  Icon, Button} from 'react-native-elements'
-import ImageSelect from '../ImageSelect'
+import ImageSelect from '../common/ImageSelect'
 import {
   ActionsContainer,
   FieldsContainer,
@@ -17,14 +17,14 @@ import {
 } from 'react-native-clean-form'
 import { View, Text, Image, ScrollView, Linking, TouchableOpacity, Alert } from 'react-native'
 import {
-  entDelete,
-  entUpdate,
+  saladDelete,
+  saladUpdate,
   glutenFree,
-  disableEnt
-} from '../../../actions'
-import FormWrapper from '../utils/FormWrapper'
+  disableSalad
+} from '../../actions'
+import FormWrapper from '../common/utils/FormWrapper'
 
-class EditEntree extends Component{
+class EditSalad extends Component{
   constructor(props){
     super(props)
     this.onDeletePress = this.onDeletePress.bind(this)
@@ -34,26 +34,25 @@ class EditEntree extends Component{
   }
 
   onUpdatePress = () => {
-    const {  entname, category, allergies, entnotes, ingredients, } = this.props;
-    console.log("ENTREE NAME: ", entname);
+    const {  saladname, category, allergies, saladnotes, ingredients, } = this.props;
     let image = null
     const gluten = this.props.gluten
     const key = this.props.details.key
     // CHECK IF CUSTOM IMAGE WAS UPLOADED
     this.props.imageAdded ? image = this.props.uploadedImage : image = this.CheckURI("")
 
-    this.props.entUpdate({ entname, category,
-      allergies, gluten, entnotes, ingredients, image, key });
+    this.props.saladUpdate({ saladname, category,
+      allergies, gluten, saladnotes, ingredients, image, key });
   }
   onDisablePressed = () => {
-    this.props.disableEnt()
+    this.props.disableSalad()
   }
   onDeletePress = () => {
     Alert.alert(
       'WARNING',
-      'Are you sure you want to permanently delete this entree?',
+      'Are you sure you want to permanently delete this Salad?',
       [
-        {text: 'OK', onPress: () => this.props.entDelete(this.props.details.key)},
+        {text: 'OK', onPress: () => this.props.saladDelete(this.props.details.key)},
         {text: 'CANCEL', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
       ]
     )
@@ -86,7 +85,7 @@ class EditEntree extends Component{
 
   render(){
     return(
-      this.props.entEdit ? this.renderEditView() : this._renderNormalView()
+      this.props.saladEdit ? this.renderEditView() : this._renderNormalView()
     )
 
   }
@@ -106,7 +105,7 @@ class EditEntree extends Component{
             </CardSection>
             <Form>
               <FieldsContainer style={AppStyles.fieldContainer}>
-                <Fieldset label="Entree Details">
+                <Fieldset label="Salad Details" >
                   <View style={[AppStyles.row, {justifyContent: 'flex-start', paddingLeft: 0}]}>
                     <View style={[AppStyles.column, AppStyles.flex1]}>
                       <Text style={[AppStyles.labelStyle, AppStyles.topBotPadding]}>NAME</Text>
@@ -129,7 +128,7 @@ class EditEntree extends Component{
                 </Fieldset>
                 <Fieldset label="description" >
                   <View style={AppStyles.flex1}>
-                    <Text style={[AppStyles.flex1, AppStyles.inputText]} numberOfLines={20}>{this.props.details.entnotes}</Text>
+                    <Text style={[AppStyles.flex1, AppStyles.inputText]} numberOfLines={20}>{this.props.details.saladnotes}</Text>
                   </View>
                   <View style={AppStyles.flex1}></View>
                 </Fieldset>
@@ -157,10 +156,10 @@ class EditEntree extends Component{
   setFormFields = () => {
     console.log('setting form values ');
     //TODO populate form state
-    this.props.change("entname", this.props.details.name)
+    this.props.change("saladname", this.props.details.name)
     this.props.change("category", this.props.details.category)
     this.props.change("allergies", this.props.details.allergies)
-    this.props.change("entnotes", this.props.details.entnotes)
+    this.props.change("saladnotes", this.props.details.saladnotes)
     this.props.change("ingredients", this.props.details.ingredients)
   }
   renderEditView(){
@@ -195,23 +194,23 @@ class EditEntree extends Component{
               </CardSection>
             <Form>
               <FieldsContainer style={AppStyles.fieldContainer}>
-                <Fieldset label="Entree details" style={{color:AppConfigs.greenColor}}>
+                <Fieldset label="Salad details" style={{color:AppConfigs.greenColor}}>
                   <Field
-                    name="entname"
+                    name="saladname"
                     myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
                     defValue={this.props.details.name}
                     myLabelStyle={AppStyles.labelStyle}
                     viewStyle={AppStyles.containerStyle}
                     lineNum= {2}
                     multiline = {true}
-                    label="Name" placeholder="Entree name"
+                    label="Name" placeholder="Salad name"
                     component={ Input }
                     onChangeAction={this.props.onChangeAction}/>
                   <Field name="category" myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
                     defValue={this.props.details.category}
                     myLabelStyle={AppStyles.labelStyle}
                     viewStyle={AppStyles.containerStyle}
-                    label="Category" placeholder="Category for this appetizer"
+                    label="Category" placeholder="Category for this Salad"
                     component={ Input }/>
 
                   <Field name="allergies"
@@ -226,14 +225,14 @@ class EditEntree extends Component{
                     myLabelStyle={AppStyles.labelStyle}/>
                 </Fieldset>
                 <Fieldset label="food tasting notes" last>
-                  <Field name="entnotes"
+                  <Field name="saladnotes"
                     myStyle={[AppStyles.inputStyle, AppStyles.inputText]}
                     myLabelStyle={AppStyles.labelStyle}
-                    defValue={this.props.details.entnotes}
+                    defValue={this.props.details.saladnotes}
                     multiline = {true}
                     lineNum= {10}
                     viewStyle={AppStyles.paraStyle}
-                    placeholder="Enter entree tasting notes."
+                    placeholder="Enter Salad tasting notes."
                     component={ Input }/>
                 </Fieldset>
                 <Fieldset label="key ingredients" last>
@@ -244,7 +243,7 @@ class EditEntree extends Component{
                     multiline = {true}
                     lineNum= {10}
                     viewStyle={AppStyles.paraStyle}
-                    placeholder="Enter entree key ingredients."
+                    placeholder="Enter Salad key ingredients."
                     component={ Input }/>
                 </Fieldset>
               </FieldsContainer>
@@ -286,30 +285,30 @@ class EditEntree extends Component{
 }
 
 
-const selector = formValueSelector('entEditForm');
+const selector = formValueSelector('saladEditForm');
 
 const mapStateToProps = (state) => {
-  const { gluten, entEdit, details } = state.entrees
+  const { gluten, saladEdit, details } = state.salads
   const { image, imageAdded, uploadedImage } = state.image
   const { toggle } = state.modal
   return {
-    entname: selector(state, 'entname'),
+    saladname: selector(state, 'saladname'),
     category: selector(state, 'category'),
     allergies: selector(state, 'allergies'),
-    entnotes: selector(state, 'entnotes'),
+    saladnotes: selector(state, 'saladnotes'),
     ingredients: selector(state, 'ingredients'),
-    image, imageAdded, uploadedImage, toggle, gluten, entEdit, details }
+    image, imageAdded, uploadedImage, toggle, gluten, saladEdit, details }
 };
 
-EditEntree = FormWrapper(reduxForm({
-  form: 'entEditForm',
+EditSalad = FormWrapper(reduxForm({
+  form: 'saladEditForm',
   enableReinitialize: true
 })(connect(
   mapStateToProps, {
   glutenFree,
-  entDelete,
-  entUpdate,
-  disableEnt
-})(EditEntree)));
+  saladDelete,
+  saladUpdate,
+  disableSalad
+})(EditSalad)));
 
-export default EditEntree
+export default EditSalad

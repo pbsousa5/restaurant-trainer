@@ -8,132 +8,132 @@ import LocalStore from 'react-native-simple-store'
 
 import firebase from 'firebase'
 import {
-  ENTREES_LOADED,
-  SHOW_ENTREES,
-  ENT_REQUESTED,
-  CREATING_ENTREE,
+  SALADS_LOADED,
+  SHOW_SALADS,
+  SALAD_REQUESTED,
+  CREATING_SALAD,
   GLUTEN_FREE,
   NAV_BACK,
-  SHOW_ENT_SELECT,
-  ENT_EDIT_SWITCH,
-  ATTEMPTING_ENT_UPDATE,
-  ENT_UPDATE_ERROR,
-  ENT_REFRESH,
+  SHOW_SALAD_SELECT,
+  SALAD_EDIT_SWITCH,
+  ATTEMPTING_SALAD_UPDATE,
+  SALAD_UPDATE_ERROR,
+  SALAD_REFRESH,
 } from './types'
 
-function getEntFulfilledAction  (entree){
-  console.log('entrees ' , entree);
+function getSaladFulfilledAction  (salad){
+  console.log('salads ' , salad);
   return{
-    type: ENTREES_LOADED,
-    payload: entree
+    type: SALADS_LOADED,
+    payload: salad
   }
 }
-//Load appetizers from firebase
-export function loadEntrees (currentLocalID) {
+//Load salads from firebase
+export function loadSalads (currentLocalID) {
   return function (dispatch) {
-    dispatch(getEntRequestedAction())
-    const entRef = companyRef.child(`${currentLocalID}`).child('entrees')
+    dispatch(getSaladRequestedAction())
+    const saladRef = companyRef.child(`${currentLocalID}`).child('salads')
 
-    return entRef.on('value', snap => {
-      const entree = snap.val()
-      console.log("snap.key entree " , entree)
-      dispatch(getEntFulfilledAction(entree))
+    return saladRef.on('value', snap => {
+      const salad = snap.val()
+      console.log("snap.key salad " , salad)
+      dispatch(getSaladFulfilledAction(salad))
     })
   }
 }
-// FUNCTION FOR CREATING APPETIZER IN FIREBASE
-export const entCreate = ({ entname, category,
-  allergies, gluten, entnotes, ingredients, image }) => {
-    console.log("Entree category ", category);
+// FUNCTION FOR CREATING SALAD IN FIREBASE
+export const saladCreate = ({ saladname, category,
+  allergies, gluten, saladnotes, ingredients, image }) => {
+
   const { currentUser } = firebase.auth()
   var currentLocalID
   var idRef = firebase.database().ref(`/users/${currentUser.uid}/currentID`)
   return dispatch => {
-    dispatch(createEntAction())
+    dispatch(createSaladAction())
     return idRef.once('value',function(snapshot){
       currentLocalID = snapshot.val()
       let id = "";
       const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
       for( var i=0; i < 12; i++ )
           id += possible.charAt(Math.floor(Math.random() * possible.length));
-      const entRef = companyRef.child(`${currentLocalID}`).child('entrees').child(id)
-      entRef.set({
+      const saladRef = companyRef.child(`${currentLocalID}`).child('salads').child(id)
+      saladRef.set({
         key: id,
-        name: entname ? entname : "",
+        name: saladname ? saladname : "",
         category: category ? category.toUpperCase() : "",
         allergies: allergies ? allergies : "",
         gluten: gluten ? gluten : "",
-        entnotes: entnotes ? entnotes : "",
+        saladnotes: saladnotes ? saladnotes : "",
         ingredients: ingredients ? ingredients : "",
         image: image ? image : "",
         time: new Date().getTime(),
         createdBy: currentUser.uid,
       })
-      dispatch(entCreateSuccess())
+      dispatch(saladCreateSuccess())
     })
       .catch((error) => {
         console.log(error)
-        dispatch(entCreateError())
+        dispatch(saladCreateError())
       })
   }
 
 }
 
 //UPDATING entrees
-export const entUpdate = ({ entname, category,
-  allergies, gluten, entnotes, ingredients, image, key }) => {
+export const saladUpdate = ({ saladname, category,
+  allergies, gluten, saladnotes, ingredients, image, key }) => {
 
   const { currentUser } = firebase.auth()
   var currentLocalID
   var idRef = firebase.database().ref(`/users/${currentUser.uid}/currentID`)
   return dispatch => {
-    dispatch(updateEntAction())
+    dispatch(updateSaladAction())
     return idRef.once('value',function(snapshot){
       currentLocalID = snapshot.val()
-      const entRef = companyRef.child(`${currentLocalID}`).child('entrees').child(key)
-      entRef.update({
-        name: entname ? entname : "",
+      const saladRef = companyRef.child(`${currentLocalID}`).child('salads').child(key)
+      saladRef.update({
+        name: saladname ? saladname : "",
         category: category ? category.toUpperCase() : "",
         allergies: allergies ? allergies : "",
         gluten: gluten ? gluten : "",
-        entnotes: entnotes ? entnotes : "",
+        saladnotes: saladnotes ? saladnotes : "",
         ingredients: ingredients ? ingredients : "",
         image: image ? image : "",
         time: new Date().getTime(),
         updatedBy: currentUser.uid,
       })
-      dispatch(entUpdateSuccess())
+      dispatch(saladUpdateSuccess())
     })
       .catch((error) => {
         console.log(error)
-        dispatch(entUpdateError())
+        dispatch(saladUpdateError())
       })
   }
 
 }
 // DELETE entree
-export const entDelete = ( key ) => {
+export const saladDelete = ( key ) => {
   const { currentUser } = firebase.auth()
   var currentLocalID
   var isAdmin
   var idRef = firebase.database().ref(`/users/${currentUser.uid}/currentID`)
 
   return dispatch => {
-    dispatch(deleteEntAction())
+    dispatch(deleteSaladAction())
     return idRef.once('value',function(snapshot){
       currentLocalID = snapshot.val()
-      const entRef = companyRef.child(`${currentLocalID}/entrees/${key}`)
-      entRef.remove()
-      dispatch(entDeleteSuccess())
+      const saladRef = companyRef.child(`${currentLocalID}/salads/${key}`)
+      saladRef.remove()
+      dispatch(saladDeleteSuccess())
     })
       .catch((error) => {
         console.log(error)
-        dispatch(entDeleteError())
+        dispatch(saladDeleteError())
       })
     }
 }
 // DISABLE ENTREE
-export const disableEnt = () => {
+export const disableSalad = () => {
   Alert.alert(
     'ERROR',
     'This feature has not yet been implemented.',
@@ -142,37 +142,38 @@ export const disableEnt = () => {
     ]
   )
   return {
-    type: "ENT_DISABLE"
+    type: "SALAD_DISABLE"
   }
 }
 
-export function entEditSwitch(){
+export function saladEditSwitch(){
   return{
-    type: ENT_EDIT_SWITCH
+    type: SALAD_EDIT_SWITCH
   }
 }
-export function showEntSelect(data){
+export function showSaladSelect(data){
   return {
-    type: SHOW_ENT_SELECT,
+    type: SHOW_SALAD_SELECT,
     payload: data
   }
 }
-export const glutenFreeEntree = () => {
+export const glutenFreeSalad = () => {
   return {
     type: GLUTEN_FREE
   }
 }
 
 // HANDLE PROMISES
-function updateEntAction(){
+function updateSaladAction(){
   return {
-    type: ATTEMPTING_ENT_UPDATE
+    type: ATTEMPTING_SALAD_UPDATE,
+
   }
 }
-function entUpdateSuccess(){
+function saladUpdateSuccess(){
   Alert.alert(
     'SUCCESS',
-    'Entree has been updated in your database.',
+    'Salad has been updated in your database.',
     [
       {text: 'OK', onPress: () => console.log('OK Pressed')},
     ]
@@ -185,7 +186,7 @@ function entUpdateSuccess(){
 
 
 }
-function entUpdateError() {
+function saladUpdateError() {
   Alert.alert(
     'ERROR',
     'There was an error saving your data.  Please try again.',
@@ -194,14 +195,14 @@ function entUpdateError() {
     ]
   )
   return {
-    type: ENT_UPDATE_ERROR
+    type: SALAD_UPDATE_ERROR
   }
 }
 
-function entCreateSuccess(){
+function saladCreateSuccess(){
   Alert.alert(
     'SUCCESS',
-    'Entree has been added to your database.',
+    'Salad has been added to your database.',
     [
       {text: 'OK', onPress: () => console.log('OK Pressed')},
     ]
@@ -213,7 +214,7 @@ function entCreateSuccess(){
   }
 
 }
-function entCreateError(){
+function saladCreateError(){
   Alert.alert(
     'ERROR',
     'There was an error saving your data.  Please try again.',
@@ -222,31 +223,32 @@ function entCreateError(){
     ]
   )
   return {
-      type: "ENTREE_CREATE_ERROR"
+      type: "SALAD_CREATE_ERROR"
     }
 }
-function deleteEntAction(){
+function deleteSaladAction
+(){
   return {
-    type: 'ATTEMPTING_APP_DELETE'
+    type: 'ATTEMPTING_SALAD_DELETE'
   }
 }
-function entDeleteError(){
+function saladDeleteError(){
   Alert.alert(
     'ERROR',
-    'There was an error deleting this entree.',
+    'There was an error deleting this Salad.',
     [
       {text: 'OK', onPress: () => console.log('OK Pressed')},
     ]
   )
   return {
     //type: WINE_CREATE
-    type: "ERROR_DELETING_ENTREE"
+    type: "ERROR_DELETING_SALAD"
   }
 }
-function entDeleteSuccess(){
+function saladDeleteSuccess(){
   Alert.alert(
     'SUCCESS',
-    'Entree has been removed from your database.',
+    'Salad has been removed from your database.',
     [
       {text: 'OK', onPress: () => console.log('OK Pressed')},
     ]
@@ -258,23 +260,23 @@ function entDeleteSuccess(){
 
 
 }
-function createEntAction(){
+function createSaladAction(){
   return {
-    type: CREATING_ENTREE
+    type: CREATING_SALAD
   }
 }
-function getEntRequestedAction() {
+function getSaladRequestedAction() {
   return {
-    type: ENT_REQUESTED
+    type: SALAD_REQUESTED
   }
 }
-export function refreshingEnt(){
+export function refreshingSalad(){
   return{
-    type: ENT_REFRESH,
+    type: SALAD_REFRESH,
   }
 }
-export const showEntree = () => {
+export const showSalad = () => {
   return {
-    type: SHOW_ENTREES
+    type: SHOW_SALADS
   }
 }

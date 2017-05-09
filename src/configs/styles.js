@@ -164,13 +164,15 @@ module.exports = StyleSheet.create({
     fontWeight: '800',
   },
   displayText: {
-    color: AppConfig.ltBlueColor,
+    color: AppConfig.darkGrey,
     fontSize: 13,
     paddingLeft: 0,
     flex: 1,
+    /*
     textShadowOffset: {width: 1, height: 1},
     textShadowRadius: 1,
     textShadowColor: '#000000',
+    */
     fontFamily: AppConfig.baseFont,
     fontWeight: '800',
   },
@@ -267,8 +269,18 @@ module.exports = StyleSheet.create({
   inputText: {
     fontFamily: AppConfig.baseFont,
     fontWeight: '500',
-    color: AppConfig.whiteColor,
+    color: AppConfig.blackColor,
     fontSize: AppConfig.baseFontSize,
+    lineHeight: parseInt(AppConfig.baseFontSize + (AppConfig.baseFontSize * 0.5)),
+  },
+  fieldText: {
+    fontFamily: AppConfig.baseFont,
+    fontWeight: '500',
+    color: AppConfig.yellowColor,
+    fontSize: AppConfig.baseFontSize,
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 1,
+    textShadowColor: '#000000',
     lineHeight: parseInt(AppConfig.baseFontSize + (AppConfig.baseFontSize * 0.5)),
   },
   h1: {
