@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Animated, Image } from 'react-native';
 //<Image source={{ uri: props.Labels[0].Url}} style={styles.photo} />
-import {  Subtitle, Caption } from '@shoutem/ui'
 import AppStyles from '../../configs/styles'
 import AppConfig from '../../configs/config'
 import { Card } from 'react-native-elements'

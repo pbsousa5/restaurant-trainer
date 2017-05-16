@@ -422,7 +422,6 @@ module.exports = StyleSheet.create({
     flex: 1,
     width: window.width,
     height: window.height,
-    backgroundColor: 'gray',
     padding: 0,
     //marginTop: 45,
     backgroundColor: AppConfig.menuColor,
@@ -433,7 +432,6 @@ module.exports = StyleSheet.create({
     fontSize: AppConfig.baseFontSize * 1.1,
     lineHeight: parseInt((AppConfig.baseFontSize * 1.1) + (AppConfig.baseFontSize * 0.5)),
     color: AppConfig.whiteColor,
-    fontSize: AppConfig.baseFontSize,
   },
   menuSubText: {
     fontFamily: AppConfig.baseFont,
@@ -441,7 +439,6 @@ module.exports = StyleSheet.create({
     fontSize: AppConfig.baseFontSize * 1,
     lineHeight: parseInt((AppConfig.baseFontSize * 1) + (AppConfig.baseFontSize * 0.5)),
     color: AppConfig.secondaryTextColor,
-    fontSize: AppConfig.baseFontSize,
   },
   /* Helper Text Styles */
   centered: {
@@ -568,12 +565,6 @@ module.exports = StyleSheet.create({
   },
   rowHeight: {
     height: 100,
-  },
-  wineRow:{
-    position: 'relative',
-    flex: 1,
-    flexDirection: 'row',
-    //backgroundColor: AppConfig.menuColor,
   },
   rowStyle : {
         backgroundColor   : '#000000',

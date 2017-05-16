@@ -4,7 +4,8 @@ import { reduxForm, Field, formValueSelector } from 'redux-form'
 import AppStyles from '../../configs/styles'
 import AppConfigs from '../../configs/config'
 import { connect } from 'react-redux';
-import { Lightbox } from '@shoutem/ui'
+//import { Lightbox } from '@shoutem/ui'
+import  Lightbox  from 'react-native-lightbox'
 import { Icon, Button} from 'react-native-elements'
 import ImageSelect from './ImageSelect'
 import {

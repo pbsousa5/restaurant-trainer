@@ -30,7 +30,7 @@ import {
   Checkbox,
   Card
 } from 'react-native-elements'
-import { Divider } from '@shoutem/ui'
+
 import  ReviewDetails  from './ReviewDetails'
 import Modal from 'react-native-root-modal';
 import { wineNoteAdd, wineNoteRemove, toggleModal } from '../../actions';

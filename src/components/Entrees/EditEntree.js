@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import AppStyles from '../../configs/styles'
 import AppConfigs from '../../configs/config'
 import { CardSection, Card, Input, CustomSwitch } from '../common';
-import { Lightbox } from '@shoutem/ui'
+//import { Lightbox } from '@shoutem/ui'
+import  Lightbox  from 'react-native-lightbox'
 import {  Icon, Button} from 'react-native-elements'
 import ImageSelect from '../common/ImageSelect'
 import {

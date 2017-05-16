@@ -3,18 +3,15 @@ package com.ordr;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import io.branch.rnbranch.RNBranchPackage;
 import com.imagepicker.ImagePickerPackage;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
-//import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.magus.fblogin.FacebookLoginPackage;
+import io.branch.rnbranch.RNBranchPackage;
 import com.reactnative.photoview.PhotoViewPackage;
 import cl.json.RNSharePackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-
-
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -35,17 +32,15 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNBranchPackage(),
             new ImagePickerPackage(),
             new RNGoogleSigninPackage(),
             new RNFetchBlobPackage(),
-            //new FBSDKPackage(),
             new FacebookLoginPackage(),
+            new RNBranchPackage(),
             new PhotoViewPackage(),
             new RNSharePackage(),
             new LinearGradientPackage(),
             new VectorIconsPackage()
-
       );
     }
   };

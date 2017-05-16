@@ -58,7 +58,7 @@ import com.android.build.OutputFile
  *   inputExcludes: ["android/**", "ios/**"],
  *
  *   // override which node gets called and with what additional arguments
- *   nodeExecutableAndArgs: ["node"]
+ *   nodeExecutableAndArgs: ["node"],
  *
  *   // supply additional arguments to the packager
  *   extraPackagerArgs: []
@@ -96,6 +96,18 @@ android {
             abiFilters "armeabi-v7a", "x86"
         }
     }
+    splits {
+        abi {
+            reset()
+            enable enableSeparateBuildPerCPUArchitecture
+            universalApk false  // If true, also generate a universal APK
+            include "armeabi-v7a", "x86"
+        }
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
     signingConfigs {
         release {
             if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
@@ -106,22 +118,11 @@ android {
             }
         }
     }
-    lintOptions {
-      checkReleaseBuilds false
-    }
-    splits {
-        abi {
-            reset()
-            enable enableSeparateBuildPerCPUArchitecture
-            universalApk false  // If true, also generate a universal APK
-            include "armeabi-v7a", "x86"
-        }
-    }
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            signingConfig signingConfigs.release
         }
     }
     // applicationVariants are e.g. debug, release
@@ -138,24 +139,20 @@ android {
         }
     }
 }
-repositories {
-        mavenCentral()
-    }
+
 dependencies {
     compile project(':react-native-image-picker')
     compile project(':react-native-google-signin')
     compile project(':react-native-fetch-blob')
     compile project(':react-native-facebook-login')
+    compile project(':react-native-branch')
     compile project(':react-native-photo-view')
     compile project(':react-native-share')
     compile project(':react-native-linear-gradient')
     compile project(':react-native-vector-icons')
-    compile project(':react-native-branch')
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile "com.android.support:appcompat-v7:23.0.1"
     compile "com.facebook.react:react-native:+"  // From node_modules
-    compile 'com.facebook.android:facebook-android-sdk:4.+'
-    compile project(":react-native-fbsdk")
 }
 
 // Run this once to be able to run the application with BUCK

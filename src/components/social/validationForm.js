@@ -32,9 +32,8 @@ import  Lightbox  from 'react-native-lightbox'
 import AppStyles from '../../configs/styles'
 import AppUtil from '../../configs/util'
 
-// Components
-//import Button from '../components/button'
 import Alerts from '../alerts'
+
 import { CardSection } from '../common';
 
 /* Component ==================================================================== */
@@ -207,7 +206,7 @@ class Form extends Component {
   */
   render = () => {
     var Form = FormValidation.form.Form;
-    
+
     return (
       <ScrollView automaticallyAdjustContentInsets={false}
         ref={'scrollView'}

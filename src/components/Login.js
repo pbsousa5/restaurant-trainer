@@ -3,7 +3,6 @@ import firebase from 'firebase'
 import {connect} from 'react-redux';
 import {startAuthListener, loginEmail} from '../actions'
 import React, {Component, PropTypes} from 'react'
-import FormValidation from 'tcomb-form-native'
 import ValidationForm from './social/validationForm'
 import {
     Text,
@@ -14,20 +13,6 @@ import {
     Form,
     AsyncStorage
 } from 'react-native'
-
-import {
-    Image,
-    ListView,
-    Tile,
-    Title,
-    Subtitle,
-    Overlay,
-    Screen,
-    Icon,
-    Divider,
-    NavigationBar,
-    Spinner
-} from '@shoutem/ui';
 import {Button, SocialIcon, Card, FormLabel, FormInput} from 'react-native-elements'
 import Modal from 'react-native-root-modal';
 import AppStyles from '../configs/styles'
